@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".gitignore" />
+    <File Path="compose.yaml" />
+  </Folder>
+  <Project Path="Shelfly.Api/Shelfly.Api.csproj" />
+</Solution>

@@ -1,0 +1,7 @@
+﻿services:
+  shelfly:
+    image: shelfly
+    build:
+      context: .
+      dockerfile: Shelfly.Api/Dockerfile
+

@@ -1,0 +1,6 @@
+@Shelfly_HostAddress = http://localhost:5261
+
+GET {{Shelfly_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
