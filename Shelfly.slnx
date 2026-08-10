@@ -3,6 +3,11 @@
     <File Path=".dockerignore" />
     <File Path=".gitignore" />
     <File Path="compose.yaml" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="Shelfly.Api/Shelfly.Api.csproj" />
+  <Project Path="Shelfly.App/Shelfly.App.csproj" />
+  <Project Path="Shelfly.Common/Shelfly.Common.csproj" />
 </Solution>

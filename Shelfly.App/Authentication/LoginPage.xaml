@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:authentication="clr-namespace:Shelfly.App.Authentication"
+             xmlns:localization="clr-namespace:Shelfly.App.Resources.Localization"
+             x:Class="Shelfly.App.Authentication.LoginPage"
+             x:DataType="authentication:LoginViewModel"
+             Title="{x:Static localization:AppResources.LoginPageTitle}">
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout>
+                <Entry Text="{Binding UserName}"
+                       Placeholder="{x:Static localization:AppResources.LoginPageUserNamePlaceholder}" />
+                <Entry Text="{Binding Password}"
+                       Placeholder="{x:Static localization:AppResources.LoginPagePasswordPlaceholder}"
+                       IsPassword="True" />
+                <Button Text="{x:Static localization:AppResources.LoginPageLoginButtonText}"
+                        IsEnabled="{Binding CanLogin}"
+                        Command="{Binding LoginCommand}" />
+                <Button Text="{x:Static localization:AppResources.LoginPageRegisterButtonText}"
+                        Command="{Binding GoToRegistrationCommand}" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
