@@ -42,6 +42,7 @@ docker compose up
 - **Data stores**: PostgreSQL for primary data (EF Core + Npgsql), MongoDB for configuration parameters
 - **Auth flow**: Keycloak handles authentication/authorization. The API delegates auth to Keycloak; the MAUI client communicates only with the API and never talks directly to Keycloak
 - **Minimal hosting model**: single `Program.cs` entry point, endpoints defined via `app.MapGet()` etc., not Controllers
+- **API surface**: The API exposes both a REST API and a GraphQL API for client consumption
 - **Entity models** live in `Shelfly.Api/Data/Entities/`, separate from Common domain classes
 
 ## Testing Stack
