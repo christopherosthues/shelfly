@@ -7,7 +7,7 @@ namespace Shelfly.Api.Bookmarks;
 
 public class BookmarkService(AppDbContext context)
 {
-    public async Task<List<Bookmark>> GetBookmarks(Guid userId, Guid bookId)
+    public async Task<List<Bookmark>> GetBookmarksAsync(Guid userId, Guid bookId)
     {
         return await context.Bookmarks
             .Where(b => b.BookId == bookId)
@@ -19,7 +19,7 @@ public class BookmarkService(AppDbContext context)
             .ToListAsync();
     }
 
-    public async Task<Bookmark?> GetBookmark(Guid userId, Guid bookmarkId)
+    public async Task<Bookmark?> GetBookmarkAsync(Guid userId, Guid bookmarkId)
     {
         BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId);
         return entity is null ? null : new Bookmark
@@ -29,7 +29,7 @@ public class BookmarkService(AppDbContext context)
         };
     }
 
-    public async Task AddBookmark(Guid userId, Guid bookId, Bookmark bookmark)
+    public async Task AddBookmarkAsync(Guid userId, Guid bookId, Bookmark bookmark)
     {
         BookmarkEntity entity = new()
         {
@@ -42,7 +42,7 @@ public class BookmarkService(AppDbContext context)
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateBookmark(Guid userId, Guid bookmarkId)
+    public async Task UpdateBookmarkAsync(Guid userId, Guid bookmarkId)
     {
         BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId);
         if (entity != null)
@@ -52,7 +52,7 @@ public class BookmarkService(AppDbContext context)
         }
     }
 
-    public async Task DeleteBookmark(Guid userId, Guid bookmarkId)
+    public async Task DeleteBookmarkAsync(Guid userId, Guid bookmarkId)
     {
         BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId);
         if (entity != null)

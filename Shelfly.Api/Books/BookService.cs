@@ -7,7 +7,7 @@ namespace Shelfly.Api.Books;
 
 public class BookService(AppDbContext context)
 {
-    public async Task<List<Book>> GetBooks(Guid userId)
+    public async Task<List<Book>> GetBooksAsync(Guid userId)
     {
         return await context.Books
             .Select(b => new Book
@@ -21,7 +21,7 @@ public class BookService(AppDbContext context)
             .ToListAsync();
     }
 
-    public async Task<Book?> GetBook(Guid userId, Guid bookId)
+    public async Task<Book?> GetBookAsync(Guid userId, Guid bookId)
     {
         BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == bookId);
         return entity is null ? null : new Book
@@ -34,7 +34,7 @@ public class BookService(AppDbContext context)
         };
     }
 
-    public async Task AddBook(Guid userId, Book book)
+    public async Task AddBookAsync(Guid userId, Book book)
     {
         BookEntity entity = new()
         {
@@ -49,7 +49,7 @@ public class BookService(AppDbContext context)
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateBook(Guid userId, Book book)
+    public async Task UpdateBookAsync(Guid userId, Book book)
     {
         BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == book.Id);
         if (entity != null)
@@ -63,7 +63,7 @@ public class BookService(AppDbContext context)
         }
     }
 
-    public async Task DeleteBook(Guid userId, Book book)
+    public async Task DeleteBookAsync(Guid userId, Book book)
     {
         BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == book.Id);
         if (entity != null)
