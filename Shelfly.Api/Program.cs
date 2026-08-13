@@ -17,6 +17,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<BookmarkService>();
 
+// builder.Services.AddHttpClient<ExampleClient>(configureClient: static client =>
+// {
+//     client.BaseAddress = new ("https://");
+// }).AddStandardResilienceHandler();
+
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
 {
     options.SerializerOptions.PropertyNamingPolicy = null;
