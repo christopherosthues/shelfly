@@ -2,20 +2,29 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <NoWarn>$(NoWarn);NU1507</NoWarn>
+    <NoWarn>$(NoWarn);NU1507;NU1903</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="15.0.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.11" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.11" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.90" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="Npgsql" Version="10.0.3" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    <PackageVersion Include="TUnit" Version="1.65.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.13.0" />
+    <PackageVersion Include="Testcontainers.MongoDb" Version="4.13.0" />
+    <PackageVersion Include="Testcontainers.Keycloak" Version="4.13.0" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,9 @@
     <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />
   </Folder>
+  <Project Path="Shelfly.Api.Tests/Shelfly.Api.Tests.csproj" />
   <Project Path="Shelfly.Api/Shelfly.Api.csproj" />
+  <Project Path="Shelfly.App.Tests/Shelfly.App.Tests.csproj" />
   <Project Path="Shelfly.App/Shelfly.App.csproj" />
   <Project Path="Shelfly.Common/Shelfly.Common.csproj" />
 </Solution>
