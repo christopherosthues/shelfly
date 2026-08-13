@@ -37,6 +37,15 @@ docker compose up
 - **global.json allows prerelease SDKs**: `<allowPrerelease>true</allowPrerelease>` with `rollForward: latestMajor`.
 - **Request validation**: FluentValidation used for request data validation in the API
 
+## Coding Standards
+
+- **Nullable reference types**: `<Nullable>enable</Nullable>` enforced across all projects. Explicit `?` annotations required for nullable parameters and return types.
+- **No `var`**: Prefer explicit type names over `var` to improve readability and maintainability. Use `var` only when the type is immediately obvious from the right-hand side (e.g., collection initializers).
+- **Primary constructors**: Prefer primary constructor syntax for classes and records to reduce boilerplate. Example: `class Book(string title) { }`.
+- **Extension members**: Use C# 12 extension members (`with` expressions, extension properties/methods on existing types) where they improve clarity without hiding implementation details.
+- **Collection expressions**: Prefer `[]` collection expression syntax over `new List<T>()` or `new T[]()` for inline collections. Example: `List<string> tags = ["fiction", "fantasy"];`.
+- **Object creation**: Prefer the concise `new()` syntax (C# 12) over explicit constructor calls when default constructors are used. Example: `Book book = new();` instead of `var book = new Book();`.
+
 ## Architecture Notes
 
 - **Data stores**: PostgreSQL for primary data (EF Core + Npgsql), MongoDB for configuration parameters
