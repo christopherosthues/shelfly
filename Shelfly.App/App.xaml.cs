@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Shelfly.App;
+﻿namespace Shelfly.App;
 
 public partial class App : Application
 {
