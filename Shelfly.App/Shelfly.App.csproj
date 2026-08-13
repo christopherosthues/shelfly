@@ -54,6 +54,8 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Maui.Controls" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="StrawberryShake" />
+    <PackageReference Include="StrawberryShake.Maui" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfly.Common\Shelfly.Common.csproj" />

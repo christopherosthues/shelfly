@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Bogus" />
     <PackageReference Include="FluentValidation" />
+    <PackageReference Include="HotChocolate" />
+    <PackageReference Include="HotChocolate.Data.EntityFramework" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
