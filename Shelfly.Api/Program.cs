@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web.Resource;
 using Shelfly.Api.Bookmarks;
 using Shelfly.Api.Books;
 using Shelfly.Api.Data;
@@ -31,15 +30,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-string scopeRequiredByApi = app.Configuration["AzureAd:Scopes"] ?? "";
 string[] summaries =
 [
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 ];
 
-app.MapGet("/weatherforecast", (HttpContext httpContext) =>
+app.MapGet("/weatherforecast", () =>
     {
-        httpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
 
         WeatherForecast[] forecast = Enumerable.Range(1, 5).Select(index =>
                 new WeatherForecast
