@@ -44,6 +44,12 @@ docker compose up
 - **Minimal hosting model**: single `Program.cs` entry point, endpoints defined via `app.MapGet()` etc., not Controllers
 - **Entity models** live in `Shelfly.Api/Data/Entities/`, separate from Common domain classes
 
+## Testing Stack
+
+- **Unit testing**: TUnit framework for unit tests across all test projects
+- **Assertions**: Shouldly used for readable, natural-language assertions in test cases
+- **Integration testing**: Testcontainers spins up isolated MongoDB, Keycloak, and PostgreSQL instances for integration tests
+
 ## .specify Integration
 
 The `.specify/` directory contains workflow configuration for the specify toolchain (SDD cycle: specify → plan → tasks → implement). Not directly relevant to code changes, but explains the project's development process.
