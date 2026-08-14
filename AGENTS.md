@@ -54,6 +54,28 @@ docker compose up
 - **API surface**: The API exposes both a REST API and a GraphQL API for client consumption
 - **Entity models** live in `Shelfly.Api/Data/Entities/`, separate from Common domain classes
 
+### Keycloak Authentication Flow
+
+1. **Startup**: API loads Keycloak configuration (issuer URL, audience, JWKS endpoint) from MongoDB at startup
+2. **Caching**: Configuration cached in-memory with 5-minute TTL to reduce MongoDB read frequency
+3. **JWT Validation**: Incoming requests validated against Keycloak issuer using JSON Web Key Set (JWKS) discovery
+4. **Audience Matching**: Custom `JwtAudienceValidator` validates JWT `aud` claim against configured audience — mismatch returns 401 Unauthorized
+5. **Role-Based Access**: Authorization rules stored in MongoDB define role-to-endpoint mappings; API enforces these policies at runtime
+6. **Runtime Refresh**: Admin can update Keycloak configuration and authorization rules without restarting the API service
+
+### Configuration Storage (MongoDB)
+
+- **KeycloakConfig Document** (`_id: "keycloak"`): Stores issuer URL, audience, JWKS endpoint
+- **PostgreSqlConfig Document** (`_id: "postgresql"`): Stores PostgreSQL related configuration
+- **AuthorizationRule Document** (`_id: "auth-rules"`): Contains array of endpoint-to-role mappings
+- **Seeding**: Default configuration seeded on first API startup if MongoDB collection is empty
+
+### Resilience Pipeline
+
+- MongoDB connection wrapped with Polly retry policy (exponential backoff, max 5 attempts)
+- Graceful failure with clear error message after retries exhausted
+- In-memory cache (`IMemoryCache`) reduces read latency for configuration parameters
+
 ## Testing Stack
 
 - **Unit testing**: TUnit framework for unit tests across all test projects

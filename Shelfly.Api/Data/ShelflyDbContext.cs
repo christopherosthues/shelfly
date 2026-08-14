@@ -3,7 +3,7 @@ using Shelfly.Api.Data.Entities;
 
 namespace Shelfly.Api.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class ShelflyDbContext(DbContextOptions<ShelflyDbContext> options) : DbContext(options)
 {
     public DbSet<BookEntity> Books => Set<BookEntity>();
     public DbSet<BookmarkEntity> Bookmarks => Set<BookmarkEntity>();

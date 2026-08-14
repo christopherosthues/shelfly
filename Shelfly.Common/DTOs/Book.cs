@@ -1,4 +1,4 @@
-namespace Shelfly.Common;
+namespace Shelfly.Common.DTOs;
 
 public class Book
 {

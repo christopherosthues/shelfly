@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
 using Shelfly.Api.Data.Entities;
-using Shelfly.Common;
+using Shelfly.Common.DTOs;
 
 namespace Shelfly.Api.Bookmarks;
 
-public class BookmarkService(AppDbContext context)
+public class BookmarkService(ShelflyDbContext context)
 {
     public async Task<List<Bookmark>> GetBookmarksAsync(Guid userId, Guid bookId)
     {

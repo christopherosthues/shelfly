@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
 using Shelfly.Api.Data.Entities;
-using Shelfly.Common;
+using Shelfly.Common.DTOs;
 
 namespace Shelfly.Api.Books;
 
-public class BookService(AppDbContext context)
+public class BookService(ShelflyDbContext context)
 {
     public async Task<List<Book>> GetBooksAsync(Guid userId)
     {

@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Bogus" />
     <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="HotChocolate" />
     <PackageReference Include="HotChocolate.Data.EntityFramework" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" NoWarn="NU1605" />
@@ -16,6 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Polly" />
     <PackageReference Include="MongoDB.Driver" />
     <PackageReference Include="Npgsql" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
@@ -34,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfly.Common\Shelfly.Common.csproj" />
+    <ProjectReference Include="..\Shelfly.Configuration\Shelfly.Configuration.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authentication\" />
