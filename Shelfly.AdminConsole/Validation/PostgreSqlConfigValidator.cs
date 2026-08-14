@@ -3,9 +3,9 @@ using Shelfly.Configuration;
 
 namespace Shelfly.AdminConsole.Validation;
 
-public class PostgreSQLConfigValidator : AbstractValidator<PostgreSQLConfiguration>
+public class PostgreSqlConfigValidator : AbstractValidator<PostgreSqlConfiguration>
 {
-    public PostgreSQLConfigValidator()
+    public PostgreSqlConfigValidator()
     {
         RuleFor(x => x.ConnectionString)
             .NotEmpty().WithMessage("ConnectionString is required");

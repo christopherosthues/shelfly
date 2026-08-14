@@ -16,20 +16,20 @@ public class ExportToFileTests : IntegrationTestBase
             "admin-client-id",
             "admin-client-secret");
 
-        string prefix = "mybackup";
+        string filePrefix = "mybackup";
 
-        // Act - generate expected file names
+        // Act - generate expected file names (underscore separator format)
         List<string> expectedFiles =
         [
-            $"{prefix}-keycloak.json",
-            $"{prefix}-postgresql.json",
-            $"{prefix}-auth-rules.json"
+            $"{filePrefix}_keycloak.json",
+            $"{filePrefix}_postgresql.json",
+            $"{filePrefix}_auth-rules.json"
         ];
 
         // Assert - file naming convention should be correct
         expectedFiles.Count.ShouldBe(3);
-        expectedFiles.ShouldContain($"{prefix}-keycloak.json");
-        expectedFiles.ShouldContain($"{prefix}-postgresql.json");
-        expectedFiles.ShouldContain($"{prefix}-auth-rules.json");
+        expectedFiles.ShouldContain($"{filePrefix}_keycloak.json");
+        expectedFiles.ShouldContain($"{filePrefix}_postgresql.json");
+        expectedFiles.ShouldContain($"{filePrefix}_auth-rules.json");
     }
 }

@@ -17,7 +17,7 @@ public class ViewRepeatedFlagsTests : IntegrationTestBase
             "admin-client-id",
             "admin-client-secret");
 
-        PostgreSQLConfiguration postgresqlConfig = PostgreSQLConfiguration.Create(
+        PostgreSqlConfiguration postgresqlConfig = PostgreSqlConfiguration.Create(
             "Host=localhost;Port=5432;Database=shelfly;Username=admin;Password=password");
 
         // Act - retrieve only Keycloak and PostgreSQL configs via repeated flags
@@ -54,7 +54,7 @@ public class ViewRepeatedFlagsTests : IntegrationTestBase
             "admin-client-id",
             "admin-client-secret");
 
-        PostgreSQLConfiguration postgresqlConfig = PostgreSQLConfiguration.Create(
+        PostgreSqlConfiguration postgresqlConfig = PostgreSqlConfiguration.Create(
             "Host=localhost;Port=5432;Database=shelfly;Username=admin;Password=password");
 
         AuthorizationRule authRules = AuthorizationRule.Create([

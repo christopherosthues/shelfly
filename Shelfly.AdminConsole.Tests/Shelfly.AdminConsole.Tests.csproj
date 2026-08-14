@@ -17,6 +17,7 @@
         <PackageReference Include="Shouldly" />
         <PackageReference Include="Testcontainers.MongoDb" />
         <PackageReference Include="TUnit"/>
+        <PackageReference Include="Verify.TUnit" />
     </ItemGroup>
 
     <ItemGroup>

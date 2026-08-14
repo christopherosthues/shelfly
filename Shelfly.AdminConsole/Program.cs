@@ -51,15 +51,9 @@ setCommand.Subcommands.Add(new SetPostgreSQLCommand(
 setCommand.Subcommands.Add(new SetAuthRulesCommand(
     serviceProvider.GetRequiredService<ILogger<SetAuthRulesCommand>>(), configService));
 
-// View command (unified)
+// View command (unified with export capability)
 rootCommand.Add(new ViewCommand(
     serviceProvider.GetRequiredService<ILogger<ViewCommand>>(), configService));
-
-// Export command (separate from view)
-Command exportCommand = new("export", "Export configuration to file");
-exportCommand.Subcommands.Add(new ExportToFileHandler(
-    serviceProvider.GetRequiredService<ILogger<ExportToFileHandler>>(), configService));
-rootCommand.Add(exportCommand);
 
 return await rootCommand.Parse(args).InvokeAsync();
 
