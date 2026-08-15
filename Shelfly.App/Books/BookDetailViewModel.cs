@@ -33,7 +33,7 @@ public partial class BookDetailViewModel(BookApiService bookApiService, Bookmark
     private string _newBookmarkNote = string.Empty;
 
     [RelayCommand]
-    private async Task LoadBookDetailsAsync()
+    public async Task LoadBookDetailsAsync()
     {
         IsLoading = true;
         try

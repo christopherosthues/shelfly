@@ -1,4 +1,5 @@
 using System.CommandLine;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Shelfly.AdminConsole.Enums;
 using Shelfly.Configuration;
@@ -88,9 +89,30 @@ public class ViewCommand : Command
 
     private async Task PrintAllConfigurations(OutputMode outputMode, string filePrefix, bool forceOverwrite)
     {
-        await ViewKeycloakAsync(outputMode, filePrefix, forceOverwrite);
-        await ViewPostgreSqlAsync(outputMode, filePrefix, forceOverwrite);
-        await ViewAuthRulesAsync(outputMode, filePrefix, forceOverwrite);
+        KeycloakConfiguration? keycloak = await _configService.LoadByIdAsync<KeycloakConfiguration>(KeycloakConfiguration.DefaultId);
+        PostgreSqlConfiguration? postgresql = await _configService.LoadByIdAsync<PostgreSqlConfiguration>(PostgreSqlConfiguration.DefaultId);
+        AuthorizationRule? authRules = await _configService.LoadByIdAsync<AuthorizationRule>(AuthorizationRule.DefaultId);
+
+        if (outputMode == OutputMode.File)
+        {
+            // File export: individual files per config type
+            await ExportToFile(keycloak, BuildExportPath(filePrefix, "keycloak"), forceOverwrite);
+            await ExportToFile(postgresql, BuildExportPath(filePrefix, "postgresql"), forceOverwrite);
+            await ExportToFile(authRules, BuildExportPath(filePrefix, "auth-rules"), forceOverwrite);
+        }
+        else
+        {
+            // Console output: combined JSON structure
+            Dictionary<string, object?> combined = new()
+            {
+                ["keycloak"] = keycloak,
+                ["postgresql"] = postgresql,
+                ["authRules"] = authRules
+            };
+
+            string json = JsonSerializer.Serialize(combined);
+            _logger.LogInformation("{Json}", json);
+        }
     }
 
     private async Task PrintConfigurations(ConfigType[] configTypes, OutputMode outputMode, string filePrefix, bool forceOverwrite)
@@ -115,87 +137,45 @@ public class ViewCommand : Command
     private async Task ViewKeycloakAsync(OutputMode outputMode, string filePrefix, bool forceOverwrite)
     {
         KeycloakConfiguration? config = await _configService.LoadByIdAsync<KeycloakConfiguration>(KeycloakConfiguration.DefaultId);
-        if (config != null)
+
+        if (outputMode == OutputMode.File)
         {
-            if (outputMode == OutputMode.File)
-            {
-                await ExportToFile(config, BuildExportPath(filePrefix, "keycloak"), forceOverwrite);
-            }
-            else
-            {
-                _logger.LogInformation("Keycloak configuration: IssuerUrl={IssuerUrl}, Audience={Audience}",
-                    config.IssuerUrl, config.Audience);
-            }
+            await ExportToFile(config, BuildExportPath(filePrefix, "keycloak"), forceOverwrite);
         }
         else
         {
-            if (outputMode == OutputMode.File)
-            {
-                await ExportToFile(config, BuildExportPath(filePrefix, "keycloak"), forceOverwrite);
-            }
-            else
-            {
-                _logger.LogInformation("Keycloak configuration: not configured");
-            }
+            string json = JsonSerializer.Serialize(config);
+            _logger.LogInformation("{Json}", json);
         }
     }
 
     private async Task ViewPostgreSqlAsync(OutputMode outputMode, string filePrefix, bool forceOverwrite)
     {
         PostgreSqlConfiguration? config = await _configService.LoadByIdAsync<PostgreSqlConfiguration>(PostgreSqlConfiguration.DefaultId);
-        if (config != null)
+
+        if (outputMode == OutputMode.File)
         {
-            if (outputMode == OutputMode.File)
-            {
-                await ExportToFile(config, BuildExportPath(filePrefix, "postgresql"), forceOverwrite);
-            }
-            else
-            {
-                _logger.LogInformation("PostgreSQL configuration: ConnectionString={ConnectionString}",
-                    config.ConnectionString);
-            }
+            await ExportToFile(config, BuildExportPath(filePrefix, "postgresql"), forceOverwrite);
         }
         else
         {
-            if (outputMode == OutputMode.File)
-            {
-                await ExportToFile(config, BuildExportPath(filePrefix, "postgresql"), forceOverwrite);
-            }
-            else
-            {
-                _logger.LogInformation("PostgreSQL configuration: not configured");
-            }
+            string json = JsonSerializer.Serialize(config);
+            _logger.LogInformation("{Json}", json);
         }
     }
 
     private async Task ViewAuthRulesAsync(OutputMode outputMode, string filePrefix, bool forceOverwrite)
     {
         AuthorizationRule? authRules = await _configService.LoadByIdAsync<AuthorizationRule>(AuthorizationRule.DefaultId);
-        if (authRules != null)
+
+        if (outputMode == OutputMode.File)
         {
-            if (outputMode == OutputMode.File)
-            {
-                await ExportToFile(authRules, BuildExportPath(filePrefix, "auth-rules"), forceOverwrite);
-            }
-            else
-            {
-                foreach (Rule rule in authRules.Rules)
-                {
-                    _logger.LogInformation("Rule: Endpoint={EndpointPattern}, Roles=[{Roles}]",
-                        rule.EndpointPattern, string.Join(", ", rule.RequiredRoles));
-                }
-            }
+            await ExportToFile(authRules, BuildExportPath(filePrefix, "auth-rules"), forceOverwrite);
         }
         else
         {
-            if (outputMode == OutputMode.File)
-            {
-                await ExportToFile(authRules, BuildExportPath(filePrefix, "auth-rules"), forceOverwrite);
-            }
-            else
-            {
-                _logger.LogInformation("Authorization rules: not configured");
-            }
+            string json = JsonSerializer.Serialize(authRules);
+            _logger.LogInformation("{Json}", json);
         }
     }
 
@@ -209,7 +189,7 @@ public class ViewCommand : Command
         }
 
         string jsonContent = config != null
-            ? System.Text.Json.JsonSerializer.Serialize(config)
+            ? JsonSerializer.Serialize(config)
             : "{}";
 
         await File.WriteAllTextAsync(filePath, jsonContent);
