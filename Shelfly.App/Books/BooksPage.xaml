@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Shelfly.App.Books.BooksPage"
+             Title="My Library">
+
+    <Grid RowDefinitions="*, Auto">
+        <CollectionView Grid.Row="0"
+                        ItemsSource="{Binding Books}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedBook}"
+                        SelectionChangedCommand="{Binding NavigateToBookDetailCommand}">
+            <CollectionView.EmptyView>
+                <Label Text="No books yet"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="Medium"
+                       Opacity="0.5" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <VerticalStackLayout Padding="10" Spacing="5">
+                            <Label Text="{Binding Title}"
+                                   Style="{StaticResource Headline}"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Author}"
+                                   Style="{StaticResource SubHeadline}" />
+                            <Label Text="{Binding ISBN}"
+                                   FontSize="Small"
+                                   Opacity="0.6" />
+                        </VerticalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator Grid.Row="0"
+                           IsRunning="{Binding IsLoading}"
+                           IsVisible="{Binding IsLoading}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+        <Button Grid.Row="1"
+                Text="Add Book"
+                Command="{Binding AddBookCommand}"
+                HorizontalOptions="Fill"
+                Margin="20,10" />
+    </Grid>
+
+</ContentPage>

@@ -10,22 +10,26 @@ public class BookmarkService(ShelflyDbContext context)
     public async Task<List<Bookmark>> GetBookmarksAsync(Guid userId, Guid bookId)
     {
         return await context.Bookmarks
-            .Where(b => b.BookId == bookId)
+            .Where(b => b.BookId == bookId && b.UserId == userId)
             .Select(b => new Bookmark
             {
                 Id = b.Id,
-                PageNumber = b.PageNumber
+                StartPage = b.StartPage,
+                EndPage = b.EndPage,
+                Note = b.Note
             })
             .ToListAsync();
     }
 
     public async Task<Bookmark?> GetBookmarkAsync(Guid userId, Guid bookmarkId)
     {
-        BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId);
+        BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId && b.UserId == userId);
         return entity is null ? null : new Bookmark
         {
             Id = entity.Id,
-            PageNumber = entity.PageNumber
+            StartPage = entity.StartPage,
+            EndPage = entity.EndPage,
+            Note = entity.Note
         };
     }
 
@@ -34,7 +38,10 @@ public class BookmarkService(ShelflyDbContext context)
         BookmarkEntity entity = new()
         {
             Id = Guid.NewGuid(),
-            PageNumber = bookmark.PageNumber,
+            StartPage = bookmark.StartPage,
+            EndPage = bookmark.EndPage,
+            Note = bookmark.Note,
+            UserId = userId,
             BookId = bookId
         };
 
@@ -42,19 +49,22 @@ public class BookmarkService(ShelflyDbContext context)
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateBookmarkAsync(Guid userId, Guid bookmarkId)
+    public async Task UpdateBookmarkAsync(Guid userId, Guid bookmarkId, Bookmark bookmark)
     {
-        BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId);
+        BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId && b.UserId == userId);
         if (entity != null)
         {
-            context.Bookmarks.Update(entity);
+            entity.StartPage = bookmark.StartPage;
+            entity.EndPage = bookmark.EndPage;
+            entity.Note = bookmark.Note;
+
             await context.SaveChangesAsync();
         }
     }
 
     public async Task DeleteBookmarkAsync(Guid userId, Guid bookmarkId)
     {
-        BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId);
+        BookmarkEntity? entity = await context.Bookmarks.FirstOrDefaultAsync(b => b.Id == bookmarkId && b.UserId == userId);
         if (entity != null)
         {
             context.Bookmarks.Remove(entity);

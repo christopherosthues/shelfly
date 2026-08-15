@@ -10,6 +10,7 @@ public class BookService(ShelflyDbContext context)
     public async Task<List<Book>> GetBooksAsync(Guid userId)
     {
         return await context.Books
+            .Where(b => b.UserId == userId)
             .Select(b => new Book
             {
                 Id = b.Id,
@@ -23,14 +24,27 @@ public class BookService(ShelflyDbContext context)
 
     public async Task<Book?> GetBookAsync(Guid userId, Guid bookId)
     {
-        BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+        BookEntity? entity = await context.Books
+            .Include(b => b.Bookmarks)
+            .FirstOrDefaultAsync(b => b.Id == bookId && b.UserId == userId);
+
         return entity is null ? null : new Book
         {
             Id = entity.Id,
             Title = entity.Title,
             Author = entity.Author,
             ISBN = entity.ISBN,
-            PublishDate = entity.PublishDate
+            PublishDate = entity.PublishDate,
+            Bookmarks = entity.Bookmarks
+                .Where(bm => bm.UserId == userId)
+                .Select(bm => new Bookmark
+                {
+                    Id = bm.Id,
+                    StartPage = bm.StartPage,
+                    EndPage = bm.EndPage,
+                    Note = bm.Note
+                })
+                .ToList()
         };
     }
 
@@ -42,7 +56,8 @@ public class BookService(ShelflyDbContext context)
             Title = book.Title,
             Author = book.Author,
             ISBN = book.ISBN,
-            PublishDate = book.PublishDate
+            PublishDate = book.PublishDate,
+            UserId = userId
         };
 
         await context.Books.AddAsync(entity);
@@ -51,7 +66,7 @@ public class BookService(ShelflyDbContext context)
 
     public async Task UpdateBookAsync(Guid userId, Book book)
     {
-        BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == book.Id);
+        BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == book.Id && b.UserId == userId);
         if (entity != null)
         {
             entity.Title = book.Title;
@@ -65,7 +80,7 @@ public class BookService(ShelflyDbContext context)
 
     public async Task DeleteBookAsync(Guid userId, Book book)
     {
-        BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == book.Id);
+        BookEntity? entity = await context.Books.FirstOrDefaultAsync(b => b.Id == book.Id && b.UserId == userId);
         if (entity != null)
         {
             context.Books.Remove(entity);

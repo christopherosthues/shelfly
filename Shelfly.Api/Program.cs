@@ -24,6 +24,10 @@ builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationValidato
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
 builder.Services.AddScoped<IValidator<PasswordResetRequest>, PasswordResetValidator>();
 
+// Book and Bookmark validators
+// TODO: register all validators explicitly, not via discovery which possibly relies on slow reflection
+builder.Services.AddValidatorsFromAssembly(typeof(CreateBookValidator).Assembly);
+
 // Configuration services
 string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")
                                ?? throw new InvalidOperationException("MONGODB_CONNECTION_STRING not configured");
@@ -64,3 +68,9 @@ app.UseHttpsRedirection();
 
 // Map authentication endpoints
 app.MapAuthEndpoints();
+
+// Map book endpoints
+app.MapBookEndpoints();
+
+// Map bookmark endpoints
+app.MapBookmarkEndpoints();
