@@ -9,6 +9,8 @@ namespace Shelfly.AdminConsole.Commands;
 
 public class ViewCommand : Command
 {
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
     private readonly ILogger<ViewCommand> _logger;
     private readonly ConfigService _configService;
     private readonly Option<ConfigType[]> _configOption;
@@ -110,7 +112,7 @@ public class ViewCommand : Command
                 ["authRules"] = authRules
             };
 
-            string json = JsonSerializer.Serialize(combined);
+            string json = JsonSerializer.Serialize(combined, JsonOptions);
             _logger.LogInformation("{Json}", json);
         }
     }
@@ -144,7 +146,7 @@ public class ViewCommand : Command
         }
         else
         {
-            string json = JsonSerializer.Serialize(config);
+            string json = JsonSerializer.Serialize(config, JsonOptions);
             _logger.LogInformation("{Json}", json);
         }
     }
@@ -159,7 +161,7 @@ public class ViewCommand : Command
         }
         else
         {
-            string json = JsonSerializer.Serialize(config);
+            string json = JsonSerializer.Serialize(config, JsonOptions);
             _logger.LogInformation("{Json}", json);
         }
     }
@@ -174,7 +176,7 @@ public class ViewCommand : Command
         }
         else
         {
-            string json = JsonSerializer.Serialize(authRules);
+            string json = JsonSerializer.Serialize(authRules, JsonOptions);
             _logger.LogInformation("{Json}", json);
         }
     }
@@ -189,7 +191,7 @@ public class ViewCommand : Command
         }
 
         string jsonContent = config != null
-            ? JsonSerializer.Serialize(config)
+            ? JsonSerializer.Serialize(config, JsonOptions)
             : "{}";
 
         await File.WriteAllTextAsync(filePath, jsonContent);

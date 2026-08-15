@@ -7,6 +7,9 @@ public class KeycloakConfigValidator : AbstractValidator<KeycloakConfiguration>
 {
     public KeycloakConfigValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Id is required");
+
         RuleFor(x => x.IssuerUrl)
             .NotEmpty().WithMessage("IssuerUrl is required")
             .Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))

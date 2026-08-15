@@ -7,6 +7,9 @@ public class AuthRulesValidator : AbstractValidator<AuthorizationRule>
 {
     public AuthRulesValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Id is required");
+
         RuleFor(x => x.Rules)
             .NotEmpty().WithMessage("Rules array must contain at least one rule")
             .Must(rules => rules.DistinctBy(r => r.EndpointPattern).Count() == rules.Count)

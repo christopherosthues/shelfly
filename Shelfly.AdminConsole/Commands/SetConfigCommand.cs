@@ -1,4 +1,5 @@
 using System.CommandLine;
+using System.Text.Json;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
@@ -72,7 +73,7 @@ internal abstract class SetConfigCommand<TConfig, TValidator> : Command
         }
 
         string jsonContent = await File.ReadAllTextAsync(fileInfo.FullName);
-        TConfig? config = System.Text.Json.JsonSerializer.Deserialize<TConfig>(jsonContent);
+        TConfig? config = JsonSerializer.Deserialize<TConfig>(jsonContent);
 
         if (config == null)
         {

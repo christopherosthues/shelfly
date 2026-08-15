@@ -7,6 +7,9 @@ public class PostgreSqlConfigValidator : AbstractValidator<PostgreSqlConfigurati
 {
     public PostgreSqlConfigValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Id is required");
+
         RuleFor(x => x.ConnectionString)
             .NotEmpty().WithMessage("ConnectionString is required");
     }
