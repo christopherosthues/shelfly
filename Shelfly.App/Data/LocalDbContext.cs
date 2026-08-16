@@ -20,7 +20,7 @@ public class LocalDbContext(DbContextOptions<LocalDbContext> options) : DbContex
             .IsUnique();
 
         modelBuilder.Entity<LocalBook>()
-            .HasIndex(b => b.DeletionStatus);
+            .HasIndex(b => b.DeletedAt);
 
         // LocalBookmark indexes
         modelBuilder.Entity<LocalBookmark>()
@@ -52,6 +52,6 @@ public class LocalDbContext(DbContextOptions<LocalDbContext> options) : DbContex
 
         // TrashConfig singleton
         modelBuilder.Entity<TrashConfigEntity>()
-            .HasData(new TrashConfigEntity { Id = 1 });
+            .HasData(new TrashConfigEntity { Id = 1, CleanupEnabled = false, RetentionDays = 30 });
     }
 }

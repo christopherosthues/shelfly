@@ -2,11 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
 using Shelfly.Api.Data.Entities;
 using Shelfly.Common.DTOs;
-using Shelfly.Common.Enums;
 
 namespace Shelfly.Api.Services;
 
-public class SyncService(ShelflyDbContext context)
+public class SyncService(ShelflyDbContext context, ILogger<SyncService> logger)
 {
     public async Task<SyncUploadResponse> UploadAsync(Guid userId, SyncUploadRequest request)
     {
@@ -148,6 +147,7 @@ public class SyncService(ShelflyDbContext context)
         }
 
         await context.SaveChangesAsync();
+        logger.LogInformation("Upload completed for user {UserId} with {ItemCount} items", userId, request.Items.Count);
         return response;
     }
 
@@ -170,14 +170,15 @@ public class SyncService(ShelflyDbContext context)
                 Title = book.Title,
                 Author = book.Author,
                 LastModified = book.LastModified,
-                DeletionStatus = book.DeletionStatus == DeletionStatus.SoftDeleted ? "SoftDeleted" : "Active",
+                DeletedAt = book.DeletedAt,
                 Bookmarks = book.Bookmarks?.Select(bm => new SyncDownloadBookmarkItem
                 {
                     RemoteGuid = bm.Id,
                     StartPage = bm.StartPage,
                     EndPage = bm.EndPage,
                     Note = bm.Note,
-                    LastModified = bm.LastModified
+                    LastModified = bm.LastModified,
+                    DeletedAt = bm.DeletedAt
                 }).ToList() ?? []
             };
 
@@ -186,7 +187,7 @@ public class SyncService(ShelflyDbContext context)
 
         // Check for soft-deleted items that need to be reported
         List<BookEntity>? deletedBooks = await context.Books
-            .Where(b => b.UserId == userId && request.LocalGuids.Contains(b.Id) && b.DeletionStatus == DeletionStatus.SoftDeleted)
+            .Where(b => b.UserId == userId && request.LocalGuids.Contains(b.Id) && b.DeletedAt != null)
             .ToListAsync();
 
         foreach (BookEntity book in deletedBooks ?? [])
@@ -195,10 +196,11 @@ public class SyncService(ShelflyDbContext context)
             {
                 RemoteGuid = book.Id,
                 EntityType = "Book",
-                DeletedAt = book.LastModified  // Use LastModified as the soft-delete timestamp
+                DeletedAt = book.DeletedAt.Value  // Use actual deletion timestamp
             });
         }
 
+        logger.LogInformation("Download completed for user {UserId} with {ItemCount} items requested", userId, request.LocalGuids.Count);
         return response;
     }
 
@@ -241,11 +243,10 @@ public class SyncService(ShelflyDbContext context)
         BookEntity? book = await context.Books
             .FirstOrDefaultAsync(b => b.UserId == userId && b.Id == remoteGuid);
 
-        if (book != null && book.DeletionStatus == DeletionStatus.SoftDeleted)
+        if (book != null && book.DeletedAt != null)
         {
-            // Restore the book by setting status to Active
-            book.DeletionStatus = DeletionStatus.Active;
-            book.LastModified = DateTimeOffset.UtcNow;
+            // Restore the book by clearing deletion timestamp (preserve LastModified)
+            book.DeletedAt = null;
 
             await context.SaveChangesAsync();
 
@@ -256,10 +257,11 @@ public class SyncService(ShelflyDbContext context)
                 Title = book.Title,
                 Author = book.Author,
                 LastModified = book.LastModified,
-                DeletionStatus = "Active"
+                DeletedAt = null
             });
         }
 
+        logger.LogInformation("Restored book {RemoteGuid} from trash for user {UserId}", remoteGuid, userId);
         return response;
     }
 }

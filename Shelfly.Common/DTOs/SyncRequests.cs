@@ -81,7 +81,7 @@ public class SyncDownloadItem
     public string Title { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
     public DateTimeOffset LastModified { get; set; }
-    public string DeletionStatus { get; set; } = "Active";
+    public DateTimeOffset? DeletedAt { get; set; }
     public List<SyncDownloadBookmarkItem>? Bookmarks { get; set; } = [];
 }
 
@@ -92,6 +92,7 @@ public class SyncDownloadBookmarkItem
     public int? EndPage { get; set; }
     public string? Note { get; set; }
     public DateTimeOffset LastModified { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 }
 
 public class SyncDeletedItem

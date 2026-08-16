@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
 using Shelfly.Api.Services;
-using Shelfly.Common.Enums;
 
 namespace Shelfly.Api.Shared.Cleanup;
 
@@ -32,7 +31,7 @@ public static class CleanupEndpoints
 
                     var existingBook = await context.Books
                         .Include(b => b.Bookmarks)
-                        .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId && b.DeletionStatus == DeletionStatus.SoftDeleted);
+                        .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId && b.DeletedAt != null);
 
                     if (existingBook is null)
                     {
@@ -41,7 +40,7 @@ public static class CleanupEndpoints
 
                     // Remove associated bookmarks first (physical row deletion — hard delete)
                     var softDeletedBookmarks = existingBook.Bookmarks
-                        .Where(bm => bm.DeletionStatus == DeletionStatus.SoftDeleted)
+                        .Where(bm => bm.DeletedAt != null)
                         .ToList();
 
                     context.Bookmarks.RemoveRange(softDeletedBookmarks);

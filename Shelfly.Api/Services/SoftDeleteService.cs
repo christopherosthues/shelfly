@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
-using Shelfly.Common.Enums;
 
 namespace Shelfly.Api.Services;
 
-public class CleanupService(ShelflyDbContext context, IConfiguration configuration) : BackgroundService
+public class CleanupService(ShelflyDbContext context, IConfiguration configuration, ILogger<CleanupService> logger) : BackgroundService
 {
     private TimeSpan _retentionPeriod = TimeSpan.FromDays(30);
     private const string ConfigSectionName = "TrashConfig";
@@ -32,7 +31,7 @@ public class CleanupService(ShelflyDbContext context, IConfiguration configurati
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"CleanupService error: {ex.Message}");
+                logger.LogError(ex, "CleanupService error during hard delete operation");
             }
 
             // Run every hour
@@ -46,14 +45,14 @@ public class CleanupService(ShelflyDbContext context, IConfiguration configurati
 
         // Find books that have been soft-deleted beyond retention period
         List<Data.Entities.BookEntity>? expiredBooks = await context.Books
-            .Where(b => b.DeletionStatus == DeletionStatus.SoftDeleted && b.LastModified <= cutoffTime)
+            .Where(b => b.DeletedAt != null && b.DeletedAt <= cutoffTime)
             .ToListAsync();
 
         foreach (Data.Entities.BookEntity book in expiredBooks ?? [])
         {
             // Remove associated bookmarks first (cascade delete will handle this, but explicit removal is clearer)
             List<Data.Entities.BookmarkEntity>? expiredBookmarks = await context.Bookmarks
-                .Where(bm => bm.BookId == book.Id && bm.DeletionStatus == DeletionStatus.SoftDeleted)
+                .Where(bm => bm.BookId == book.Id && bm.DeletedAt != null)
                 .ToListAsync();
 
             // Remove from database (physical row deletion — hard delete)
@@ -67,13 +66,12 @@ public class CleanupService(ShelflyDbContext context, IConfiguration configurati
     public async Task<Data.Entities.BookEntity?> RestoreFromTrashAsync(Guid bookId)
     {
         Data.Entities.BookEntity? book = await context.Books
-            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletionStatus == DeletionStatus.SoftDeleted);
+            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt != null);
 
         if (book != null)
         {
-            // Set status back to Active to restore the book
-            book.DeletionStatus = DeletionStatus.Active;
-            book.LastModified = DateTimeOffset.UtcNow;
+            // Clear deletion timestamp to restore the book (preserve LastModified)
+            book.DeletedAt = null;
 
             await context.SaveChangesAsync();
         }

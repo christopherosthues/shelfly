@@ -45,8 +45,41 @@ public class BookmarkRepository(LocalDbContext dbContext) : IBookmarkRepository
         LocalBookmark? bookmark = await GetByIdAsync(id);
         if (bookmark != null)
         {
-            bookmark.DeletionStatus = Shelfly.Common.Enums.DeletionStatus.SoftDeleted;
+            bookmark.DeletedAt = DateTimeOffset.UtcNow;
             await UpdateAsync(bookmark);
         }
+    }
+
+    public async Task RestoreAsync(Guid id)
+    {
+        LocalBookmark? bookmark = await GetByIdAsync(id);
+        if (bookmark != null && bookmark.DeletedAt != null)
+        {
+            bookmark.DeletedAt = null;
+            await UpdateAsync(bookmark);
+        }
+    }
+
+    public async Task<List<LocalBookmark>> GetTrashItemsAsync()
+    {
+        return await dbContext.LocalBookmarks
+            .Include(bm => bm.LocalBook)
+            .Where(bm => bm.DeletedAt != null)
+            .ToListAsync();
+    }
+
+    public async Task CleanupExpiredAsync(DateTimeOffset cutoffTime)
+    {
+        var expired = await dbContext.LocalBookmarks
+            .Where(bm => bm.DeletedAt != null && bm.DeletedAt <= cutoffTime)
+            .Select(bm => bm.LocalGuid)
+            .ToListAsync();
+
+        foreach (var guid in expired)
+        {
+            dbContext.LocalBookmarks.RemoveRange(dbContext.LocalBookmarks.Where(bm => bm.LocalGuid == guid));
+        }
+
+        await dbContext.SaveChangesAsync();
     }
 }

@@ -9,4 +9,7 @@ public interface IBookRepository
     Task<LocalBook> AddAsync(LocalBook book);
     Task UpdateAsync(LocalBook book);
     Task DeleteAsync(Guid id);
+    Task RestoreAsync(Guid id);
+    Task<List<LocalBook>> GetTrashItemsAsync();
+    Task CleanupExpiredAsync(DateTimeOffset cutoffTime);
 }

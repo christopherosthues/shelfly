@@ -1,10 +1,10 @@
 <!-- Sync Impact Report:
-  Version change: 1.0.0 → 1.0.1 (PATCH - removed Azure AD references, Keycloak-only auth clarified)
+  Version change: 1.0.2 → 1.0.3 (PATCH - added vertical slice architecture principle)
   Modified principles: N/A
-  Added sections: N/A
+  Added sections: VII. Vertical Slice Architecture
   Removed sections: N/A
-  Changes: Architecture & Technology Constraints - removed Azure AD configuration requirement; Development Workflow - removed Azure AD placeholder update step
-  Deferred TODOs: RATIFICATION_DATE set to 2026-08-13 (initial adoption date - confirm with project lead)
+  Changes: Core Principles - added feature-based project structure mandate with vertical slice guidance
+  Deferred TODOs: N/A
 -->
 
 # Shelfly Constitution
@@ -35,6 +35,24 @@ API endpoints MUST respond within 200ms for p95 latency under normal load. Datab
 
 **Rationale**: Shelfly serves as a reading companion application where responsiveness directly impacts user engagement. EF Core queries without proper indexing degrade quickly as the library catalog grows. Configuration caching prevents redundant MongoDB reads on every request.
 
+### V. Dependency Injection Preference
+
+All service dependencies MUST be injected via constructor dependency injection. The DI container controls object lifetimes, ensuring consistent lifecycle management and testability. Parameterless constructors SHOULD only exist for setup/bootstrap scenarios where the DI container is not yet available (e.g., config service needed before container build). EF Core already implements the Repository and UnitOfWork patterns natively through `DbContext` — separate repository abstractions are unnecessary unless data is loaded from different sources (e.g., database combined with file system or external APIs).
+
+**Rationale**: Constructor injection enables dependency mocking during unit tests, reduces coupling between components, and prevents stale references. Leveraging EF Core's native patterns avoids redundant abstraction layers and simplifies the persistence architecture. Custom repositories are justified only when aggregating data from heterogeneous sources.
+
+### VI. Data Lifecycle & Deletion Patterns
+
+Entity lifecycle states MUST use a two-value enum: `Active` (normal use) and `SoftDeleted` (in trash, recoverable). Soft deletion marks an entity as trashed without removing it from storage, enabling user recovery. Hard deletion physically removes the entity row from the database—hard-deleted entities no longer exist in storage rather than being marked with a status flag. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed).
+
+**Rationale**: A two-state enum eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency and prevents phantom records. Cascade delete maintains referential integrity without orphaned child records.
+
+### VII. Vertical Slice Architecture
+
+Project structure MUST follow features, not technical layers. Everything related to a feature (e.g., Books, Bookmarks) lives inside its own directory containing all concerns: models, services, endpoints, views, and tests. Each feature forms a vertical slice—self-contained and independently navigable. Shared infrastructure (common utilities, base classes) MAY reside in a dedicated shared directory, but feature-specific code MUST be co-located within the feature boundary.
+
+**Rationale**: Feature-based organization improves discoverability and reduces cognitive load when navigating the codebase. Co-locating related code enables faster feature isolation, easier refactoring, and clearer ownership boundaries. Vertical slices support independent development, testing, and deployment of features without cross-cutting layer dependencies.
+
 ## Architecture & Technology Constraints
 
 The solution targets .NET 10 (`net10.0`) with prerelease SDK tolerance enabled via `global.json`. The API layer uses ASP.NET Core minimal hosting with a single `Program.cs` entry point. Authentication delegates to Keycloak; the API validates tokens using `VerifyUserHasAnyAcceptedScope()`. Data persistence splits between PostgreSQL (primary data via EF Core + Npgsql) and MongoDB (configuration parameters). MAUI target frameworks resolve conditionally — build scripts MUST use `dotnet build Shelfly.App/Shelfly.App.csproj` to allow MSBuild conditional evaluation.
@@ -51,4 +69,4 @@ All feature work MUST follow the Spec Kit SDD cycle: specify → plan → tasks 
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 1.0.1 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-13
+**Version**: 1.0.3 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-16

@@ -5,7 +5,6 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
 using Shelfly.Api.Features.Books.Validators;
-using Shelfly.Common.Enums;
 
 namespace Shelfly.Api.Features.Books.Endpoints;
 
@@ -26,7 +25,7 @@ public static class BookStatusEndpoints
     {
         public WebApplication MapBookStatusEndpoints()
         {
-            // PATCH /books/{id}/status — change DeletionStatus between Active and SoftDeleted
+            // PATCH /books/{id}/status — change deletion state (soft-delete or restore via DeletedAt timestamp)
             app.MapPatch("/books/{id}/status",
                 async (Guid id, BookStatusUpdateRequest request, HttpContext httpContext, IValidator<BookStatusUpdateRequest> validator, ShelflyDbContext context) =>
                 {
@@ -47,8 +46,8 @@ public static class BookStatusEndpoints
                         return Results.NotFound();
                     }
 
-                    // Update deletion status and last modified timestamp
-                    existingBook.DeletionStatus = request.Status;
+                    // Update deletion timestamp based on request status
+                    existingBook.DeletedAt = request.Status == "SoftDeleted" ? DateTimeOffset.UtcNow : null;
                     existingBook.LastModified = DateTimeOffset.UtcNow;
 
                     await context.SaveChangesAsync();
@@ -58,7 +57,7 @@ public static class BookStatusEndpoints
                         Id = existingBook.Id,
                         Title = existingBook.Title,
                         Author = existingBook.Author,
-                        DeletionStatus = existingBook.DeletionStatus.ToString(),
+                        DeletedAt = existingBook.DeletedAt,
                         LastModified = existingBook.LastModified
                     });
                 }).RequireAuthorization();
@@ -70,13 +69,14 @@ public static class BookStatusEndpoints
                     Guid userId = ExtractUserId(httpContext);
 
                     var trashBooks = await context.Books
-                        .Where(b => b.UserId == userId && b.DeletionStatus == DeletionStatus.SoftDeleted)
+                        .Where(b => b.UserId == userId && b.DeletedAt != null)
                         .Select(b => new
                         {
                             Id = b.Id,
                             Title = b.Title,
                             Author = b.Author,
                             ISBN = b.ISBN,
+                            DeletedAt = b.DeletedAt,
                             LastModified = b.LastModified
                         })
                         .ToListAsync();
@@ -84,23 +84,22 @@ public static class BookStatusEndpoints
                     return Results.Ok(trashBooks ?? []);
                 }).RequireAuthorization();
 
-            // POST /books/{id}/restore — restore a soft-deleted book from trash to Active status
+            // POST /books/{id}/restore — restore a soft-deleted book from trash (clear DeletedAt timestamp)
             app.MapPost("/books/{id}/restore",
                 async (Guid id, HttpContext httpContext, ShelflyDbContext context) =>
                 {
                     Guid userId = ExtractUserId(httpContext);
 
                     var existingBook = await context.Books
-                        .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId && b.DeletionStatus == DeletionStatus.SoftDeleted);
+                        .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId && b.DeletedAt != null);
 
                     if (existingBook is null)
                     {
                         return Results.NotFound();
                     }
 
-                    // Restore the book by setting status to Active
-                    existingBook.DeletionStatus = DeletionStatus.Active;
-                    existingBook.LastModified = DateTimeOffset.UtcNow;
+                    // Restore the book by clearing deletion timestamp (preserve LastModified)
+                    existingBook.DeletedAt = null;
 
                     await context.SaveChangesAsync();
 
@@ -109,8 +108,56 @@ public static class BookStatusEndpoints
                         Id = existingBook.Id,
                         Title = existingBook.Title,
                         Author = existingBook.Author,
-                        DeletionStatus = existingBook.DeletionStatus.ToString(),
+                        DeletedAt = existingBook.DeletedAt,
                         LastModified = existingBook.LastModified
+                    });
+                }).RequireAuthorization();
+
+            // POST /books/bulk-delete — soft-delete multiple books at once (set DeletedAt timestamp)
+            app.MapPost("/books/bulk-delete",
+                async (List<Guid> ids, HttpContext httpContext, ShelflyDbContext context) =>
+                {
+                    Guid userId = ExtractUserId(httpContext);
+
+                    var booksToUpdate = await context.Books
+                        .Where(b => b.UserId == userId && ids.Contains(b.Id))
+                        .ToListAsync();
+
+                    foreach (var book in booksToUpdate ?? [])
+                    {
+                        book.DeletedAt = DateTimeOffset.UtcNow;
+                    }
+
+                    await context.SaveChangesAsync();
+
+                    return Results.Ok(new
+                    {
+                        Count = booksToUpdate?.Count ?? 0,
+                        Message = $"Soft-deleted {booksToUpdate?.Count ?? 0} books"
+                    });
+                }).RequireAuthorization();
+
+            // POST /books/bulk-restore — restore multiple soft-deleted books from trash (clear DeletedAt timestamp)
+            app.MapPost("/books/bulk-restore",
+                async (List<Guid> ids, HttpContext httpContext, ShelflyDbContext context) =>
+                {
+                    Guid userId = ExtractUserId(httpContext);
+
+                    var booksToUpdate = await context.Books
+                        .Where(b => b.UserId == userId && ids.Contains(b.Id) && b.DeletedAt != null)
+                        .ToListAsync();
+
+                    foreach (var book in booksToUpdate ?? [])
+                    {
+                        book.DeletedAt = null;
+                    }
+
+                    await context.SaveChangesAsync();
+
+                    return Results.Ok(new
+                    {
+                        Count = booksToUpdate?.Count ?? 0,
+                        Message = $"Restored {booksToUpdate?.Count ?? 0} books from trash"
                     });
                 }).RequireAuthorization();
 

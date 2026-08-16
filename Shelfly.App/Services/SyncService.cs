@@ -21,7 +21,7 @@ public class SyncService(
 
         // Get all local books that are not soft-deleted
         List<LocalBook>? localBooks = await bookRepository.GetAllAsync();
-        List<LocalBook>? activeBooks = localBooks?.Where(b => b.DeletionStatus == Shelfly.Common.Enums.DeletionStatus.Active).ToList() ?? [];
+        List<LocalBook>? activeBooks = localBooks?.Where(b => b.DeletedAt == null).ToList() ?? [];
 
         // Upload phase - send local changes to remote server
         foreach (LocalBook book in activeBooks)
@@ -39,7 +39,7 @@ public class SyncService(
                         Isbn = book.Isbn,
                         PublishDate = book.PublishDate,
                         LastModified = book.LastModified,
-                        Bookmarks = book.LocalBookmarks?.Where(bm => bm.DeletionStatus == Shelfly.Common.Enums.DeletionStatus.Active)
+                        Bookmarks = book.LocalBookmarks?.Where(bm => bm.DeletedAt == null)
                             .Select(bm => new SyncBookmarkItem
                             {
                                 LocalGuid = bm.LocalGuid,
@@ -114,7 +114,7 @@ public class SyncService(
                                 Title = item.Title,
                                 Author = item.Author,
                                 LastModified = item.LastModified,
-                                DeletionStatus = item.DeletionStatus == "SoftDeleted" ? Shelfly.Common.Enums.DeletionStatus.SoftDeleted : Shelfly.Common.Enums.DeletionStatus.Active
+                                DeletedAt = item.DeletedAt  // Map deletion timestamp from remote
                             };
 
                             await bookRepository.AddAsync(newBook);
@@ -128,6 +128,7 @@ public class SyncService(
                                 existingBook.Title = item.Title;
                                 existingBook.Author = item.Author;
                                 existingBook.LastModified = item.LastModified;
+                                existingBook.DeletedAt = item.DeletedAt;  // Sync deletion timestamp
 
                                 await bookRepository.UpdateAsync(existingBook);
                                 result.DownloadedCount++;
@@ -139,9 +140,9 @@ public class SyncService(
                     foreach (SyncDeletedItem deleted in downloadResponse.Deleted)
                     {
                         LocalBook? localBook = await bookRepository.GetByIdAsync(deleted.RemoteGuid);
-                        if (localBook != null && localBook.DeletionStatus == Shelfly.Common.Enums.DeletionStatus.Active)
+                        if (localBook != null && localBook.DeletedAt == null)
                         {
-                            localBook.DeletionStatus = Shelfly.Common.Enums.DeletionStatus.SoftDeleted;
+                            localBook.DeletedAt = deleted.DeletedAt;  // Set deletion timestamp from remote
                             await bookRepository.UpdateAsync(localBook);
                             result.DeletedCount++;
                         }

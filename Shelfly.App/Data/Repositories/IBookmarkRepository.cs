@@ -10,4 +10,7 @@ public interface IBookmarkRepository
     Task<LocalBookmark> AddAsync(LocalBookmark bookmark);
     Task UpdateAsync(LocalBookmark bookmark);
     Task DeleteAsync(Guid id);
+    Task RestoreAsync(Guid id);
+    Task<List<LocalBookmark>> GetTrashItemsAsync();
+    Task CleanupExpiredAsync(DateTimeOffset cutoffTime);
 }

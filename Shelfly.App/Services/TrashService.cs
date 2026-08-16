@@ -46,7 +46,7 @@ public class TrashService(
     public async Task<List<LocalBook>> GetTrashItemsAsync()
     {
         List<LocalBook>? allBooks = await bookRepository.GetAllAsync();
-        return (allBooks?.Where(b => b.DeletionStatus == Shelfly.Common.Enums.DeletionStatus.SoftDeleted).ToList()) ?? [];
+        return (allBooks?.Where(b => b.DeletedAt != null).ToList()) ?? [];
     }
 
     public async Task CleanupAsync()
@@ -63,7 +63,7 @@ public class TrashService(
 
             foreach (LocalBook book in trashItems)
             {
-                if (book.LastModified < cutoffTime)
+                if (book.DeletedAt < cutoffTime)
                 {
                     // Permanently delete books older than retention period (physical row removal — hard delete)
                     await bookRepository.DeleteAsync(book.LocalGuid);
@@ -81,9 +81,9 @@ public class TrashService(
     public async Task<LocalBook?> RestoreBookAsync(Guid bookId)
     {
         LocalBook? book = await bookRepository.GetByIdAsync(bookId);
-        if (book != null && book.DeletionStatus == Shelfly.Common.Enums.DeletionStatus.SoftDeleted)
+        if (book != null && book.DeletedAt != null)
         {
-            book.DeletionStatus = Shelfly.Common.Enums.DeletionStatus.Active;
+            book.DeletedAt = null;
             await bookRepository.UpdateAsync(book);
 
             logger.LogInformation("Restored book '{Title}' from trash", book.Title);
