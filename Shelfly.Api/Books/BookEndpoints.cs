@@ -9,6 +9,17 @@ namespace Shelfly.Api.Books;
 
 public static class BookEndpoints
 {
+    private static Guid ExtractUserId(HttpContext context)
+    {
+        string? subClaim = context.User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        if (Guid.TryParse(subClaim, out Guid userId))
+        {
+            return userId;
+        }
+
+        return Guid.CreateVersion7();
+    }
+
     extension(WebApplication app)
     {
         public WebApplication MapBookEndpoints()
@@ -100,17 +111,6 @@ public static class BookEndpoints
                 }).RequireAuthorization();
 
             return app;
-        }
-
-        static Guid ExtractUserId(HttpContext context)
-        {
-            string? subClaim = context.User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-            if (Guid.TryParse(subClaim, out Guid userId))
-            {
-                return userId;
-            }
-
-            return Guid.CreateVersion7();
         }
     }
 }

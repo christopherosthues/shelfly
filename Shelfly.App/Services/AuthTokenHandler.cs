@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace Shelfly.App.Services;
@@ -11,14 +12,14 @@ public class AuthTokenHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        string? accessToken = SecureTokenStore.GetAccessTokenAsync();
+        string? accessToken = await SecureTokenStore.GetAccessTokenAsync();
 
         if (accessToken is not null && IsTokenExpiredOrNearExpiry(accessToken))
         {
             await RefreshTokensAsync(accessToken);
         }
 
-        string? updatedAccessToken = SecureTokenStore.GetAccessTokenAsync();
+        string? updatedAccessToken = await SecureTokenStore.GetAccessTokenAsync();
         if (updatedAccessToken is not null)
         {
             request.Headers.Add("Authorization", $"Bearer {updatedAccessToken}");
@@ -28,7 +29,7 @@ public class AuthTokenHandler : DelegatingHandler
 
         if (response.StatusCode == HttpStatusCode.Unauthorized && updatedAccessToken is not null)
         {
-            string? refreshToken = SecureTokenStore.GetRefreshToken();
+            string? refreshToken = await SecureTokenStore.GetRefreshToken();
             if (refreshToken is not null)
             {
                 await RefreshTokensAsync(updatedAccessToken);
@@ -88,7 +89,7 @@ public class AuthTokenHandler : DelegatingHandler
 
                 if (newAccessToken is not null)
                 {
-                    SecureTokenStore.StoreTokensAsync(newAccessToken, refreshToken);
+                    await SecureTokenStore.StoreTokensAsync(newAccessToken, refreshToken);
                 }
             }
         }

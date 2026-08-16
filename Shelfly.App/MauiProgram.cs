@@ -32,6 +32,7 @@ public static class MauiProgram
         {
             HttpClient innerClient = new()
             {
+                // TODO: URL input by user
                 BaseAddress = new("http://localhost:5000/")
             };
             return new AuthTokenHandler(innerClient);
@@ -42,6 +43,7 @@ public static class MauiProgram
             AuthTokenHandler handler = services.GetRequiredService<AuthTokenHandler>();
             HttpClient client = new(handler)
             {
+                // TODO: URL input by user
                 BaseAddress = new("http://localhost:5000/")
             };
             return new BookApiService(client);
@@ -52,6 +54,7 @@ public static class MauiProgram
             AuthTokenHandler handler = services.GetRequiredService<AuthTokenHandler>();
             HttpClient client = new(handler)
             {
+                // TODO: URL input by user
                 BaseAddress = new("http://localhost:5000/")
             };
             return new BookmarkApiService(client);

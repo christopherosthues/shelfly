@@ -55,6 +55,10 @@ setCommand.Subcommands.Add(new SetAuthRulesCommand(
 rootCommand.Add(new ViewCommand(
     serviceProvider.GetRequiredService<ILogger<ViewCommand>>(), configService));
 
+// Generate command (creates empty configuration templates)
+rootCommand.Add(new GenerateCommand(
+    serviceProvider.GetRequiredService<ILogger<GenerateCommand>>()));
+
 return await rootCommand.Parse(args).InvokeAsync();
 
 static string? ParseConnectionString(string[] args)
