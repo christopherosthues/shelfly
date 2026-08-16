@@ -8,7 +8,7 @@ public class AuthTokenHandler : DelegatingHandler
 {
     private const int RefreshThresholdMinutes = 5;
 
-    public AuthTokenHandler(HttpClient innerClient) : base(innerClient) { }
+    public AuthTokenHandler(HttpMessageHandler innerHandler) : base(innerHandler) { }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 using Shelfly.AdminConsole.Commands;
-using Shelfly.AdminConsole.Enums;
 
 namespace Shelfly.AdminConsole.Tests.Unit;
 

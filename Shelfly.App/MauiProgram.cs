@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shelfly.App.Authentication;
 using Shelfly.App.Books;
+using Shelfly.App.Data;
+using Shelfly.App.Data.Repositories;
 using Shelfly.App.Routing;
 using Shelfly.App.Services;
 using AddEditBookViewModel = Shelfly.App.Books.AddEditBookViewModel;
@@ -30,12 +33,12 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<AuthTokenHandler>(handler =>
         {
-            HttpClient innerClient = new()
+            HttpClientHandler innerHandler = new()
             {
                 // TODO: URL input by user
-                BaseAddress = new("http://localhost:5000/")
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
             };
-            return new AuthTokenHandler(innerClient);
+            return new AuthTokenHandler(innerHandler);
         });
 
         builder.Services.AddScoped<BookApiService>(services =>
@@ -60,6 +63,20 @@ public static class MauiProgram
             return new BookmarkApiService(client);
         });
         builder.Services.AddHttpClient();
+
+        string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "shelfly_local.db");
+        builder.Services.AddDbContext<LocalDbContext>(options =>
+            options.UseSqlite($"Data Source={dbPath}"));
+
+        builder.Services.AddScoped<IBookRepository, BookRepository>();
+        builder.Services.AddScoped<IBookmarkRepository, BookmarkRepository>();
+        builder.Services.AddScoped<IRemoteMappingRepository, RemoteMappingRepository>();
+
+        // Sync and Trash services
+        builder.Services.AddSingleton<ServerConnectionService>();
+        builder.Services.AddScoped<SyncService>();
+        builder.Services.AddScoped<ConflictResolver>();
+        builder.Services.AddScoped<TrashService>();
 
         builder.Services.AddScopedWithShellRoute<LoginPage, LoginViewModel>(Routes.LoginPage);
         builder.Services.AddScopedWithShellRoute<RegistrationPage, RegistrationViewModel>(Routes.RegistrationPage);
