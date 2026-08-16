@@ -1,3 +1,5 @@
+using Shelfly.Common.Enums;
+
 namespace Shelfly.Api.Data.Entities;
 
 public class BookmarkEntity
@@ -9,9 +11,8 @@ public class BookmarkEntity
     public Guid UserId { get; set; }
     public Guid BookId { get; set; }
 
+    public DeletionStatus DeletionStatus { get; set; } = DeletionStatus.Active;
     public DateTimeOffset LastModified { get; set; } = DateTimeOffset.UtcNow;
-    public DateTimeOffset? SoftDeletedAt { get; set; }
-    public DateTimeOffset? HardDeletedAt { get; set; }
 
     public BookEntity? Book { get; set; }
 }

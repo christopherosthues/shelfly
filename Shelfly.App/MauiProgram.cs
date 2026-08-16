@@ -72,7 +72,7 @@ public static class MauiProgram
         builder.Services.AddScoped<IBookmarkRepository, BookmarkRepository>();
         builder.Services.AddScoped<IRemoteMappingRepository, RemoteMappingRepository>();
 
-        // Sync and Trash services
+        // Sync and Trash services (constructor DI per Constitution V)
         builder.Services.AddSingleton<ServerConnectionService>();
         builder.Services.AddScoped<SyncService>();
         builder.Services.AddScoped<ConflictResolver>();

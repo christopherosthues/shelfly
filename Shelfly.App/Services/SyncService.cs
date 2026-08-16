@@ -12,7 +12,8 @@ public class SyncService(
     IBookRepository bookRepository,
     IBookmarkRepository bookmarkRepository,
     ServerConnectionService serverConnectionService,
-    ILogger<SyncService> logger)
+    ILogger<SyncService> logger,
+    LocalDbContext localDbContext)
 {
     public async Task<SyncResult> SyncBooksAsync()
     {
@@ -161,17 +162,10 @@ public class SyncService(
 
     private async Task<RemoteMapping?> GetOrCreateRemoteMapping(Guid localBookGuid, string serverUrl, Guid remoteGuid)
     {
-        // Check if mapping already exists
-        DbContextOptionsBuilder optionsBuilder = new();
-        optionsBuilder.UseSqlite($"Data Source={Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "shelfly_local.db")}");
+        // Check if mapping already exists using injected DbContext (constructor DI per Constitution V)
+        RemoteMapping? existingMapping = await localDbContext.RemoteMappings
+            .FirstOrDefaultAsync(m => m.LocalBookGuid == localBookGuid && m.ServerUrl == serverUrl && m.RemoteGuid == remoteGuid);
 
-        LocalDbContext dbContext = new((DbContextOptions<LocalDbContext>)optionsBuilder.Options);
-
-        List<RemoteMapping>? existingMappings = await dbContext.RemoteMappings
-            .Where(m => m.LocalBookGuid == localBookGuid)
-            .ToListAsync();
-
-        RemoteMapping? existingMapping = existingMappings?.FirstOrDefault(m => m.ServerUrl == serverUrl && m.RemoteGuid == remoteGuid);
         if (existingMapping != null)
         {
             return existingMapping;
@@ -186,8 +180,8 @@ public class SyncService(
             LastSynced = DateTimeOffset.UtcNow
         };
 
-        dbContext.RemoteMappings.Add(newMapping);
-        await dbContext.SaveChangesAsync();
+        localDbContext.RemoteMappings.Add(newMapping);
+        await localDbContext.SaveChangesAsync();
 
         return newMapping;
     }

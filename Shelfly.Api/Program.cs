@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Authentication;
 using Shelfly.Api.Authentication.Models;
 using Shelfly.Api.Authentication.Validators;
-using Shelfly.Api.Bookmarks;
-using Shelfly.Api.Books;
 using Shelfly.Api.Data;
 using Shelfly.Api.Configuration;
+using Shelfly.Api.Services;
+using Shelfly.Api.Shared.Cleanup;
+using Shelfly.Api.Features.Books.Validators;
+using Shelfly.Api.Shared.DI;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +18,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddDbContext<ShelflyDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<BookService>();
-builder.Services.AddScoped<BookmarkService>();
+// Register feature services using extension methods (DI enforcement per Constitution V)
+builder.Services.AddBooksFeature();
+builder.Services.AddBookmarksFeature();
+builder.Services.AddScoped<CleanupService>();  // Cleanup service for trash management and hard delete operations
 
 // Auth validators
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationValidator>();
@@ -25,6 +29,8 @@ builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
 builder.Services.AddScoped<IValidator<PasswordResetRequest>, PasswordResetValidator>();
 
 // Book and Bookmark validators
+builder.Services.AddScoped<IValidator<BookStatusUpdateRequest>, BookStatusUpdateValidator>();
+
 // TODO: register all validators explicitly, not via discovery which possibly relies on slow reflection
 builder.Services.AddValidatorsFromAssembly(typeof(CreateBookValidator).Assembly);
 
@@ -69,8 +75,9 @@ app.UseHttpsRedirection();
 // Map authentication endpoints
 app.MapAuthEndpoints();
 
-// Map book endpoints
-app.MapBookEndpoints();
+// Map feature endpoints using extension methods (vertical slice architecture per Constitution VII)
+app.MapBooksFeatureEndpoints();
+app.MapBookmarksFeatureEndpoints();
 
-// Map bookmark endpoints
-app.MapBookmarkEndpoints();
+// Map cleanup endpoints
+app.MapCleanupEndpoints();

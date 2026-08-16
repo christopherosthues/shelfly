@@ -2,7 +2,6 @@ namespace Shelfly.Common.Enums;
 
 public enum DeletionStatus
 {
-    Active,
-    SoftDeleted,
-    HardDeleted
+    Active,       // Normal use — entity is visible and accessible
+    SoftDeleted   // In trash — recoverable via restore operation
 }

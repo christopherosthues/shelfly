@@ -65,9 +65,8 @@ public class TrashService(
             {
                 if (book.LastModified < cutoffTime)
                 {
-                    // Permanently delete books older than retention period
-                    book.DeletionStatus = Shelfly.Common.Enums.DeletionStatus.HardDeleted;
-                    await bookRepository.UpdateAsync(book);
+                    // Permanently delete books older than retention period (physical row removal — hard delete)
+                    await bookRepository.DeleteAsync(book.LocalGuid);
 
                     logger.LogInformation("Hard-deleted book '{Title}' from trash", book.Title);
                 }

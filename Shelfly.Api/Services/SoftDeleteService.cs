@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
+using Shelfly.Common.Enums;
 
 namespace Shelfly.Api.Services;
 
-public class SoftDeleteService(ShelflyDbContext context, IConfiguration configuration) : BackgroundService
+public class CleanupService(ShelflyDbContext context, IConfiguration configuration) : BackgroundService
 {
     private TimeSpan _retentionPeriod = TimeSpan.FromDays(30);
     private const string ConfigSectionName = "TrashConfig";
@@ -31,7 +32,7 @@ public class SoftDeleteService(ShelflyDbContext context, IConfiguration configur
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"SoftDeleteService error: {ex.Message}");
+                Console.WriteLine($"CleanupService error: {ex.Message}");
             }
 
             // Run every hour
@@ -45,25 +46,17 @@ public class SoftDeleteService(ShelflyDbContext context, IConfiguration configur
 
         // Find books that have been soft-deleted beyond retention period
         List<Data.Entities.BookEntity>? expiredBooks = await context.Books
-            .Where(b => b.SoftDeletedAt.HasValue && b.SoftDeletedAt <= cutoffTime)
+            .Where(b => b.DeletionStatus == DeletionStatus.SoftDeleted && b.LastModified <= cutoffTime)
             .ToListAsync();
 
         foreach (Data.Entities.BookEntity book in expiredBooks ?? [])
         {
-            // Set HardDeletedAt timestamp before removal
-            book.HardDeletedAt = DateTimeOffset.UtcNow;
-
-            // Remove associated bookmarks first
+            // Remove associated bookmarks first (cascade delete will handle this, but explicit removal is clearer)
             List<Data.Entities.BookmarkEntity>? expiredBookmarks = await context.Bookmarks
-                .Where(bm => bm.BookId == book.Id && bm.SoftDeletedAt.HasValue)
+                .Where(bm => bm.BookId == book.Id && bm.DeletionStatus == DeletionStatus.SoftDeleted)
                 .ToListAsync();
 
-            foreach (Data.Entities.BookmarkEntity bookmark in expiredBookmarks ?? [])
-            {
-                bookmark.HardDeletedAt = DateTimeOffset.UtcNow;
-            }
-
-            // Remove from database
+            // Remove from database (physical row deletion — hard delete)
             context.Bookmarks.RemoveRange(expiredBookmarks ?? []);
             context.Books.Remove(book);
         }
@@ -74,12 +67,12 @@ public class SoftDeleteService(ShelflyDbContext context, IConfiguration configur
     public async Task<Data.Entities.BookEntity?> RestoreFromTrashAsync(Guid bookId)
     {
         Data.Entities.BookEntity? book = await context.Books
-            .FirstOrDefaultAsync(b => b.Id == bookId && b.SoftDeletedAt.HasValue);
+            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletionStatus == DeletionStatus.SoftDeleted);
 
         if (book != null)
         {
-            // Clear SoftDeletedAt to restore the book
-            book.SoftDeletedAt = null;
+            // Set status back to Active to restore the book
+            book.DeletionStatus = DeletionStatus.Active;
             book.LastModified = DateTimeOffset.UtcNow;
 
             await context.SaveChangesAsync();

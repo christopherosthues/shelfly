@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Shelfly.Api.Data;
 using Shelfly.Api.Data.Entities;
 using Shelfly.Common.DTOs;
+using Shelfly.Common.Enums;
 
 namespace Shelfly.Api.Services;
 
@@ -169,7 +170,7 @@ public class SyncService(ShelflyDbContext context)
                 Title = book.Title,
                 Author = book.Author,
                 LastModified = book.LastModified,
-                DeletionStatus = book.SoftDeletedAt.HasValue ? "SoftDeleted" : "Active",
+                DeletionStatus = book.DeletionStatus == DeletionStatus.SoftDeleted ? "SoftDeleted" : "Active",
                 Bookmarks = book.Bookmarks?.Select(bm => new SyncDownloadBookmarkItem
                 {
                     RemoteGuid = bm.Id,
@@ -185,7 +186,7 @@ public class SyncService(ShelflyDbContext context)
 
         // Check for soft-deleted items that need to be reported
         List<BookEntity>? deletedBooks = await context.Books
-            .Where(b => b.UserId == userId && request.LocalGuids.Contains(b.Id) && b.SoftDeletedAt.HasValue)
+            .Where(b => b.UserId == userId && request.LocalGuids.Contains(b.Id) && b.DeletionStatus == DeletionStatus.SoftDeleted)
             .ToListAsync();
 
         foreach (BookEntity book in deletedBooks ?? [])
@@ -194,7 +195,7 @@ public class SyncService(ShelflyDbContext context)
             {
                 RemoteGuid = book.Id,
                 EntityType = "Book",
-                SoftDeletedAt = book.SoftDeletedAt.Value
+                DeletedAt = book.LastModified  // Use LastModified as the soft-delete timestamp
             });
         }
 
@@ -240,10 +241,10 @@ public class SyncService(ShelflyDbContext context)
         BookEntity? book = await context.Books
             .FirstOrDefaultAsync(b => b.UserId == userId && b.Id == remoteGuid);
 
-        if (book != null && book.SoftDeletedAt.HasValue)
+        if (book != null && book.DeletionStatus == DeletionStatus.SoftDeleted)
         {
-            // Restore the book by clearing SoftDeletedAt
-            book.SoftDeletedAt = null;
+            // Restore the book by setting status to Active
+            book.DeletionStatus = DeletionStatus.Active;
             book.LastModified = DateTimeOffset.UtcNow;
 
             await context.SaveChangesAsync();

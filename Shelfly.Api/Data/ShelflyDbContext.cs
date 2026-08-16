@@ -18,10 +18,11 @@ public class ShelflyDbContext(DbContextOptions<ShelflyDbContext> options) : DbCo
             entity.Property(e => e.ISBN).HasMaxLength(16);
             entity.Property(e => e.UserId).IsRequired();
             entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.DeletionStatus);  // Index for trash filtering queries
             entity.HasMany(e => e.Bookmarks)
                 .WithOne(e => e.Book)
                 .HasForeignKey(e => e.BookId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);  // Cascade delete on hard deletion
         });
 
         modelBuilder.Entity<BookmarkEntity>(entity =>
@@ -31,6 +32,8 @@ public class ShelflyDbContext(DbContextOptions<ShelflyDbContext> options) : DbCo
             entity.Property(e => e.Note).HasMaxLength(1000);
             entity.Property(e => e.UserId).IsRequired();
             entity.HasIndex(e => new { e.UserId, e.BookId });
+            entity.HasIndex(e => e.DeletionStatus);  // Index for trash filtering queries
+            entity.HasIndex(e => e.BookId);          // Index for cascade delete joins
         });
     }
 }

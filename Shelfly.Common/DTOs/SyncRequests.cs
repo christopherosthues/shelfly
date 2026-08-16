@@ -98,5 +98,5 @@ public class SyncDeletedItem
 {
     public Guid RemoteGuid { get; set; }
     public string EntityType { get; set; } = string.Empty;
-    public DateTimeOffset SoftDeletedAt { get; set; }
+    public DateTimeOffset DeletedAt { get; set; }  // Timestamp when item was soft-deleted (moved to trash)
 }
