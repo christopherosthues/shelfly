@@ -1,68 +1,19 @@
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using Shelfly.Api.Authentication;
-using Shelfly.Api.Authentication.Models;
-using Shelfly.Api.Authentication.Validators;
-using Shelfly.Api.Data;
-using Shelfly.Api.Configuration;
-using Shelfly.Api.Services;
-using Shelfly.Api.Shared.Cleanup;
-using Shelfly.Api.Features.Books.Validators;
-using Shelfly.Api.Shared.DI;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
-
-builder.Services.AddDbContext<ShelflyDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Register feature services using extension methods (DI enforcement per Constitution V)
-builder.Services.AddBooksFeature();
-builder.Services.AddBookmarksFeature();
-builder.Services.AddScoped<CleanupService>();  // Cleanup service for trash management and hard delete operations
-
-// Auth validators
-builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationValidator>();
-builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
-builder.Services.AddScoped<IValidator<PasswordResetRequest>, PasswordResetValidator>();
-
-// Book and Bookmark validators
-builder.Services.AddScoped<IValidator<BookStatusUpdateRequest>, BookStatusUpdateValidator>();
-
-// TODO: register all validators explicitly, not via discovery which possibly relies on slow reflection
-builder.Services.AddValidatorsFromAssembly(typeof(CreateBookValidator).Assembly);
 
 // Configuration services
 string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")
                                ?? throw new InvalidOperationException("MONGODB_CONNECTION_STRING not configured");
 
 ILoggerFactory loggerFactory = LoggerFactory.Create(b => b.AddConsole());
-ResilientMongoClient resilientMongoClient = new(
-    loggerFactory.CreateLogger<ResilientMongoClient>());
-resilientMongoClient.Initialize(mongoConnectionString, "shelfly-config");
-
-builder.Services.AddSingleton(resilientMongoClient);
-builder.Services.AddScoped<ConfigurationService>();
-builder.Services.AddKeycloakAuthentication();
-builder.Services.AddMemoryCache();
-
-// Keycloak admin client for user management operations
-builder.Services.AddHttpClient<KeycloakAdminClient>(client =>
-{
-    client.BaseAddress = new("http://todo.todo/");
-});
 
 WebApplication app = builder.Build();
 
 // Seed default configuration if empty (using scoped service)
-using IServiceScope scope = app.Services.CreateScope();
-ConfigurationService configurationService = scope.ServiceProvider.GetRequiredService<ConfigurationService>();
-await configurationService.SeedDefaultsAsync();
-
-// Load and apply Keycloak authentication configuration asynchronously
-await app.LoadAndApplyKeycloakConfigAsync(configurationService);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -71,13 +22,3 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// Map authentication endpoints
-app.MapAuthEndpoints();
-
-// Map feature endpoints using extension methods (vertical slice architecture per Constitution VII)
-app.MapBooksFeatureEndpoints();
-app.MapBookmarksFeatureEndpoints();
-
-// Map cleanup endpoints
-app.MapCleanupEndpoints();

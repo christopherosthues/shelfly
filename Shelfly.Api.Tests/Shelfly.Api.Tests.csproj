@@ -21,4 +21,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Shelfly.Api\Shelfly.Api.csproj"/>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Unit\" />
+    </ItemGroup>
 </Project>

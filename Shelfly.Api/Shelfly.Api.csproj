@@ -42,7 +42,4 @@
     <ProjectReference Include="..\Shelfly.Common\Shelfly.Common.csproj" />
     <ProjectReference Include="..\Shelfly.Configuration\Shelfly.Configuration.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Authentication\" />
-  </ItemGroup>
 </Project>

@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Shelfly.Api.Data;
 using Shelfly.Api.Tests.Helpers;
 using Testcontainers.Keycloak;
 using Testcontainers.MongoDb;
@@ -82,17 +79,17 @@ public class ShelflyWebApplicationFactory : WebApplicationFactory<Program>, IAsy
 
         builder.ConfigureTestServices(services =>
         {
-            ServiceDescriptor? dbContextDescriptor =
-                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ShelflyDbContext>));
-            if (dbContextDescriptor is not null)
-            {
-                services.Remove(dbContextDescriptor);
-            }
+            // ServiceDescriptor? dbContextDescriptor =
+                // services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ShelflyDbContext>));
+            // if (dbContextDescriptor is not null)
+            // {
+                // services.Remove(dbContextDescriptor);
+            // }
 
-            services.AddDbContext<ShelflyDbContext>((_, options) =>
-            {
-                options.UseNpgsql(_postgreSqlContainer.GetConnectionString());
-            });
+            // services.AddDbContext<ShelflyDbContext>((_, options) =>
+            // {
+                // options.UseNpgsql(_postgreSqlContainer.GetConnectionString());
+            // });
         });
 
         string? mongoConnectionString = _mongoDbContainer?.GetConnectionString();

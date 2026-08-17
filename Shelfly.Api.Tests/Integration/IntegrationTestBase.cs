@@ -1,7 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.DependencyInjection;
-using Shelfly.Api.Data;
 using Shelfly.Api.Tests.Helpers;
 
 namespace Shelfly.Api.Tests.Integration;
@@ -71,45 +70,45 @@ public class IntegrationTestBase
         httpClient.DefaultRequestHeaders.Authorization = null;
     }
 
-    protected async Task SeedDatabaseAsync(Action<ShelflyDbContext> seed)
-    {
-        using IServiceScope scope = ApiFactory.Services.CreateScope();
-        IServiceProvider serviceProvider = scope.ServiceProvider;
-        ShelflyDbContext dbContext = serviceProvider.GetRequiredService<ShelflyDbContext>();
-        seed(dbContext);
-        await dbContext.SaveChangesAsync();
-    }
+    // protected async Task SeedDatabaseAsync(Action<ShelflyDbContext> seed)
+    // {
+    //     using IServiceScope scope = ApiFactory.Services.CreateScope();
+    //     IServiceProvider serviceProvider = scope.ServiceProvider;
+    //     ShelflyDbContext dbContext = serviceProvider.GetRequiredService<ShelflyDbContext>();
+    //     seed(dbContext);
+    //     await dbContext.SaveChangesAsync();
+    // }
+    //
+    // protected async Task CheckDbContentAsync(Func<ShelflyDbContext, Task> checkAsync)
+    // {
+    //     using IServiceScope scope = ApiFactory.Services.CreateScope();
+    //     IServiceProvider serviceProvider = scope.ServiceProvider;
+    //     ShelflyDbContext dbContext = serviceProvider.GetRequiredService<ShelflyDbContext>();
+    //     await checkAsync(dbContext);
+    // }
 
-    protected async Task CheckDbContentAsync(Func<ShelflyDbContext, Task> checkAsync)
-    {
-        using IServiceScope scope = ApiFactory.Services.CreateScope();
-        IServiceProvider serviceProvider = scope.ServiceProvider;
-        ShelflyDbContext dbContext = serviceProvider.GetRequiredService<ShelflyDbContext>();
-        await checkAsync(dbContext);
-    }
-
-    [After(Test)]
-    public async Task TearDownBase()
-    {
-        using IServiceScope scope = ApiFactory.Services.CreateScope();
-        IServiceProvider serviceProvider = scope.ServiceProvider;
-        ShelflyDbContext dbContext = serviceProvider.GetRequiredService<ShelflyDbContext>();
-        await ResetDatabase(dbContext);
-
-        // GraphQLClient.Dispose();
-        // await ApiFactory.DisposeAsync();
-    }
+    // [After(Test)]
+    // public async Task TearDownBase()
+    // {
+    //     using IServiceScope scope = ApiFactory.Services.CreateScope();
+    //     IServiceProvider serviceProvider = scope.ServiceProvider;
+    //     ShelflyDbContext dbContext = serviceProvider.GetRequiredService<ShelflyDbContext>();
+    //     await ResetDatabase(dbContext);
+    //
+    //     // GraphQLClient.Dispose();
+    //     // await ApiFactory.DisposeAsync();
+    // }
 
     /// <summary>
     /// This method reset the database after each test. This is the place where you can clear the database. The default
     /// implementation deletes all data from the database.
     /// </summary>
     /// <param name="dbContext">The database context used to reset the database</param>
-    private static async Task ResetDatabase(ShelflyDbContext dbContext)
-    {
-        dbContext.Bookmarks.RemoveRange(dbContext.Bookmarks);
-        dbContext.Books.RemoveRange(dbContext.Books);
-
-        await dbContext.SaveChangesAsync();
-    }
+    // private static async Task ResetDatabase(ShelflyDbContext dbContext)
+    // {
+    //     dbContext.Bookmarks.RemoveRange(dbContext.Bookmarks);
+    //     dbContext.Books.RemoveRange(dbContext.Books);
+    //
+    //     await dbContext.SaveChangesAsync();
+    // }
 }
