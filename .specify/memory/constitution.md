@@ -1,9 +1,22 @@
 <!-- Sync Impact Report:
-  Version change: 1.0.2 → 1.0.3 (PATCH - added vertical slice architecture principle)
-  Modified principles: N/A
-  Added sections: VII. Vertical Slice Architecture
-  Removed sections: N/A
-  Changes: Core Principles - added feature-based project structure mandate with vertical slice guidance
+  Version change: 1.0.3 → 2.0.0 (MAJOR - comprehensive restructuring and expansion)
+  Modified principles:
+    I. Code Quality → I. SOLID & Separation of Concerns (expanded with explicit Common/Api boundary rules)
+    II. Testing Standards → retained, merged into broader Testing Strategy section
+    III. User Experience Consistency → III. MVVM Pattern (refocused on DI registration and Shell navigation)
+    IV. Performance Requirements → removed as standalone principle (merged into Architecture)
+    V. Dependency Injection Preference → V. Coding Standards (expanded with type inference, collections, constructors)
+    VI. Data Lifecycle & Deletion Patterns → VI. Data Management (added sync strategy, EF Core patterns, MongoDB schema)
+    VII. Vertical Slice Architecture → II. Vertical Slice Architecture (repositioned, expanded with Modular Monolith rules)
+  Added sections:
+    API Design & Authentication (REST versioning, GraphQL Code-first, Keycloak flow)
+    Testing & Observability (TUnit/Shouldly strategy, NLog/Microsoft.Extensions.Logging conventions)
+    DevOps & Configuration (Podman/compose.yaml structure, envfiles/, MongoDB runtime config, migration service)
+    Workflow & Dependency Policy (Conventional Commits, SemVer, CI/CD stages, dependency approval gate)
+  Removed sections:
+    Architecture & Technology Constraints (merged into Core Principles and new sections)
+    Development Workflow (expanded into Workflow & Dependency Policy)
+  Changes: Complete rewrite to cover all governance areas with authoritative, actionable rules
   Deferred TODOs: N/A
 -->
 
@@ -11,62 +24,92 @@
 
 ## Core Principles
 
-### I. Code Quality
+### I. SOLID & Separation of Concerns
 
-All code MUST adhere to SOLID principles and maintain separation of concerns across the three-project architecture. Domain models in `Shelfly.Common` remain framework-agnostic; entity models in `Shelfly.Api/Data/Entities/` handle persistence-specific concerns. FluentValidation MUST validate all incoming request data before processing. NuGet packages MUST be centralized via `Directory.Packages.props` — individual `.csproj` files only declare package references, not versions. Code reviews MUST verify that new endpoints follow the minimal hosting model (`app.MapGet()` patterns) rather than introducing Controllers unless justified by complexity.
+All code MUST adhere strictly to SOLID principles across every layer. Domain models in `Shelfly.Common` remain framework-agnostic and contain only business logic — no EF Core attributes, no controller dependencies, no UI concerns. Entity models in `Shelfly.Api/Data/Entities/` handle persistence-specific mapping and MAY include data annotations or FluentAPI configurations. The API layer MUST validate all incoming request data via FluentValidation before processing. NuGet packages MUST be centralized through `Directory.Packages.props`; individual `.csproj` files declare package references only, never versions.
 
-**Rationale**: Centralized package management prevents version drift across projects. Separating Common domain models from Api entity models enables independent evolution of business logic and persistence layers. Minimal API design reduces boilerplate and improves endpoint discoverability.
+**Rationale**: Separating Common domain models from Api entity models enables independent evolution of business logic and persistence layers. Centralized package management prevents version drift across the three-project solution. FluentValidation at the boundary ensures predictable error handling before business logic executes.
 
-### II. Testing Standards (NON-NEGOTIABLE)
+### II. Vertical Slice Architecture
 
-Test projects MUST exist for `Shelfly.Api` and `Shelfly.Common` before feature implementation begins. Unit tests MUST cover all FluentValidation rules, domain model invariants, and business logic paths. Integration tests MUST verify API endpoints against the PostgreSQL data store using EF Core test harnesses. The Red-Green-Refactor cycle is enforced: tests written → approved → failing → implemented → passing. No code merges without green test suites.
+Project structure MUST follow features, not technical layers. Each feature or business capability (e.g., Books, Bookmarks) lives inside its own directory containing all concerns: models, services, endpoints, views, DTOs, and tests. The server follows **Modular Monolith** architecture — modules communicate via direct service calls, not event buses (event bus usage requires explicit approval). Each vertical slice is self-contained and independently navigable. Shared infrastructure (common utilities, base classes) MAY reside in a dedicated shared directory, but feature-specific code MUST be co-located within the feature boundary.
 
-**Rationale**: With no test projects currently existing, establishing test-first discipline prevents technical debt accumulation. API endpoints backed by PostgreSQL require integration verification beyond unit tests to catch EF Core mapping issues and database constraint violations early.
+**Rationale**: Feature-based organization improves discoverability and reduces cognitive load when navigating the codebase. Co-locating related code enables faster feature isolation, easier refactoring, and clearer ownership boundaries. Direct service calls between modules reduce indirection and simplify debugging compared to event-driven communication.
 
-### III. User Experience Consistency
+### III. MVVM Pattern (Client)
 
-The MAUI client (`Shelfly.App`) MUST deliver visually consistent experiences across all target platforms (Android always, iOS/MacCatalyst on non-Linux, Windows conditionally). XAML views MUST leverage source generation (`MauiXamlInflator=SourceGen`) for compile-time validation. Shared UI components MUST reside in a common resource dictionary or shared view library to prevent platform-specific divergence. The client communicates exclusively with the API — no direct Keycloak calls — ensuring consistent authentication flows and error handling across platforms.
+The MAUI client (`Shelfly.App`) MUST follow MVVM pattern with Shell navigation. Pages and ViewModels MUST be registered via `AddScopedWithShellRoute<TPage, TViewModel>("route")` for DI registration, enabling constructor injection on both pages and view models. Use CommunityToolkit patterns: `ObservableObject`, `ObservableProperty`, `RelayCommand`. XAML views MUST leverage source generation (`MauiXamlInflator=SourceGen`) for compile-time validation. The client communicates exclusively with the API — no direct Keycloak calls — ensuring consistent authentication flows across platforms (Android always, iOS/MacCatalyst on non-Linux, Windows conditionally).
 
-**Rationale**: Cross-platform consistency reduces user confusion and support burden. XAML source generation catches binding errors at compile time rather than runtime. Single API dependency simplifies auth flow changes and keeps the client layer thin.
+**Rationale**: Scoped DI registration tied to Shell routes ensures view models are recreated per navigation, preventing stale state. XAML source generation catches binding errors at compile time rather than runtime. Single API dependency keeps the client layer thin and simplifies auth flow changes.
 
-### IV. Performance Requirements
+### IV. Coding Standards
 
-API endpoints MUST respond within 200ms for p95 latency under normal load. Database queries using EF Core MUST include explicit indexing strategies for frequently queried fields. MongoDB configuration parameters MUST be cached in-memory with TTL-based invalidation to reduce read latency. Batch operations (e.g., bulk book imports) MUST use asynchronous streaming patterns and report progress via SignalR or similar real-time channels. Connection pooling MUST be configured for both PostgreSQL and MongoDB clients.
+Type inference (`var`) MUST be avoided except for complete anonymous types (`new { ... }`). Prefer explicit type names to improve readability and maintainability. Collections MUST use collection expression syntax (e.g., `[1, 2, 3]`) over `new List<T>()` or `new T[]()`. Constructors MUST prefer primary constructor syntax where applicable (e.g., `class Book(string title) { }`). Object instantiation MUST prefer `new()` syntax (C# 12) over explicit constructor calls when default constructors are used. Nullable reference types (`<Nullable>enable</Nullable>`) enforced across all projects — explicit `?` annotations required for nullable parameters and return types. Naming conventions follow standard .NET patterns, enforced via `.editorconfig`.
 
-**Rationale**: Shelfly serves as a reading companion application where responsiveness directly impacts user engagement. EF Core queries without proper indexing degrade quickly as the library catalog grows. Configuration caching prevents redundant MongoDB reads on every request.
+**Rationale**: Explicit typing reduces ambiguity in complex expressions. Collection expressions and primary constructors reduce boilerplate without sacrificing clarity. Nullable enforcement prevents null-reference runtime exceptions. Consistent naming conventions improve team readability and IDE navigation.
 
-### V. Dependency Injection Preference
+### V. Data Management
 
-All service dependencies MUST be injected via constructor dependency injection. The DI container controls object lifetimes, ensuring consistent lifecycle management and testability. Parameterless constructors SHOULD only exist for setup/bootstrap scenarios where the DI container is not yet available (e.g., config service needed before container build). EF Core already implements the Repository and UnitOfWork patterns natively through `DbContext` — separate repository abstractions are unnecessary unless data is loaded from different sources (e.g., database combined with file system or external APIs).
+Books use soft deletion via nullable `DeletedAt` timestamp (`null` = active, non-null = deleted); queries MUST filter out records where `DeletedAt != null` unless explicitly requested. Bookmarks use hard deletion — physically removed from storage. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed). EF Core inherently implements Repository and UnitOfWork patterns through `DbContext`; custom repositories are unnecessary unless reading from multiple distinct sources (e.g., Database + Filesystem). Different tables in the same database ≠ multiple sources. Client-server bookmark synchronization uses **last-write-wins** based on `lastModified` timestamp.
 
-**Rationale**: Constructor injection enables dependency mocking during unit tests, reduces coupling between components, and prevents stale references. Leveraging EF Core's native patterns avoids redundant abstraction layers and simplifies the persistence architecture. Custom repositories are justified only when aggregating data from heterogeneous sources.
+**Rationale**: A deletion date eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency. Leveraging EF Core's native patterns avoids redundant abstraction layers. Last-write-wins provides predictable conflict resolution for cross-device synchronization.
 
-### VI. Data Lifecycle & Deletion Patterns
+### VI. API Design & Versioning
 
-Entity lifecycle states MUST use a two-value enum: `Active` (normal use) and `SoftDeleted` (in trash, recoverable). Soft deletion marks an entity as trashed without removing it from storage, enabling user recovery. Hard deletion physically removes the entity row from the database—hard-deleted entities no longer exist in storage rather than being marked with a status flag. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed).
+REST endpoints MUST use URL versioning (e.g., `/v1/books`, `/v1/bookmarks`). Minimal APIs preferred — single `Program.cs` entry point with endpoints defined via `app.MapGet()` patterns, not Controllers. Error responses MUST follow **RFC 7807 Problem Details** format. GraphQL schema design is **Code-first** (C# classes → schema). Server uses HotChocolate; Client uses StrawberryShake for type-safe queries. Both REST and GraphQL APIs share the same underlying domain models from `Shelfly.Common`.
 
-**Rationale**: A two-state enum eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency and prevents phantom records. Cascade delete maintains referential integrity without orphaned child records.
+**Rationale**: URL versioning provides clear backward-compatibility boundaries. Minimal API design reduces boilerplate and improves endpoint discoverability. RFC 7807 standardizes error responses across all clients. Code-first GraphQL keeps schema definitions in C#, enabling compile-time validation and reducing drift between code and schema.
 
-### VII. Vertical Slice Architecture
+### VII. Authentication & User Management
 
-Project structure MUST follow features, not technical layers. Everything related to a feature (e.g., Books, Bookmarks) lives inside its own directory containing all concerns: models, services, endpoints, views, and tests. Each feature forms a vertical slice—self-contained and independently navigable. Shared infrastructure (common utilities, base classes) MAY reside in a dedicated shared directory, but feature-specific code MUST be co-located within the feature boundary.
+Keycloak handles user registration, login, profile management, and token-based auth/authz. The API delegates authentication to Keycloak — validating JWT tokens against the configured issuer using JWKS discovery. Custom `JwtAudienceValidator` validates JWT `aud` claim against configured audience; mismatch returns 401 Unauthorized. Role-based access rules stored in MongoDB define role-to-endpoint mappings; the API enforces these policies at runtime. The client app configures server URL dynamically — no central server assumption. Keycloak configuration cached in-memory with 5-minute TTL to reduce MongoDB read frequency. Admin can update Keycloak configuration and authorization rules without restarting the API service.
 
-**Rationale**: Feature-based organization improves discoverability and reduces cognitive load when navigating the codebase. Co-locating related code enables faster feature isolation, easier refactoring, and clearer ownership boundaries. Vertical slices support independent development, testing, and deployment of features without cross-cutting layer dependencies.
+**Rationale**: Delegating auth to Keycloak keeps authentication logic centralized and auditable. In-memory caching prevents redundant MongoDB reads on every request. Runtime refresh enables operational flexibility without downtime. Dynamic server URL supports self-hosted deployments where users control their own infrastructure.
 
-## Architecture & Technology Constraints
+## Testing & Observability
 
-The solution targets .NET 10 (`net10.0`) with prerelease SDK tolerance enabled via `global.json`. The API layer uses ASP.NET Core minimal hosting with a single `Program.cs` entry point. Authentication delegates to Keycloak; the API validates tokens using `VerifyUserHasAnyAcceptedScope()`. Data persistence splits between PostgreSQL (primary data via EF Core + Npgsql) and MongoDB (configuration parameters). MAUI target frameworks resolve conditionally — build scripts MUST use `dotnet build Shelfly.App/Shelfly.App.csproj` to allow MSBuild conditional evaluation.
+### Testing Strategy
 
-**Rationale**: The dual-data-store architecture separates mutable user content from stable configuration, enabling independent scaling. Keycloak delegation keeps auth logic centralized and auditable. Conditional MAUI targeting prevents build failures on platforms without the required SDK tooling installed.
+Unit tests MUST use TUnit framework with Shouldly for readable, natural-language assertions. Integration tests MUST use TestContainers to spin up isolated PostgreSQL, MongoDB, and Keycloak instances. Unit tests cover all FluentValidation rules, domain model invariants, and business logic paths. Integration tests verify API endpoints against the PostgreSQL data store using EF Core test harnesses. The Red-Green-Refactor cycle is enforced: tests written → approved → failing → implemented → passing. No code merges without green test suites. Test projects MUST exist for all projects before feature implementation begins.
 
-## Development Workflow
+**Rationale**: TUnit provides modern, attribute-free test definitions that integrate cleanly with .NET 10. Shouldly assertions produce readable failure messages, reducing debugging time. TestContainers provide isolated, reproducible environments for integration verification, catching EF Core mapping issues and database constraint violations early.
 
-All feature work MUST follow the Spec Kit SDD cycle: specify → plan → tasks → implement. The `.specify/` directory contains workflow configuration driving this process. Code changes MUST be committed with descriptive messages following conventional commit format (`feat:`, `fix:`, `docs:`, etc.). Docker Compose provides an alternative local runtime for the API service. Pull requests MUST include updated tests and pass `dotnet build Shelfly.slnx` successfully.
+### Logging & Observability
 
-**Rationale**: The structured SDD cycle ensures features are fully specified before implementation begins, reducing rework. Conventional commits enable automated changelog generation and semantic versioning. Requiring successful solution builds on PR merge prevents integration breakage across the three interdependent projects.
+Client logging MUST use structured logging via NLog integrated with `Microsoft.Extensions.Logging`. Logs written to local files on the device. Server logging MUST use structured logging via `Microsoft.Extensions.Logging` (console output in development, file output in production). All log entries MUST include timestamp, severity level, and contextual data (user ID, request ID where applicable). Sensitive data (tokens, passwords) MUST be masked or excluded from logs unless explicitly approved for debugging.
+
+**Rationale**: Structured logging enables efficient filtering and aggregation across distributed components. Local file storage on the client preserves diagnostic history without network dependency. Server-side structured output supports container orchestration tools that parse log streams. Consistent contextual data enables request tracing across API boundaries.
+
+## DevOps & Configuration
+
+### Containerization & Deployment
+
+Use Dockerfiles and `compose.yaml` for both development and production environments. Execution engine: Podman (not Docker). The existing `compose.yaml` defines services for the API, PostgreSQL, MongoDB, Keycloak, and pgAdmin. A dedicated migration service/utility Docker container manages database schema changes separately from the main application stack. Migration containers integrate with the main stack by connecting to the same PostgreSQL instance defined in `compose.yaml`. Services MUST be named consistently across compose files and environment files to enable automatic variable resolution.
+
+**Rationale**: Podman provides daemonless container execution, improving security and resource efficiency. Separating migrations into a dedicated service enables atomic schema changes without application downtime. Consistent naming conventions simplify environment management and reduce configuration errors.
+
+### Configuration & Secrets Management
+
+Per-service configuration managed via separate `<service>.env` files stored in `envfiles/` directory (e.g., `shelfly.env`, `postgres.env`, `keycloak.env`). Podman Compose loads these files automatically based on service names. MongoDB currently stores runtime configuration parameters and secrets ("for the moment") — including KeycloakConfig (`_id: "keycloak"`), PostgreSqlConfig (`_id: "postgresql"`), and AuthorizationRule (`_id: "auth-rules"`). Default configuration seeded before first API startup by an admin using a separate console program. MongoDB connection wrapped with Polly retry policy (exponential backoff, max 5 attempts) for resilience. This approach is temporary; a clear migration path to dedicated secrets management (e.g., HashiCorp Vault, Kubernetes Secrets) is expected as the project matures. Services MUST read from `.env` files for infrastructure configuration and MongoDB for runtime parameters until migration occurs.
+
+**Rationale**: Per-service environment files enable granular configuration control without cross-service coupling. MongoDB provides a centralized, queryable store for runtime parameters that can be updated without restarts. Polly retry policy ensures graceful degradation during transient MongoDB failures. Temporary nature acknowledged with explicit migration expectation to prevent long-term technical debt.
+
+## Workflow & Dependency Policy
+
+### Process & Workflow
+
+Commits MUST follow Conventional Commits specification (`feat:`, `fix:`, `chore:`, `docs:`, etc.). Versioning follows Semantic Versioning (SemVer) for releases — MAJOR.MINOR.PATCH format with clear backward-compatibility boundaries. CI/CD pipeline via GitHub Actions MUST include stages: build, test, lint, publish, deploy. All feature work MUST follow the Spec Kit SDD cycle: specify → plan → tasks → implement. Pull requests MUST include updated tests and pass `dotnet build Shelfly.slnx` successfully before merge.
+
+**Rationale**: Conventional commits enable automated changelog generation and semantic versioning. Structured CI/CD stages ensure quality gates are enforced consistently. The SDD cycle ensures features are fully specified before implementation begins, reducing rework. Requiring successful solution builds on PR merge prevents integration breakage across the three interdependent projects.
+
+### Dependency Policy
+
+No additional NuGet packages or libraries added without explicit approval. Always ask before adding new dependencies to the solution. Approved dependencies MUST be documented in `Directory.Packages.props` with version pinning and rationale comments. Transitive dependencies reviewed during each major release cycle for security vulnerabilities and compatibility issues. Third-party libraries MUST support .NET 10 targeting and maintain active development status (last release within 12 months).
+
+**Rationale**: Explicit approval prevents dependency sprawl and reduces attack surface. Centralized version pinning ensures consistency across projects. Regular vulnerability reviews catch security issues before they become critical. Active maintenance requirement reduces long-term compatibility risks.
 
 ## Governance
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 1.0.3 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-16
+**Version**: 2.0.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-17
