@@ -57,11 +57,16 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Maui.Controls" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="NLog" />
+    <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="StrawberryShake" />
     <PackageReference Include="StrawberryShake.Maui" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfly.Common\Shelfly.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="nlog.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Localization\AppResources.resx">
