@@ -14,6 +14,7 @@
   <Project Path="Shelfly.Api/Shelfly.Api.csproj" />
   <Project Path="Shelfly.App.Tests/Shelfly.App.Tests.csproj" />
   <Project Path="Shelfly.App/Shelfly.App.csproj" />
+  <Project Path="Shelfly.Common.Tests/Shelfly.Common.Tests.csproj" />
   <Project Path="Shelfly.Common/Shelfly.Common.csproj" />
   <Project Path="Shelfly.Configuration/Shelfly.Configuration.csproj" />
 </Solution>

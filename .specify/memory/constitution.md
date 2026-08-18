@@ -1,22 +1,10 @@
 <!-- Sync Impact Report:
-  Version change: 1.0.3 → 2.0.0 (MAJOR - comprehensive restructuring and expansion)
+  Version change: 2.1.0 → 2.2.0 (MINOR - new governance rule added)
   Modified principles:
-    I. Code Quality → I. SOLID & Separation of Concerns (expanded with explicit Common/Api boundary rules)
-    II. Testing Standards → retained, merged into broader Testing Strategy section
-    III. User Experience Consistency → III. MVVM Pattern (refocused on DI registration and Shell navigation)
-    IV. Performance Requirements → removed as standalone principle (merged into Architecture)
-    V. Dependency Injection Preference → V. Coding Standards (expanded with type inference, collections, constructors)
-    VI. Data Lifecycle & Deletion Patterns → VI. Data Management (added sync strategy, EF Core patterns, MongoDB schema)
-    VII. Vertical Slice Architecture → II. Vertical Slice Architecture (repositioned, expanded with Modular Monolith rules)
-  Added sections:
-    API Design & Authentication (REST versioning, GraphQL Code-first, Keycloak flow)
-    Testing & Observability (TUnit/Shouldly strategy, NLog/Microsoft.Extensions.Logging conventions)
-    DevOps & Configuration (Podman/compose.yaml structure, envfiles/, MongoDB runtime config, migration service)
-    Workflow & Dependency Policy (Conventional Commits, SemVer, CI/CD stages, dependency approval gate)
-  Removed sections:
-    Architecture & Technology Constraints (merged into Core Principles and new sections)
-    Development Workflow (expanded into Workflow & Dependency Policy)
-  Changes: Complete rewrite to cover all governance areas with authoritative, actionable rules
+    IV. Coding Standards (expanded with Result pattern mandate for error handling)
+  Added sections: N/A
+  Removed sections: N/A
+  Changes: Error handling now MUST use Result pattern instead of custom/domain exceptions, making failure paths explicit at compile time
   Deferred TODOs: N/A
 -->
 
@@ -44,15 +32,15 @@ The MAUI client (`Shelfly.App`) MUST follow MVVM pattern with Shell navigation. 
 
 ### IV. Coding Standards
 
-Type inference (`var`) MUST be avoided except for complete anonymous types (`new { ... }`). Prefer explicit type names to improve readability and maintainability. Collections MUST use collection expression syntax (e.g., `[1, 2, 3]`) over `new List<T>()` or `new T[]()`. Constructors MUST prefer primary constructor syntax where applicable (e.g., `class Book(string title) { }`). Object instantiation MUST prefer `new()` syntax (C# 12) over explicit constructor calls when default constructors are used. Nullable reference types (`<Nullable>enable</Nullable>`) enforced across all projects — explicit `?` annotations required for nullable parameters and return types. Naming conventions follow standard .NET patterns, enforced via `.editorconfig`.
+Type inference (`var`) MUST be avoided except for complete anonymous types (`new { ... }`). Prefer explicit type names to improve readability and maintainability. Collections MUST use collection expression syntax (e.g., `[1, 2, 3]`) over `new List<T>()` or `new T[]()`. Constructors MUST prefer primary constructor syntax where applicable (e.g., `class Book(string title) { }`). Object instantiation MUST prefer `new()` syntax (C# 12) over explicit constructor calls when default constructors are used. Nullable reference types (`<Nullable>enable</Nullable>`) enforced across all projects — explicit `?` annotations required for nullable parameters and return types. Naming conventions follow standard .NET patterns, enforced via `.editorconfig`. No custom or domain-specific exceptions SHOULD be created or thrown; instead, the **Result pattern** MUST be used to represent success/failure outcomes explicitly in method signatures.
 
-**Rationale**: Explicit typing reduces ambiguity in complex expressions. Collection expressions and primary constructors reduce boilerplate without sacrificing clarity. Nullable enforcement prevents null-reference runtime exceptions. Consistent naming conventions improve team readability and IDE navigation.
+**Rationale**: Explicit typing reduces ambiguity in complex expressions. Collection expressions and primary constructors reduce boilerplate without sacrificing clarity. Nullable enforcement prevents null-reference runtime exceptions. Consistent naming conventions improve team readability and IDE navigation. The Result pattern makes error handling explicit at the call site, eliminates hidden control flow via exception propagation, and enables compile-time verification of failure paths — reducing runtime surprises and improving testability across all layers.
 
 ### V. Data Management
 
-Books use soft deletion via nullable `DeletedAt` timestamp (`null` = active, non-null = deleted); queries MUST filter out records where `DeletedAt != null` unless explicitly requested. Bookmarks use hard deletion — physically removed from storage. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed). EF Core inherently implements Repository and UnitOfWork patterns through `DbContext`; custom repositories are unnecessary unless reading from multiple distinct sources (e.g., Database + Filesystem). Different tables in the same database ≠ multiple sources. Client-server bookmark synchronization uses **last-write-wins** based on `lastModified` timestamp.
+Books use soft deletion via nullable `DeletedAt` timestamp (`null` = active, non-null = deleted); queries MUST filter out records where `DeletedAt != null` unless explicitly requested. Bookmarks use hard deletion — physically removed from storage only when the parent book is also hard deleted. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed). EF Core inherently implements Repository and UnitOfWork patterns through `DbContext`; custom repositories are unnecessary unless reading from multiple distinct sources (e.g., Database + Filesystem). Different tables in the same database ≠ multiple sources. Client-server bookmark synchronization uses **last-write-wins** based on `lastModified` timestamp. All entity identifiers MUST use UUID version 7 (`Guid.CreateVersion7()`) for time-ordered generation, enabling efficient sorting and indexing across databases.
 
-**Rationale**: A deletion date eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency. Leveraging EF Core's native patterns avoids redundant abstraction layers. Last-write-wins provides predictable conflict resolution for cross-device synchronization.
+**Rationale**: A deletion date eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency. Leveraging EF Core's native patterns avoids redundant abstraction layers. Last-write-wins provides predictable conflict resolution for cross-device synchronization. UUID version 7 produces time-ordered identifiers that improve database index locality, reduce page splits, and enable natural chronological sorting without additional timestamp columns.
 
 ### VI. API Design & Versioning
 
@@ -112,4 +100,4 @@ No additional NuGet packages or libraries added without explicit approval. Alway
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 2.0.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-17
+**Version**: 2.2.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-18
