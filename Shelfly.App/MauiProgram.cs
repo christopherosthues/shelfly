@@ -13,9 +13,10 @@ namespace Shelfly.App;
 
 public static class MauiProgram
 {
+
     public static MauiApp CreateMauiApp()
     {
-        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory!, "nlog.config");
+        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nlog.config");
         if (File.Exists(configPath))
         {
             LogManager.Setup().LoadConfigurationFromFile(configPath);
@@ -40,10 +41,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalDbContext>();
         builder.Services.AddSingleton<AuditTimestampInterceptor>();
 
-        builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>("BookListPage");
-        builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>("BookEditPage");
-        builder.Services.AddScopedWithShellRoute<BookDetailPage, BookDetailViewModel>("BookDetailPage");
-        builder.Services.AddScopedWithShellRoute<BookmarkEditPage, BookmarkEditViewModel>("BookmarkEditPage");
+        builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>(Routes.BookListPage);
+        builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>(Routes.BookEditPage);
+        builder.Services.AddScopedWithShellRoute<BookDetailPage, BookDetailViewModel>(Routes.BookDetailPage);
+        builder.Services.AddScopedWithShellRoute<BookmarkEditPage, BookmarkEditViewModel>(Routes.BookmarkEditPage);
 
         return builder.Build();
     }
