@@ -2,5 +2,7 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <!-- CA1416 - Platform warning that all targeted platforms runs this code (which is exactly what I want, you idiot!) -->
+        <NoWarn>$(NoWarn);CA1416</NoWarn>
     </PropertyGroup>
 </Project>

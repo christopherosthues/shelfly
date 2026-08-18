@@ -1,6 +1,13 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Shelfly.App.Data;
+using Shelfly.App.Features.BookEditor.Pages;
+using Shelfly.App.Features.BookEditor.ViewModels;
+using Shelfly.App.Features.BookmarkEditor.Pages;
+using Shelfly.App.Features.BookmarkEditor.ViewModels;
+using Shelfly.App.Features.Library.Pages;
+using Shelfly.App.Features.Library.ViewModels;
 
 namespace Shelfly.App;
 
@@ -11,7 +18,7 @@ public static class MauiProgram
         var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory!, "nlog.config");
         if (File.Exists(configPath))
         {
-            NLog.LogManager.Setup().LoadConfigurationFromFile(configPath);
+            LogManager.Setup().LoadConfigurationFromFile(configPath);
         }
 
         MauiAppBuilder builder = MauiApp.CreateBuilder();
@@ -29,6 +36,14 @@ public static class MauiProgram
 #else
         builder.Logging.ClearProviders().AddNLog();
 #endif
+
+        builder.Services.AddSingleton<LocalDbContext>();
+        builder.Services.AddSingleton<AuditTimestampInterceptor>();
+
+        builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>("BookListPage");
+        builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>("BookEditPage");
+        builder.Services.AddScopedWithShellRoute<BookDetailPage, BookDetailViewModel>("BookDetailPage");
+        builder.Services.AddScopedWithShellRoute<BookmarkEditPage, BookmarkEditViewModel>("BookmarkEditPage");
 
         return builder.Build();
     }

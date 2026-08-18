@@ -5,7 +5,7 @@ namespace Shelfly.AdminConsole.Tests.Helpers;
 
 public class MongoDbTestContainer : IAsyncInitializer, IAsyncDisposable
 {
-    private MongoDbContainer _mongoDbContainer;
+    private MongoDbContainer? _mongoDbContainer;
 
     public async Task InitializeAsync()
     {
@@ -15,7 +15,10 @@ public class MongoDbTestContainer : IAsyncInitializer, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await _mongoDbContainer.StopAsync();
-        await _mongoDbContainer.DisposeAsync();
+        if (_mongoDbContainer != null)
+        {
+            await _mongoDbContainer.StopAsync();
+            await _mongoDbContainer.DisposeAsync();
+        }
     }
 }

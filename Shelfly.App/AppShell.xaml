@@ -4,11 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Shelfly.App"
-    Title="Shelfly.App">
+    xmlns:libraryPages="clr-namespace:Shelfly.App.Features.Library.Pages"
+    xmlns:bookEditorPages="clr-namespace:Shelfly.App.Features.BookEditor.Pages"
+    xmlns:bookmarkEditorPages="clr-namespace:Shelfly.App.Features.BookmarkEditor.Pages"
+    Title="Shelfly">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Books"
+        ContentTemplate="{DataTemplate libraryPages:BookListPage}"
+        Route="BookListPage" />
 
 </Shell>
