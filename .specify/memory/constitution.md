@@ -1,10 +1,9 @@
 <!-- Sync Impact Report:
-  Version change: 2.4.0 → 2.4.1 (PATCH - clarification of soft-delete query mechanism)
-  Modified principles:
-    V. Data Management (refined with EF Core global query filter mandate for soft-deleted entries)
-  Added sections: N/A
+  Version change: 2.4.1 → 2.5.0 (MINOR - new principle added for localization coverage)
+  Modified principles: N/A
+  Added sections: VIII. Localization & Internationalization
   Removed sections: N/A
-  Changes: Normal library queries MUST use EF Core global query filters to exclude soft-deleted entries; Trash management queries MUST use IgnoreQueryFilters to include soft-deleted entries
+  Changes: All user-facing text, including semantic accessibility properties and validation error messages, MUST be localized via resource files
   Deferred TODOs: N/A
 -->
 
@@ -58,6 +57,12 @@ Keycloak handles user registration, login, profile management, and token-based a
 
 **Rationale**: Delegating auth to Keycloak keeps authentication logic centralized and auditable. In-memory caching prevents redundant MongoDB reads on every request. Runtime refresh enables operational flexibility without downtime. Dynamic server URL supports self-hosted deployments where users control their own infrastructure.
 
+### VIII. Localization & Internationalization
+
+All user-facing text in the MAUI client (`Shelfly.App`) MUST be localized via resource files (`.resx`). This includes UI labels, button text, placeholder strings, validation error messages, toast notifications, and semantic accessibility properties (`SemanticProperties.Description`). Hardcoded string literals in XAML views or code-behind files are forbidden. Resource files MUST exist for English (`en-US`) and German (`de-DE`) at minimum. New localization keys MUST be added to `AppResources.resx` in both language directories simultaneously. Fallback text SHOULD use the English resource value when a translation is pending, but the key MUST exist in all active locale files.
+
+**Rationale**: Comprehensive localization ensures consistent user experience across supported languages and enables future expansion without structural changes. Including semantic accessibility properties in localization guarantees screen reader support matches the visual UI language. Centralizing strings in `.resx` files enables translation management, reduces duplication, and simplifies maintenance.
+
 ## Testing & Observability
 
 ### Testing Strategy
@@ -104,4 +109,4 @@ No additional NuGet packages or libraries added without explicit approval. Alway
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 2.4.1 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-19
+**Version**: 2.5.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-19
