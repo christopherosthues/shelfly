@@ -25,11 +25,10 @@ public class LibraryService(LocalDbContext dbContext)
 
         return await dbContext.Books
             .Where(book =>
-                book.DeletedAt == null &&
-                (EF.Functions.Like(book.Title, $"%{lowerQuery}%") ||
-                 EF.Functions.Like(book.Author, $"%{lowerQuery}%") ||
-                 EF.Functions.Like(book.Publisher, $"%{lowerQuery}%") ||
-                 EF.Functions.Like(book.ISBN, $"%{lowerQuery}%")))
+                EF.Functions.Like(book.Title, $"%{lowerQuery}%") ||
+                EF.Functions.Like(book.Author, $"%{lowerQuery}%") ||
+                EF.Functions.Like(book.Publisher, $"%{lowerQuery}%") ||
+                EF.Functions.Like(book.ISBN, $"%{lowerQuery}%"))
             .ToListAsync(cancellationToken);
     }
 
@@ -50,7 +49,7 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<BookEntity?> SoftDeleteBookAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         BookEntity? book = await dbContext.Books
-            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
 
         if (book is not null)
         {
@@ -63,7 +62,7 @@ public class LibraryService(LocalDbContext dbContext)
 
     public async Task<Result<BookEntity>> AddBookAsync(string title, string author, string isbn, string publisher, DateTime? publishDate, CancellationToken cancellationToken = default)
     {
-        BookEntity? existingBook = await dbContext.Books
+        BookEntity? existingBook = await dbContext.Books.IgnoreQueryFilters()
             .FirstOrDefaultAsync(b => b.ISBN == isbn, cancellationToken);
 
         if (existingBook is not null)
@@ -91,14 +90,14 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<Result<BookEntity>> UpdateBookAsync(Guid bookId, string title, string author, string isbn, string publisher, DateTime? publishDate, CancellationToken cancellationToken = default)
     {
         BookEntity? book = await dbContext.Books
-            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
 
         if (book is null)
         {
             return Result<BookEntity>.Failure("Book not found");
         }
 
-        BookEntity? existingBook = await dbContext.Books
+        BookEntity? existingBook = await dbContext.Books.IgnoreQueryFilters()
             .FirstOrDefaultAsync(b => b.ISBN == isbn && b.Id != bookId, cancellationToken);
 
         if (existingBook is not null)
@@ -121,7 +120,7 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<BookEntity?> GetBookByIdAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Books
-            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
     }
 
     public async Task<Result<BookmarkEntity>> AddBookmarkAsync(Guid bookId, int startPage, int? endPage, string? note, CancellationToken cancellationToken = default)
@@ -228,7 +227,7 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<Result<bool>> SoftDeleteBookWithBookmarksAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         BookEntity? book = await dbContext.Books
-            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
 
         if (book is null)
         {

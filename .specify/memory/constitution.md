@@ -1,10 +1,10 @@
 <!-- Sync Impact Report:
-  Version change: 2.1.0 → 2.2.0 (MINOR - new governance rule added)
+  Version change: 2.4.0 → 2.4.1 (PATCH - clarification of soft-delete query mechanism)
   Modified principles:
-    IV. Coding Standards (expanded with Result pattern mandate for error handling)
+    V. Data Management (refined with EF Core global query filter mandate for soft-deleted entries)
   Added sections: N/A
   Removed sections: N/A
-  Changes: Error handling now MUST use Result pattern instead of custom/domain exceptions, making failure paths explicit at compile time
+  Changes: Normal library queries MUST use EF Core global query filters to exclude soft-deleted entries; Trash management queries MUST use IgnoreQueryFilters to include soft-deleted entries
   Deferred TODOs: N/A
 -->
 
@@ -26,9 +26,13 @@ Project structure MUST follow features, not technical layers. Each feature or bu
 
 ### III. MVVM Pattern (Client)
 
-The MAUI client (`Shelfly.App`) MUST follow MVVM pattern with Shell navigation. Pages and ViewModels MUST be registered via `AddScopedWithShellRoute<TPage, TViewModel>("route")` for DI registration, enabling constructor injection on both pages and view models. Use CommunityToolkit patterns: `ObservableObject`, `ObservableProperty`, `RelayCommand`. XAML views MUST leverage source generation (`MauiXamlInflator=SourceGen`) for compile-time validation. The client communicates exclusively with the API — no direct Keycloak calls — ensuring consistent authentication flows across platforms (Android always, iOS/MacCatalyst on non-Linux, Windows conditionally).
+The MAUI client (`Shelfly.App`) MUST follow MVVM pattern with Shell navigation. Pages MUST inherit from `ShelflyContentPageBase` and ViewModels MUST inherit from `ShelflyViewModelBase`. Pages and ViewModels MUST be registered via `AddScopedWithShellRoute<TPage, TViewModel>("route")` for DI registration, enabling constructor injection on both pages and view models. Use CommunityToolkit patterns: `ObservableObject`, `ObservableProperty`, `RelayCommand`. XAML views MUST leverage source generation (`MauiXamlInflator=SourceGen`) for compile-time validation. The client communicates exclusively with the API — no direct Keycloak calls — ensuring consistent authentication flows across platforms (Android always, iOS/MacCatalyst on non-Linux, Windows conditionally).
 
-**Rationale**: Scoped DI registration tied to Shell routes ensures view models are recreated per navigation, preventing stale state. XAML source generation catches binding errors at compile time rather than runtime. Single API dependency keeps the client layer thin and simplifies auth flow changes.
+**Loading Lifecycle**: Initial data loading MUST be performed via the `LoadAsync` method of the base view model (`ShelflyViewModelBase`). The base page lifecycle handles invoking `LoadAsync` during page navigation. Loading cancellation MUST occur automatically when navigating away from a page before loading completes. ViewModels requiring navigation query parameters MUST implement the `IQueryAttributable` interface to receive route parameters. The `ApplyQueryAttributes` method is used solely for parameter extraction — data loading in `ApplyQueryAttributes` is forbidden; all loading MUST flow through `LoadAsync`.
+
+**Cancellation Token Management**: When commands or methods use their own cancellation tokens, the view model MUST override `OnNavigatingFrom` and cancel all active commands and their associated cancellation tokens. This ensures no orphaned operations continue executing after the user has navigated away from the page.
+
+**Rationale**: Inheriting from base classes ensures consistent page lifecycle management, loading behavior, and cancellation handling across all pages. Scoped DI registration tied to Shell routes ensures view models are recreated per navigation, preventing stale state. XAML source generation catches binding errors at compile time rather than runtime. Single API dependency keeps the client layer thin and simplifies auth flow changes. Separating parameter extraction (`ApplyQueryAttributes`) from data loading (`LoadAsync`) enables clean separation of concerns and allows the base page lifecycle to manage cancellation tokens uniformly. Overriding `OnNavigatingFrom` guarantees all in-flight operations are cancelled on navigation, preventing memory leaks, stale state updates, and unnecessary resource consumption from orphaned async operations.
 
 ### IV. Coding Standards
 
@@ -38,9 +42,9 @@ Type inference (`var`) MUST be avoided except for complete anonymous types (`new
 
 ### V. Data Management
 
-Books use soft deletion via nullable `DeletedAt` timestamp (`null` = active, non-null = deleted); queries MUST filter out records where `DeletedAt != null` unless explicitly requested. Bookmarks use hard deletion — physically removed from storage only when the parent book is also hard deleted. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed). EF Core inherently implements Repository and UnitOfWork patterns through `DbContext`; custom repositories are unnecessary unless reading from multiple distinct sources (e.g., Database + Filesystem). Different tables in the same database ≠ multiple sources. Client-server bookmark synchronization uses **last-write-wins** based on `lastModified` timestamp. All entity identifiers MUST use UUID version 7 (`Guid.CreateVersion7()`) for time-ordered generation, enabling efficient sorting and indexing across databases.
+Books use soft deletion via nullable `DeletedAt` timestamp (`null` = active, non-null = deleted); normal library queries MUST use EF Core global query filters to automatically exclude records where `DeletedAt != null`. Trash management queries that need to load soft-deleted entries MUST use `IgnoreQueryFilters` in the DB LINQ query. Bookmarks use hard deletion — physically removed from storage only when the parent book is also hard deleted. When a parent entity is hard-deleted, all dependent child entities MUST cascade delete automatically (e.g., bookmarks deleted when their book is removed). EF Core inherently implements Repository and UnitOfWork patterns through `DbContext`; custom repositories are unnecessary unless reading from multiple distinct sources (e.g., Database + Filesystem). Different tables in the same database ≠ multiple sources. Client-server bookmark synchronization uses **last-write-wins** based on `lastModified` timestamp. All entity identifiers MUST use UUID version 7 (`Guid.CreateVersion7()`) for time-ordered generation, enabling efficient sorting and indexing across databases.
 
-**Rationale**: A deletion date eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency. Leveraging EF Core's native patterns avoids redundant abstraction layers. Last-write-wins provides predictable conflict resolution for cross-device synchronization. UUID version 7 produces time-ordered identifiers that improve database index locality, reduce page splits, and enable natural chronological sorting without additional timestamp columns.
+**Rationale**: A deletion date eliminates confusion between soft delete (recoverable trash) and hard delete (permanent removal). Physical row deletion ensures storage efficiency. Leveraging EF Core's native patterns avoids redundant abstraction layers. Global query filters provide automatic, centralized exclusion of soft-deleted records across all normal queries, reducing boilerplate `Where` clauses and preventing accidental inclusion of deleted entities. Using `IgnoreQueryFilters` for trash management offers explicit opt-in access to soft-deleted data without polluting the global filter logic. Last-write-wins provides predictable conflict resolution for cross-device synchronization. UUID version 7 produces time-ordered identifiers that improve database index locality, reduce page splits, and enable natural chronological sorting without additional timestamp columns.
 
 ### VI. API Design & Versioning
 
@@ -100,4 +104,4 @@ No additional NuGet packages or libraries added without explicit approval. Alway
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 2.2.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-18
+**Version**: 2.4.1 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-19

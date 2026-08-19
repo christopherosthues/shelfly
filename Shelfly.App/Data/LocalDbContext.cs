@@ -16,6 +16,11 @@ public partial class LocalDbContext : DbContext
         optionsBuilder.UseSqlite($"Data Source={DatabasePath}");
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<BookEntity>().HasQueryFilter(book => book.DeletedAt == null);
+    }
+
     public async Task EnsureDatabaseCreatedAsync(CancellationToken cancellationToken = default)
     {
         await Database.MigrateAsync(cancellationToken);

@@ -24,20 +24,14 @@ public partial class BookListViewModel(LibraryService libraryService) : ShelflyV
     [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
 
-    public List<SortCriterion> SortOptions { get; } =
-    [
-        SortCriterion.Title,
-        SortCriterion.Author,
-        SortCriterion.Publisher,
-        SortCriterion.PublishDate
-    ];
+    public List<SortCriterion> SortOptions { get; } = [.. Enum.GetValues(typeof(SortCriterion)).Cast<SortCriterion>()];
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await libraryService.SortBooksAsync(SortCriterion.Title,cancellationToken);
+            List<BookEntity> books = await libraryService.SortBooksAsync(SortCriterion.Title, cancellationToken);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally
