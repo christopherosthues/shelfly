@@ -12,6 +12,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem
+            SemanticProperties.Description="Add new book"
             Text="{x:Static resx:AppResources.BookListPageAddBookButtonText}"
             Command="{Binding NavigateToAddBookCommand}" />
     </ContentPage.ToolbarItems>
@@ -21,17 +22,20 @@
         <SearchBar
             Grid.Row="0"
             Margin="8"
+            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
             Placeholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
             Text="{Binding SearchQuery}" />
 
         <!-- Book List -->
         <CollectionView
             Grid.Row="1"
+            SemanticProperties.Description="Book list"
             ItemsSource="{Binding Books}">
 
             <CollectionView.EmptyView>
                 <Label
                     HorizontalOptions="Center"
+                    SemanticProperties.Description="No books found"
                     Text="{x:Static resx:AppResources.BookListPageEmptyStateMessage}" />
             </CollectionView.EmptyView>
 
@@ -49,7 +53,8 @@
                         <Grid
                             Padding="12"
                             ColumnDefinitions="*"
-                            RowDefinitions="Auto, Auto, Auto">
+                            RowDefinitions="Auto, Auto, Auto"
+                            SemanticProperties.Description="Book entry: {Binding Title} by {Binding Author}, published by {Binding Publisher}. Tap to edit book. Swipe right to delete.">
 
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer
@@ -88,6 +93,7 @@
         <Picker
             Grid.Row="2"
             Margin="8"
+            SemanticProperties.Description="Sort books by"
             Title="Sort by"
             ItemsSource="{Binding SortOptions}"
             SelectedItem="{Binding SortCriterion}" />

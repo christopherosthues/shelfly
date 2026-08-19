@@ -12,7 +12,8 @@
     Title="{x:Static local:AppResources.BookDetailPageTitle}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:AppResources.BookDetailPageDeleteBookButtonText}"
+        <ToolbarItem SemanticProperties.Description="Soft delete book and all bookmarks"
+                     Text="{x:Static local:AppResources.BookDetailPageDeleteBookButtonText}"
                      Command="{Binding DeleteBookCommand}" />
     </ContentPage.ToolbarItems>
 
@@ -25,19 +26,19 @@
                                WidthRequest="40" />
 
             <VerticalStackLayout IsVisible="{Binding Book, Converter={toolkit:IsNotNullConverter}}" Spacing="8">
-                <Label x:Name="TitleLabel" Text="{Binding Book.Title}" FontSize="24" FontAttributes="Bold" />
-                <Label x:Name="AuthorLabel" Text="{Binding Book.Author}" FontSize="16" />
-                <Label x:Name="ISBNLabel" Text="{Binding Book.ISBN}" FontSize="14" Opacity="0.7" />
-                <Label x:Name="PublisherLabel" Text="{Binding Book.Publisher}" FontSize="14" />
-                <Label x:Name="PublishDateLabel" Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}" FontSize="14" IsVisible="{Binding Book.PublishDate}" />
+                <Label x:Name="TitleLabel" SemanticProperties.Description="Book title" Text="{Binding Book.Title}" FontSize="24" FontAttributes="Bold" />
+                <Label x:Name="AuthorLabel" SemanticProperties.Description="Book author" Text="{Binding Book.Author}" FontSize="16" />
+                <Label x:Name="ISBNLabel" SemanticProperties.Description="International Standard Book Number" Text="{Binding Book.ISBN}" FontSize="14" Opacity="0.7" />
+                <Label x:Name="PublisherLabel" SemanticProperties.Description="Book publisher" Text="{Binding Book.Publisher}" FontSize="14" />
+                <Label x:Name="PublishDateLabel" SemanticProperties.Description="Publication date" Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}" FontSize="14" IsVisible="{Binding Book.PublishDate}" />
             </VerticalStackLayout>
 
-            <Label x:Name="BookmarksTitleLabel" Text="{x:Static local:AppResources.BookDetailPageBookmarksTitle}"
+            <Label x:Name="BookmarksTitleLabel" SemanticProperties.Description="Bookmarks section" Text="{x:Static local:AppResources.BookDetailPageBookmarksTitle}"
                     FontSize="20"
                     FontAttributes="Bold"
                     Margin="0,16,0,8" />
 
-            <CollectionView ItemsSource="{Binding Bookmarks}">
+            <CollectionView SemanticProperties.Description="Bookmark list" ItemsSource="{Binding Bookmarks}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:BookmarkEntity">
                         <SwipeView>
@@ -48,7 +49,8 @@
                                            CommandParameter="{Binding}" />
                             </SwipeView.RightItems>
 
-                            <Grid ColumnDefinitions="*, Auto, Auto" Padding="8">
+                            <Grid ColumnDefinitions="*, Auto, Auto" Padding="8"
+                                  SemanticProperties.Description="Bookmark on page {Binding StartPage} to {Binding EndPage}. Swipe right to delete. Tap note icon to view note content. Tap edit icon to modify bookmark.">
                                 <Label Grid.Column="0"
                                         Text="{Binding StartPage, StringFormat='Page {0}'}"
                                         VerticalOptions="Center" />
@@ -59,6 +61,7 @@
                                         IsVisible="{Binding EndPage}" />
 
                                 <ImageButton Grid.Column="1"
+                                              SemanticProperties.Description="View bookmark note"
                                               Source="note_icon.png"
                                               WidthRequest="24"
                                               HeightRequest="24"
@@ -68,6 +71,7 @@
                                               CommandParameter="{Binding Note}" />
 
                                 <ImageButton Grid.Column="2"
+                                              SemanticProperties.Description="Edit bookmark"
                                               Source="edit_icon.png"
                                               WidthRequest="24"
                                               HeightRequest="24"
@@ -80,7 +84,8 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Button Text="{x:Static local:AppResources.BookDetailPageAddBookmarkButtonText}"
+            <Button SemanticProperties.Description="Add new bookmark to this book"
+                    Text="{x:Static local:AppResources.BookDetailPageAddBookmarkButtonText}"
                     Command="{Binding AddBookmarkCommand}"
                     Margin="0,16,0,0" />
         </VerticalStackLayout>

@@ -11,36 +11,39 @@
 
     <ScrollView>
         <VerticalStackLayout Spacing="16" Padding="16">
-            <Entry x:Name="StartPageEntry" Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
-                   Text="{Binding StartPage, Mode=TwoWay, StringFormat='{0}'}"
-                   Keyboard="Numeric" />
+            <Entry x:Name="StartPageEntry" SemanticProperties.Description="Starting page number" Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
+                    Text="{Binding StartPage, Mode=TwoWay, StringFormat='{0}'}"
+                    Keyboard="Numeric" />
 
             <Label Text="{Binding StartPageError}"
+                   SemanticProperties.Description="Starting page validation error"
                    TextColor="Red"
-                   FontSize="12"
-                   IsVisible="{Binding StartPageError}" />
+                    FontSize="12"
+                    IsVisible="{Binding StartPageError}" />
 
-            <Entry x:Name="EndPageEntry" Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
-                   Text="{Binding EndPage, Mode=TwoWay, StringFormat='{0}'}"
-                   Keyboard="Numeric" />
+            <Entry x:Name="EndPageEntry" SemanticProperties.Description="Ending page number (optional)" Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
+                    Text="{Binding EndPage, Mode=TwoWay, StringFormat='{0}'}"
+                    Keyboard="Numeric" />
 
             <Label Text="{Binding EndPageError}"
-                  TextColor="Red"
-                   FontSize="12"
-                   IsVisible="{Binding EndPageError}" />
+                   SemanticProperties.Description="Ending page validation error"
+                   TextColor="Red"
+                    FontSize="12"
+                    IsVisible="{Binding EndPageError}" />
 
-            <Editor x:Name="NoteEditor" Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
-                    Text="{Binding Note, Mode=TwoWay}"
-                    HeightRequest="100" />
+            <Editor x:Name="NoteEditor" SemanticProperties.Description="Bookmark note (maximum 1000 characters)" Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
+                     Text="{Binding Note, Mode=TwoWay}"
+                     HeightRequest="100" />
 
             <Label Text="{Binding NoteError}"
-                  TextColor="Red"
-                   FontSize="12"
-                   IsVisible="{Binding NoteError}" />
+                   SemanticProperties.Description="Note validation error"
+                   TextColor="Red"
+                    FontSize="12"
+                    IsVisible="{Binding NoteError}" />
 
-            <Button x:Name="SaveButton" Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
-                    Command="{Binding SaveCommand}"
-                    Margin="0,16,0,0" />
+            <Button x:Name="SaveButton" SemanticProperties.Description="Save bookmark changes" Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
+                     Command="{Binding SaveCommand}"
+                     Margin="0,16,0,0" />
         </VerticalStackLayout>
     </ScrollView>
 </pages:ShelflyContentPageBase>
