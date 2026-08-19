@@ -180,4 +180,67 @@
     <data name="BookmarkEditPageNoteMaxLengthError" xml:space="preserve">
         <value>Notiz überschreitet maximale Länge von 1000 Zeichen</value>
     </data>
+    <data name="BookListPageAddNewBookDescription" xml:space="preserve">
+        <value>Neues Buch hinzufügen</value>
+    </data>
+    <data name="BookListPageBookListDescription" xml:space="preserve">
+        <value>Buchliste</value>
+    </data>
+    <data name="BookListPageNoBooksFoundDescription" xml:space="preserve">
+        <value>Keine Bücher gefunden</value>
+    </data>
+    <data name="BookListPageSortBooksByDescription" xml:space="preserve">
+        <value>Bücher sortieren nach</value>
+    </data>
+    <data name="BookDetailPageSoftDeleteBookDescription" xml:space="preserve">
+        <value>Buch und alle Lesezeichen weich löschen</value>
+    </data>
+    <data name="BookDetailPageBookTitleDescription" xml:space="preserve">
+        <value>Buchtitel</value>
+    </data>
+    <data name="BookDetailPageBookAuthorDescription" xml:space="preserve">
+        <value>Buchautor</value>
+    </data>
+    <data name="BookDetailPageISBNDescription" xml:space="preserve">
+        <value>Internationale Standard-Buchnummer</value>
+    </data>
+    <data name="BookDetailPageBookPublisherDescription" xml:space="preserve">
+        <value>Buchverlag</value>
+    </data>
+    <data name="BookDetailPagePublicationDateDescription" xml:space="preserve">
+        <value>Erscheinungsdatum</value>
+    </data>
+    <data name="BookDetailPageBookmarksSectionDescription" xml:space="preserve">
+        <value>Lesezeichenbereich</value>
+    </data>
+    <data name="BookDetailPageBookmarkListDescription" xml:space="preserve">
+        <value>Lesezeichenliste</value>
+    </data>
+    <data name="BookDetailPageViewNoteDescription" xml:space="preserve">
+        <value>Notiz anzeigen</value>
+    </data>
+    <data name="BookDetailPageEditBookmarkDescription" xml:space="preserve">
+        <value>Lesezeichen bearbeiten</value>
+    </data>
+    <data name="BookDetailPageAddNewBookmarkDescription" xml:space="preserve">
+        <value>Neues Lesezeichen zu diesem Buch hinzufügen</value>
+    </data>
+    <data name="BookmarkEditPageStartingPageDescription" xml:space="preserve">
+        <value>Startseitennummer</value>
+    </data>
+    <data name="BookmarkEditPageEndingPageDescription" xml:space="preserve">
+        <value>Endseitennummer (optional)</value>
+    </data>
+    <data name="BookmarkEditPageNoteFieldDescription" xml:space="preserve">
+        <value>Lesezeichennote (maximal 1000 Zeichen)</value>
+    </data>
+    <data name="BookListPageBookEntryDescription" xml:space="preserve">
+        <value>Bucheintrag. Tippen zum Bearbeiten. Nach links wischen zum Löschen.</value>
+    </data>
+    <data name="BookDetailPageBookmarkEntryDescription" xml:space="preserve">
+        <value>Lesezeicheneintrag. Nach links wischen zum Löschen. Notizsymbol tippen, um Notizinhalt anzuzeigen. Bearbeitungssymbol tippen, um Lesezeichen zu ändern.</value>
+    </data>
+    <data name="BookmarkEditPageSaveChangesDescription" xml:space="preserve">
+        <value>Lesezeichenänderungen speichern</value>
+    </data>
 </root>

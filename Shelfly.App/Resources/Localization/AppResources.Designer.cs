@@ -69,6 +69,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new bookmark to this book.
+        /// </summary>
+        internal static string BookDetailPageAddNewBookmarkDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageAddNewBookmarkDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Author.
         /// </summary>
         internal static string BookDetailPageAuthorLabel {
@@ -78,11 +87,65 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Book author.
+        /// </summary>
+        internal static string BookDetailPageBookAuthorDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookAuthorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmark entry. Swipe left to delete. Tap note icon to view note content. Tap edit icon to modify bookmark..
+        /// </summary>
+        internal static string BookDetailPageBookmarkEntryDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookmarkEntryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmark list.
+        /// </summary>
+        internal static string BookDetailPageBookmarkListDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookmarkListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmarks section.
+        /// </summary>
+        internal static string BookDetailPageBookmarksSectionDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookmarksSectionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bookmarks.
         /// </summary>
         internal static string BookDetailPageBookmarksTitle {
             get {
                 return ResourceManager.GetString("BookDetailPageBookmarksTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Book publisher.
+        /// </summary>
+        internal static string BookDetailPageBookPublisherDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookPublisherDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Book title.
+        /// </summary>
+        internal static string BookDetailPageBookTitleDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookTitleDescription", resourceCulture);
             }
         }
         
@@ -114,6 +177,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit bookmark.
+        /// </summary>
+        internal static string BookDetailPageEditBookmarkDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageEditBookmarkDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to International Standard Book Number.
+        /// </summary>
+        internal static string BookDetailPageISBNDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageISBNDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ISBN.
         /// </summary>
         internal static string BookDetailPageISBNLabel {
@@ -128,6 +209,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookDetailPageNoteIndicatorTooltip {
             get {
                 return ResourceManager.GetString("BookDetailPageNoteIndicatorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publication date.
+        /// </summary>
+        internal static string BookDetailPagePublicationDateDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPagePublicationDateDescription", resourceCulture);
             }
         }
         
@@ -150,11 +240,29 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Soft delete book and all bookmarks.
+        /// </summary>
+        internal static string BookDetailPageSoftDeleteBookDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageSoftDeleteBookDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Book Details.
         /// </summary>
         internal static string BookDetailPageTitle {
             get {
                 return ResourceManager.GetString("BookDetailPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View bookmark note.
+        /// </summary>
+        internal static string BookDetailPageViewNoteDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageViewNoteDescription", resourceCulture);
             }
         }
         
@@ -312,6 +420,33 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new book.
+        /// </summary>
+        internal static string BookListPageAddNewBookDescription {
+            get {
+                return ResourceManager.GetString("BookListPageAddNewBookDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Book entry. Tap to edit book. Swipe left to delete..
+        /// </summary>
+        internal static string BookListPageBookEntryDescription {
+            get {
+                return ResourceManager.GetString("BookListPageBookEntryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Book list.
+        /// </summary>
+        internal static string BookListPageBookListDescription {
+            get {
+                return ResourceManager.GetString("BookListPageBookListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No books yet. Tap + to add your first book..
         /// </summary>
         internal static string BookListPageEmptyStateMessage {
@@ -321,11 +456,29 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No books found.
+        /// </summary>
+        internal static string BookListPageNoBooksFoundDescription {
+            get {
+                return ResourceManager.GetString("BookListPageNoBooksFoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search by title, author, publisher, or ISBN.
         /// </summary>
         internal static string BookListPageSearchPlaceholder {
             get {
                 return ResourceManager.GetString("BookListPageSearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort books by.
+        /// </summary>
+        internal static string BookListPageSortBooksByDescription {
+            get {
+                return ResourceManager.GetString("BookListPageSortBooksByDescription", resourceCulture);
             }
         }
         
@@ -384,6 +537,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ending page number (optional).
+        /// </summary>
+        internal static string BookmarkEditPageEndingPageDescription {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageEndingPageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Page (optional).
         /// </summary>
         internal static string BookmarkEditPageEndPageLabel {
@@ -398,6 +560,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageEndPageRangeError {
             get {
                 return ResourceManager.GetString("BookmarkEditPageEndPageRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmark note (maximum 1000 characters).
+        /// </summary>
+        internal static string BookmarkEditPageNoteFieldDescription {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageNoteFieldDescription", resourceCulture);
             }
         }
         
@@ -425,6 +596,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageSaveButtonText {
             get {
                 return ResourceManager.GetString("BookmarkEditPageSaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save bookmark changes.
+        /// </summary>
+        internal static string BookmarkEditPageSaveChangesDescription {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageSaveChangesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting page number.
+        /// </summary>
+        internal static string BookmarkEditPageStartingPageDescription {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageStartingPageDescription", resourceCulture);
             }
         }
         

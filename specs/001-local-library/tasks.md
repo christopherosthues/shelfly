@@ -75,7 +75,7 @@ description: "Task list template for feature implementation"
 - [X] T021 [US1] Create BookListPage XAML in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` with CollectionView displaying book title, author, publisher; empty state view; search bar; sort selector; SwipeView for soft deletion gesture (mobile) and platform-native drag/swipe equivalent (desktop)
 - [X] T022 [US1] Implement swipe-to-delete logic in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs` that sets DeletedAt on the swiped book via LibraryService, removes it from visible list within 200ms with visual feedback (SC-005)
 - [X] T023 [US1] Implement platform-specific swipe gesture handlers in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs`: use SwipeView for Android/iOS; implement drag/swipe equivalent via pointer/touch events on Windows/MacOS desktop platforms; unify visual feedback across all platforms per FR-022
-- [X] T024 [US1] Add accessibility semantic properties to `Shelfly.App/Features/Library/Pages/BookListPage.xaml` for screen reader support on list items, search bar, and sort controls (XAML only, no code behind)
+- [X] T024 [US1] Add accessibility semantic properties to `Shelfly.App/Features/Library/Pages/BookListPage.xaml` for screen reader support on list items, search bar, and sort controls (XAML only, no code behind) — localized via `{x:Static resx:AppResources.*Description}` bindings
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -117,7 +117,7 @@ description: "Task list template for feature implementation"
 - [X] T037 [US3] Implement BookmarkEditViewModel in `Shelfly.App/Features/BookmarkEditor/ViewModels/BookmarkEditViewModel.cs` with ObservableProperty for StartPage, EndPage?, Note?; inline validation errors (end page ≥ start page per FR-023, note max 1000 chars per FR-021); RelayCommand for save action
 - [X] T038 [US3] Create BookmarkEditPage XAML in `Shelfly.App/Features/BookmarkEditor/Pages/BookmarkEditPage.xaml` with fields for start page (positive int), end page (optional, ≥ start page), note text (max 1000 chars); inline validation error display on each field
 - [X] T039 [US3] Implement note indicator icon interaction in `Shelfly.App/Features/Library/Pages/BookDetailPage.xaml.cs` — clicking the note indicator displays associated note content to user (FR-020)
-- [X] T040 [US3] Add accessibility semantic properties to `Shelfly.App/Features/Library/Pages/BookDetailPage.xaml` and `Shelfly.App/Features/BookmarkEditor/Pages/BookmarkEditPage.xaml` for screen reader support (XAML only, no code behind)
+- [X] T040 [US3] Add accessibility semantic properties to `Shelfly.App/Features/Library/Pages/BookDetailPage.xaml` and `Shelfly.App/Features/BookmarkEditor/Pages/BookmarkEditPage.xaml` for screen reader support (XAML only, no code behind) — localized via `{x:Static localization:AppResources.*Description}` bindings
 
 **Checkpoint**: All user stories should now be independently functional
 

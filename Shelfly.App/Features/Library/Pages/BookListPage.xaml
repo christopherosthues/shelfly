@@ -12,7 +12,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem
-            SemanticProperties.Description="Add new book"
+            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageAddNewBookDescription}"
             Text="{x:Static resx:AppResources.BookListPageAddBookButtonText}"
             Command="{Binding NavigateToAddBookCommand}" />
     </ContentPage.ToolbarItems>
@@ -29,13 +29,13 @@
         <!-- Book List -->
         <CollectionView
             Grid.Row="1"
-            SemanticProperties.Description="Book list"
+            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookListDescription}"
             ItemsSource="{Binding Books}">
 
             <CollectionView.EmptyView>
                 <Label
                     HorizontalOptions="Center"
-                    SemanticProperties.Description="No books found"
+                    SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}"
                     Text="{x:Static resx:AppResources.BookListPageEmptyStateMessage}" />
             </CollectionView.EmptyView>
 
@@ -54,7 +54,7 @@
                             Padding="12"
                             ColumnDefinitions="*"
                             RowDefinitions="Auto, Auto, Auto"
-                            SemanticProperties.Description="Book entry: {Binding Title} by {Binding Author}, published by {Binding Publisher}. Tap to edit book. Swipe right to delete.">
+                            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}">
 
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer
@@ -93,7 +93,7 @@
         <Picker
             Grid.Row="2"
             Margin="8"
-            SemanticProperties.Description="Sort books by"
+            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
             Title="Sort by"
             ItemsSource="{Binding SortOptions}"
             SelectedItem="{Binding SortCriterion}" />

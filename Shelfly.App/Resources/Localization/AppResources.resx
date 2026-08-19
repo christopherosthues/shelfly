@@ -180,4 +180,67 @@
     <data name="BookmarkEditPageNoteMaxLengthError" xml:space="preserve">
         <value>Note exceeds maximum length of 1000 characters</value>
     </data>
+    <data name="BookListPageAddNewBookDescription" xml:space="preserve">
+        <value>Add new book</value>
+    </data>
+    <data name="BookListPageBookListDescription" xml:space="preserve">
+        <value>Book list</value>
+    </data>
+    <data name="BookListPageNoBooksFoundDescription" xml:space="preserve">
+        <value>No books found</value>
+    </data>
+    <data name="BookListPageSortBooksByDescription" xml:space="preserve">
+        <value>Sort books by</value>
+    </data>
+    <data name="BookDetailPageSoftDeleteBookDescription" xml:space="preserve">
+        <value>Soft delete book and all bookmarks</value>
+    </data>
+    <data name="BookDetailPageBookTitleDescription" xml:space="preserve">
+        <value>Book title</value>
+    </data>
+    <data name="BookDetailPageBookAuthorDescription" xml:space="preserve">
+        <value>Book author</value>
+    </data>
+    <data name="BookDetailPageISBNDescription" xml:space="preserve">
+        <value>International Standard Book Number</value>
+    </data>
+    <data name="BookDetailPageBookPublisherDescription" xml:space="preserve">
+        <value>Book publisher</value>
+    </data>
+    <data name="BookDetailPagePublicationDateDescription" xml:space="preserve">
+        <value>Publication date</value>
+    </data>
+    <data name="BookDetailPageBookmarksSectionDescription" xml:space="preserve">
+        <value>Bookmarks section</value>
+    </data>
+    <data name="BookDetailPageBookmarkListDescription" xml:space="preserve">
+        <value>Bookmark list</value>
+    </data>
+    <data name="BookDetailPageViewNoteDescription" xml:space="preserve">
+        <value>View bookmark note</value>
+    </data>
+    <data name="BookDetailPageEditBookmarkDescription" xml:space="preserve">
+        <value>Edit bookmark</value>
+    </data>
+    <data name="BookDetailPageAddNewBookmarkDescription" xml:space="preserve">
+        <value>Add new bookmark to this book</value>
+    </data>
+    <data name="BookmarkEditPageStartingPageDescription" xml:space="preserve">
+        <value>Starting page number</value>
+    </data>
+    <data name="BookmarkEditPageEndingPageDescription" xml:space="preserve">
+        <value>Ending page number (optional)</value>
+    </data>
+    <data name="BookmarkEditPageNoteFieldDescription" xml:space="preserve">
+        <value>Bookmark note (maximum 1000 characters)</value>
+    </data>
+    <data name="BookListPageBookEntryDescription" xml:space="preserve">
+        <value>Book entry. Tap to edit book. Swipe left to delete.</value>
+    </data>
+    <data name="BookDetailPageBookmarkEntryDescription" xml:space="preserve">
+        <value>Bookmark entry. Swipe left to delete. Tap note icon to view note content. Tap edit icon to modify bookmark.</value>
+    </data>
+    <data name="BookmarkEditPageSaveChangesDescription" xml:space="preserve">
+        <value>Save bookmark changes</value>
+    </data>
 </root>
