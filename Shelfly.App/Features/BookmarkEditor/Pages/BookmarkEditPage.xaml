@@ -11,37 +11,34 @@
 
     <ScrollView>
         <VerticalStackLayout Spacing="16" Padding="16">
-            <Entry Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
+            <Entry x:Name="StartPageEntry" Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
                    Text="{Binding StartPage, Mode=TwoWay, StringFormat='{0}'}"
-                   Keyboard="Numeric"
-                   SemanticProperties.HeadingLevel="2" />
+                   Keyboard="Numeric" />
 
             <Label Text="{Binding StartPageError}"
                    TextColor="Red"
                    FontSize="12"
                    IsVisible="{Binding StartPageError}" />
 
-            <Entry Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
+            <Entry x:Name="EndPageEntry" Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
                    Text="{Binding EndPage, Mode=TwoWay, StringFormat='{0}'}"
-                   Keyboard="Numeric"
-                   SemanticProperties.HeadingLevel="2" />
+                   Keyboard="Numeric" />
 
             <Label Text="{Binding EndPageError}"
                   TextColor="Red"
                    FontSize="12"
                    IsVisible="{Binding EndPageError}" />
 
-            <Editor Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
+            <Editor x:Name="NoteEditor" Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
                     Text="{Binding Note, Mode=TwoWay}"
-                    HeightRequest="100"
-                    SemanticProperties.HeadingLevel="2" />
+                    HeightRequest="100" />
 
             <Label Text="{Binding NoteError}"
                   TextColor="Red"
                    FontSize="12"
                    IsVisible="{Binding NoteError}" />
 
-            <Button Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
+            <Button x:Name="SaveButton" Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
                     Command="{Binding SaveCommand}"
                     Margin="0,16,0,0" />
         </VerticalStackLayout>

@@ -24,7 +24,7 @@ public partial class BookListViewModel(LibraryService libraryService) : ShelflyV
     [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
 
-    public List<SortCriterion> SortOptions { get; } = [.. Enum.GetValues(typeof(SortCriterion)).Cast<SortCriterion>()];
+    public List<SortCriterion> SortOptions { get; } = [.. Enum.GetValues<SortCriterion>()];
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
