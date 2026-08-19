@@ -148,5 +148,77 @@ namespace Shelfly.App.Resources.Localization {
                 return ResourceManager.GetString("RegistrationPageUserNamePlaceholder", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No books yet. Start adding your library!.
+        /// </summary>
+        internal static string BookListPageEmptyStateMessage {
+            get {
+                return ResourceManager.GetString("BookListPageEmptyStateMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Search by title, author, publisher or ISBN.
+        /// </summary>
+        internal static string BookListPageSearchPlaceholder {
+            get {
+                return ResourceManager.GetString("BookListPageSearchPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sort by Title.
+        /// </summary>
+        internal static string BookListPageSortByTitle {
+            get {
+                return ResourceManager.GetString("BookListPageSortByTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sort by Author.
+        /// </summary>
+        internal static string BookListPageSortByAuthor {
+            get {
+                return ResourceManager.GetString("BookListPageSortByAuthor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sort by Publisher.
+        /// </summary>
+        internal static string BookListPageSortByPublisher {
+            get {
+                return ResourceManager.GetString("BookListPageSortByPublisher", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sort by Publish Date.
+        /// </summary>
+        internal static string BookListPageSortByPublishDate {
+            get {
+                return ResourceManager.GetString("BookListPageSortByPublishDate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add Book.
+        /// </summary>
+        internal static string BookListPageAddBookButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageAddBookButtonText", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string BookListPageSwipeToDeleteCommand {
+            get {
+                return ResourceManager.GetString("BookListPageSwipeToDeleteCommand", resourceCulture);
+            }
+        }
     }
 }

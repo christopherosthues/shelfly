@@ -7,6 +7,7 @@ using Shelfly.App.Features.BookEditor.ViewModels;
 using Shelfly.App.Features.BookmarkEditor.Pages;
 using Shelfly.App.Features.BookmarkEditor.ViewModels;
 using Shelfly.App.Features.Library.Pages;
+using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Features.Library.ViewModels;
 
 namespace Shelfly.App;
@@ -16,7 +17,7 @@ public static class MauiProgram
 
     public static MauiApp CreateMauiApp()
     {
-        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nlog.config");
+        string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nlog.config");
         if (File.Exists(configPath))
         {
             LogManager.Setup().LoadConfigurationFromFile(configPath);
@@ -38,8 +39,9 @@ public static class MauiProgram
         builder.Logging.ClearProviders().AddNLog();
 #endif
 
-        builder.Services.AddSingleton<LocalDbContext>();
+        builder.Services.AddDbContext<LocalDbContext>();
         builder.Services.AddSingleton<AuditTimestampInterceptor>();
+        builder.Services.AddScoped<LibraryService>();
 
         builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>(Routes.BookListPage);
         builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>(Routes.BookEditPage);

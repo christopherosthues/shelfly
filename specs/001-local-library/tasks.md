@@ -67,15 +67,15 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Create English localization resource file in `Shelfly.App/Resources/Strings/en-US/AppResources.resx` with strings for book list UI (empty state message, search placeholder, sort options)
-- [ ] T017 [P] [US1] Create German localization resource file in `Shelfly.App/Resources/Strings/de-DE/AppResources.resx` with corresponding translations for all book list UI strings
-- [ ] T018 [P] [US1] Implement LibraryService in `Shelfly.App/Features/Library/Services/LibraryService.cs` with methods: GetAllBooks (filtered by DeletedAt == null), SearchBooks (case-insensitive substring match on Title, Author, Publisher, ISBN), SortBooks (by title, author, publisher, publish date)
-- [ ] T019 [US1] Implement BookListViewModel in `Shelfly.App/Features/Library/ViewModels/BookListViewModel.cs` with ObservableProperty for book list, search query, sort criterion, RelayCommand for search/sort actions, and loading state management (FR-032)
-- [ ] T020 [US1] Add debounced search input handler in `Shelfly.App/Features/Library/ViewModels/BookListViewModel.cs` using CommunityToolkit.Maui debounce extension (≤500ms delay) to meet SC-002 performance target; ensure SearchBooks method executes only after debounce completes
-- [ ] T021 [US1] Create BookListPage XAML in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` with CollectionView displaying book title, author, publisher; empty state view; search bar; sort selector; SwipeView for soft deletion gesture (mobile) and platform-native drag/swipe equivalent (desktop)
-- [ ] T022 [US1] Implement swipe-to-delete logic in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs` that sets DeletedAt on the swiped book via LibraryService, removes it from visible list within 200ms with visual feedback (SC-005)
-- [ ] T023 [US1] Implement platform-specific swipe gesture handlers in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs`: use SwipeView for Android/iOS; implement drag/swipe equivalent via pointer/touch events on Windows/MacOS desktop platforms; unify visual feedback across all platforms per FR-022
-- [ ] T024 [US1] Add accessibility semantic properties to `Shelfly.App/Features/Library/Pages/BookListPage.xaml` for screen reader support on list items, search bar, and sort controls
+- [X] T016 [P] [US1] Create English localization resource file in `Shelfly.App/Resources/Strings/en-US/AppResources.resx` with strings for book list UI (empty state message, search placeholder, sort options)
+- [X] T017 [P] [US1] Create German localization resource file in `Shelfly.App/Resources/Strings/de-DE/AppResources.resx` with corresponding translations for all book list UI strings
+- [X] T018 [P] [US1] Implement LibraryService in `Shelfly.App/Features/Library/Services/LibraryService.cs` with methods: GetAllBooks (filtered by DeletedAt == null), SearchBooks (case-insensitive substring match on Title, Author, Publisher, ISBN), SortBooks (by title, author, publisher, publish date)
+- [X] T019 [US1] Implement BookListViewModel in `Shelfly.App/Features/Library/ViewModels/BookListViewModel.cs` with ObservableProperty for book list, search query, sort criterion, RelayCommand for search/sort actions, and loading state management (FR-032)
+- [X] T020 [US1] Add debounced search input handler in `Shelfly.App/Features/Library/ViewModels/BookListViewModel.cs` using CommunityToolkit.Maui debounce extension (≤500ms delay) to meet SC-002 performance target; ensure SearchBooks method executes only after debounce completes
+- [X] T021 [US1] Create BookListPage XAML in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` with CollectionView displaying book title, author, publisher; empty state view; search bar; sort selector; SwipeView for soft deletion gesture (mobile) and platform-native drag/swipe equivalent (desktop)
+- [X] T022 [US1] Implement swipe-to-delete logic in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs` that sets DeletedAt on the swiped book via LibraryService, removes it from visible list within 200ms with visual feedback (SC-005)
+- [X] T023 [US1] Implement platform-specific swipe gesture handlers in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs`: use SwipeView for Android/iOS; implement drag/swipe equivalent via pointer/touch events on Windows/MacOS desktop platforms; unify visual feedback across all platforms per FR-022
+- [X] T024 [US1] Add accessibility semantic properties to `Shelfly.App/Features/Library/Pages/BookListPage.xaml` for screen reader support on list items, search bar, and sort controls
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

@@ -48,4 +48,28 @@
     <data name="LoginPageLoginButtonText" xml:space="preserve">
         <value>Registrieren</value>
     </data>
+    <data name="BookListPageEmptyStateMessage" xml:space="preserve">
+        <value>Noch keine Bücher. Tippe auf +, um dein erstes Buch hinzuzufügen.</value>
+    </data>
+    <data name="BookListPageSearchPlaceholder" xml:space="preserve">
+        <value>Nach Titel, Autor, Verlag oder ISBN suchen</value>
+    </data>
+    <data name="BookListPageSortByTitle" xml:space="preserve">
+        <value>Titel</value>
+    </data>
+    <data name="BookListPageSortByAuthor" xml:space="preserve">
+        <value>Autor</value>
+    </data>
+    <data name="BookListPageSortByPublisher" xml:space="preserve">
+        <value>Verlag</value>
+    </data>
+    <data name="BookListPageSortByPublishDate" xml:space="preserve">
+        <value>Erscheinungsdatum</value>
+    </data>
+    <data name="BookListPageAddBookButtonText" xml:space="preserve">
+        <value>Buch hinzufügen</value>
+    </data>
+    <data name="BookListPageSwipeToDeleteCommand" xml:space="preserve">
+        <value>Löschen</value>
+    </data>
 </root>

@@ -3,6 +3,84 @@
     x:Class="Shelfly.App.Features.Library.Pages.BookListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Shelfly.App.Features.Library.ViewModels"
+    xmlns:model="clr-namespace:Shelfly.App.Data.Entities"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    x:DataType="local:BookListViewModel"
     Title="Books">
-    <CollectionView />
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+" Command="{Binding SortCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *, Auto">
+        <!-- Search Bar -->
+        <SearchBar
+            Grid.Row="0"
+            Margin="8"
+            Placeholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
+            Text="{Binding SearchQuery}" />
+
+        <!-- Book List -->
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding Books}">
+
+            <CollectionView.EmptyView>
+                <Label
+                    HorizontalOptions="Center"
+                    Text="{x:Static resx:AppResources.BookListPageEmptyStateMessage}" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:BookEntity">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                                BackgroundColor="Red"
+                                Text="{x:Static resx:AppResources.BookListPageSwipeToDeleteCommand}"
+                                Command="{Binding SoftDeleteCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                CommandParameter="{Binding Id}" />
+                        </SwipeView.RightItems>
+
+                        <Grid
+                            Padding="12"
+                            ColumnDefinitions="*"
+                            RowDefinitions="Auto, Auto, Auto">
+
+                            <Label
+                                Grid.Row="0"
+                                FontAttributes="Bold"
+                                Text="{Binding Title}" />
+
+                            <Label
+                                Grid.Row="1"
+                                Text="{Binding Author}" />
+
+                            <Label
+                                Grid.Row="2"
+                                Opacity="0.6"
+                                Text="{Binding Publisher}" />
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}" />
+
+        <!-- Sort Selector -->
+        <Picker
+            Grid.Row="2"
+            Margin="8"
+            Title="Sort by"
+            ItemsSource="{Binding SortOptions}"
+            SelectedItem="{Binding SortCriterion}" />
+    </Grid>
 </ContentPage>
