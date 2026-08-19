@@ -28,7 +28,7 @@ public abstract class ShelflyViewModelBase : ObservableObject
 
     protected abstract Task LoadAsync(CancellationToken cancellationToken);
 
-    public void OnNavigatingFrom()
+    public virtual void OnNavigatingFrom()
     {
         _lifetimeCts?.Cancel();
     }

@@ -217,6 +217,14 @@ public class LibraryService(LocalDbContext dbContext)
         return [.. bookmarks.OrderBy(b => b.StartPage).ThenBy(b => b.EndPage ?? int.MaxValue)];
     }
 
+    public async Task<BookmarkEntity?> GetBookmarkByIdAsync(Guid bookmarkId, CancellationToken cancellationToken = default)
+    {
+        BookmarkEntity? bookmark = await dbContext.Bookmarks
+            .FirstOrDefaultAsync(b => b.Id == bookmarkId, cancellationToken);
+
+        return bookmark;
+    }
+
     public async Task<Result<bool>> SoftDeleteBookWithBookmarksAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         BookEntity? book = await dbContext.Books

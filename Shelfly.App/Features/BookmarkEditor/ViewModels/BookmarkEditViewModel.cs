@@ -31,9 +31,22 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
     public Guid BookmarkId { get; set; } = Guid.Empty;
     public Guid BookId { get; set; }
 
-    protected override Task LoadAsync(CancellationToken cancellationToken)
+    protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (BookmarkId != Guid.Empty)
+        {
+            BookmarkEntity? bookmark = await libraryService.GetBookmarkByIdAsync(BookmarkId, cancellationToken);
+            if (bookmark is not null)
+            {
+                StartPage = bookmark.StartPage;
+                EndPage = bookmark.EndPage;
+                Note = bookmark.Note;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlertAsync("Bookmark not found", "Bookmark not found", "Ok");
+            }
+        }
     }
 
     partial void OnStartPageChanged(int value)
