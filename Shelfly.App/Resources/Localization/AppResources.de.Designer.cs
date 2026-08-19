@@ -60,6 +60,105 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lesezeichen hinzufügen.
+        /// </summary>
+        internal static string BookDetailPageAddBookmarkButtonText {
+            get {
+                return ResourceManager.GetString("BookDetailPageAddBookmarkButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Autor.
+        /// </summary>
+        internal static string BookDetailPageAuthorLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPageAuthorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lesezeichen.
+        /// </summary>
+        internal static string BookDetailPageBookmarksTitle {
+            get {
+                return ResourceManager.GetString("BookDetailPageBookmarksTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buch löschen.
+        /// </summary>
+        internal static string BookDetailPageDeleteBookButtonText {
+            get {
+                return ResourceManager.GetString("BookDetailPageDeleteBookButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Löschen.
+        /// </summary>
+        internal static string BookDetailPageDeleteBookmarkCommand {
+            get {
+                return ResourceManager.GetString("BookDetailPageDeleteBookmarkCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bearbeiten.
+        /// </summary>
+        internal static string BookDetailPageEditBookmarkButtonText {
+            get {
+                return ResourceManager.GetString("BookDetailPageEditBookmarkButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISBN.
+        /// </summary>
+        internal static string BookDetailPageISBNLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPageISBNLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notiz anzeigen.
+        /// </summary>
+        internal static string BookDetailPageNoteIndicatorTooltip {
+            get {
+                return ResourceManager.GetString("BookDetailPageNoteIndicatorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erscheinungsdatum.
+        /// </summary>
+        internal static string BookDetailPagePublishDateLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPagePublishDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verlag.
+        /// </summary>
+        internal static string BookDetailPagePublisherLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPagePublisherLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buchdetails.
+        /// </summary>
+        internal static string BookDetailPageTitle {
+            get {
+                return ResourceManager.GetString("BookDetailPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buch hinzufügen.
         /// </summary>
         internal static string BookEditPageAddTitle {
@@ -272,6 +371,87 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookListPageSwipeToDeleteCommand {
             get {
                 return ResourceManager.GetString("BookListPageSwipeToDeleteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lesezeichen hinzufügen.
+        /// </summary>
+        internal static string BookmarkEditPageAddTitle {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageAddTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endseite (optional).
+        /// </summary>
+        internal static string BookmarkEditPageEndPageLabel {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageEndPageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endseite muss größer oder gleich der Startseite sein.
+        /// </summary>
+        internal static string BookmarkEditPageEndPageRangeError {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageEndPageRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notiz.
+        /// </summary>
+        internal static string BookmarkEditPageNoteLabel {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageNoteLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notiz überschreitet maximale Länge von 1000 Zeichen.
+        /// </summary>
+        internal static string BookmarkEditPageNoteMaxLengthError {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageNoteMaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speichern.
+        /// </summary>
+        internal static string BookmarkEditPageSaveButtonText {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageSaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startseite muss eine positive Zahl sein.
+        /// </summary>
+        internal static string BookmarkEditPageStartPageEmptyError {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageStartPageEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startseite.
+        /// </summary>
+        internal static string BookmarkEditPageStartPageLabel {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageStartPageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lesezeichen bearbeiten.
+        /// </summary>
+        internal static string BookmarkEditPageTitle {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageTitle", resourceCulture);
             }
         }
         

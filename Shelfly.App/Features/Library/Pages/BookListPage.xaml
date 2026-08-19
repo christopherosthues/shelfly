@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<pages:ShelflyContentPageBase
     x:Class="Shelfly.App.Features.Library.Pages.BookListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Shelfly.App.Features.Library.ViewModels"
     xmlns:model="clr-namespace:Shelfly.App.Data.Entities"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
     x:DataType="local:BookListViewModel"
     Title="{x:Static resx:AppResources.BookListPageSortByTitle}">
 
@@ -91,4 +92,4 @@
             ItemsSource="{Binding SortOptions}"
             SelectedItem="{Binding SortCriterion}" />
     </Grid>
-</ContentPage>
+</pages:ShelflyContentPageBase>

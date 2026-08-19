@@ -1,9 +1,13 @@
+using Shelfly.App.Features.BookmarkEditor.ViewModels;
+using Shelfly.App.Pages;
+
 namespace Shelfly.App.Features.BookmarkEditor.Pages;
 
-public partial class BookmarkEditPage : ContentPage
+public partial class BookmarkEditPage : ShelflyContentPageBase
 {
-    public BookmarkEditPage()
+    public BookmarkEditPage(BookmarkEditViewModel viewModel)
     {
+        BindingContext = viewModel;
         InitializeComponent();
     }
 }

@@ -2,13 +2,14 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
+using Shelfly.App.Features.BookEditor.ViewModels;
 using Shelfly.App.Features.Library.Services;
+using Shelfly.App.ViewModels;
 
 namespace Shelfly.App.Features.Library.ViewModels;
 
-public partial class BookListViewModel : ObservableObject
+public partial class BookListViewModel(LibraryService libraryService) : ShelflyViewModelBase
 {
-    private readonly LibraryService _libraryService;
     private CancellationTokenSource? _debounceTokenSource;
 
     [ObservableProperty]
@@ -31,11 +32,18 @@ public partial class BookListViewModel : ObservableObject
         SortCriterion.PublishDate
     ];
 
-    public BookListViewModel(LibraryService libraryService)
+    protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        _libraryService = libraryService;
-
-        LoadBooksAsync().ContinueWith(_ => IsLoading = false, TaskContinuationOptions.OnlyOnRanToCompletion);
+        IsLoading = true;
+        try
+        {
+            List<BookEntity> books = await libraryService.SortBooksAsync(SortCriterion.Title,cancellationToken);
+            Books = new ObservableCollection<BookEntity>(books);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     [RelayCommand]
@@ -63,7 +71,7 @@ public partial class BookListViewModel : ObservableObject
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await _libraryService.SearchBooksAsync(query);
+            List<BookEntity> books = await libraryService.SearchBooksAsync(query);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally
@@ -82,7 +90,7 @@ public partial class BookListViewModel : ObservableObject
     [RelayCommand]
     private async Task SoftDeleteAsync(Guid bookId)
     {
-        BookEntity? book = await _libraryService.SoftDeleteBookAsync(bookId);
+        BookEntity? book = await libraryService.SoftDeleteBookAsync(bookId);
         if (book is not null)
         {
             Books.Remove(book);
@@ -92,27 +100,13 @@ public partial class BookListViewModel : ObservableObject
     [RelayCommand]
     private static async Task NavigateToAddBookAsync()
     {
-        await Shell.Current!.GoToAsync($"//{Routes.BookEditPage}");
+        await Shell.Current.GoToAsync(Routes.BookEditPage);
     }
 
     [RelayCommand]
     private static async Task NavigateToEditBookAsync(Guid bookId)
     {
-        await Shell.Current!.GoToAsync($"{Routes.BookEditPage}/{bookId}", new Dictionary<string, object> { ["bookId"] = bookId });
-    }
-
-    private async Task LoadBooksAsync()
-    {
-        IsLoading = true;
-        try
-        {
-            List<BookEntity> books = await _libraryService.SortBooksAsync(SortCriterion.Title);
-            Books = new ObservableCollection<BookEntity>(books);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        await Shell.Current.GoToAsync(Routes.BookEditPage, new Dictionary<string, object> { [nameof(BookEditViewModel.BookId)] = bookId });
     }
 
     private async Task RefreshBooksAsync()
@@ -120,7 +114,7 @@ public partial class BookListViewModel : ObservableObject
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await _libraryService.SortBooksAsync(SortCriterion);
+            List<BookEntity> books = await libraryService.SortBooksAsync(SortCriterion);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally

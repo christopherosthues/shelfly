@@ -117,6 +117,121 @@ public class LibraryService(LocalDbContext dbContext)
 
         return Result<BookEntity>.Success(book);
     }
+
+    public async Task<BookEntity?> GetBookByIdAsync(Guid bookId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Books
+            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+    }
+
+    public async Task<Result<BookmarkEntity>> AddBookmarkAsync(Guid bookId, int startPage, int? endPage, string? note, CancellationToken cancellationToken = default)
+    {
+        if (startPage <= 0)
+        {
+            return Result<BookmarkEntity>.Failure("Start page must be a positive number");
+        }
+
+        if (endPage.HasValue && endPage.Value < startPage)
+        {
+            return Result<BookmarkEntity>.Failure("End page must be greater than or equal to start page");
+        }
+
+        if (note is not null && note.Length > 1000)
+        {
+            return Result<BookmarkEntity>.Failure("Note exceeds maximum length of 1000 characters");
+        }
+
+        BookmarkEntity bookmark = new()
+        {
+            Id = IdGenerator.NewId(),
+            BookId = bookId,
+            StartPage = startPage,
+            EndPage = endPage,
+            Note = note,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        dbContext.Bookmarks.Add(bookmark);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<BookmarkEntity>.Success(bookmark);
+    }
+
+    public async Task<Result<BookmarkEntity>> UpdateBookmarkAsync(Guid bookmarkId, int startPage, int? endPage, string? note, CancellationToken cancellationToken = default)
+    {
+        BookmarkEntity? bookmark = await dbContext.Bookmarks
+            .FirstOrDefaultAsync(b => b.Id == bookmarkId, cancellationToken);
+
+        if (bookmark is null)
+        {
+            return Result<BookmarkEntity>.Failure("Bookmark not found");
+        }
+
+        if (startPage <= 0)
+        {
+            return Result<BookmarkEntity>.Failure("Start page must be a positive number");
+        }
+
+        if (endPage.HasValue && endPage.Value < startPage)
+        {
+            return Result<BookmarkEntity>.Failure("End page must be greater than or equal to start page");
+        }
+
+        if (note is not null && note.Length > 1000)
+        {
+            return Result<BookmarkEntity>.Failure("Note exceeds maximum length of 1000 characters");
+        }
+
+        bookmark.StartPage = startPage;
+        bookmark.EndPage = endPage;
+        bookmark.Note = note;
+        bookmark.LastModifiedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<BookmarkEntity>.Success(bookmark);
+    }
+
+    public async Task<Result<BookmarkEntity?>> DeleteBookmarkAsync(Guid bookmarkId, CancellationToken cancellationToken = default)
+    {
+        BookmarkEntity? bookmark = await dbContext.Bookmarks
+            .FirstOrDefaultAsync(b => b.Id == bookmarkId, cancellationToken);
+
+        if (bookmark is null)
+        {
+            return Result<BookmarkEntity?>.Failure("Bookmark not found");
+        }
+
+        dbContext.Bookmarks.Remove(bookmark);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<BookmarkEntity?>.Success(bookmark);
+    }
+
+    public async Task<List<BookmarkEntity>> GetBookmarksByBookIdAsync(Guid bookId, CancellationToken cancellationToken = default)
+    {
+        List<BookmarkEntity> bookmarks = await dbContext.Bookmarks
+            .Where(b => b.BookId == bookId)
+            .ToListAsync(cancellationToken);
+
+        return [.. bookmarks.OrderBy(b => b.StartPage).ThenBy(b => b.EndPage ?? int.MaxValue)];
+    }
+
+    public async Task<Result<bool>> SoftDeleteBookWithBookmarksAsync(Guid bookId, CancellationToken cancellationToken = default)
+    {
+        BookEntity? book = await dbContext.Books
+            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+
+        if (book is null)
+        {
+            return Result<bool>.Failure("Book not found");
+        }
+
+        book.DeletedAt = DateTime.UtcNow;
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<bool>.Success(true);
+    }
 }
 
 public enum SortCriterion

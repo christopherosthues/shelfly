@@ -120,4 +120,64 @@
     <data name="BookEditPagePublisherMaxLengthError" xml:space="preserve">
         <value>Verlag überschreitet maximale Länge von 256 Zeichen</value>
     </data>
+    <data name="BookDetailPageTitle" xml:space="preserve">
+        <value>Buchdetails</value>
+    </data>
+    <data name="BookDetailPageAuthorLabel" xml:space="preserve">
+        <value>Autor</value>
+    </data>
+    <data name="BookDetailPageISBNLabel" xml:space="preserve">
+        <value>ISBN</value>
+    </data>
+    <data name="BookDetailPagePublisherLabel" xml:space="preserve">
+        <value>Verlag</value>
+    </data>
+    <data name="BookDetailPagePublishDateLabel" xml:space="preserve">
+        <value>Erscheinungsdatum</value>
+    </data>
+    <data name="BookDetailPageBookmarksTitle" xml:space="preserve">
+        <value>Lesezeichen</value>
+    </data>
+    <data name="BookDetailPageAddBookmarkButtonText" xml:space="preserve">
+        <value>Lesezeichen hinzufügen</value>
+    </data>
+    <data name="BookDetailPageDeleteBookButtonText" xml:space="preserve">
+        <value>Buch löschen</value>
+    </data>
+    <data name="BookDetailPageEditBookmarkButtonText" xml:space="preserve">
+        <value>Bearbeiten</value>
+    </data>
+    <data name="BookDetailPageDeleteBookmarkCommand" xml:space="preserve">
+        <value>Löschen</value>
+    </data>
+    <data name="BookDetailPageNoteIndicatorTooltip" xml:space="preserve">
+        <value>Notiz anzeigen</value>
+    </data>
+    <data name="BookmarkEditPageTitle" xml:space="preserve">
+        <value>Lesezeichen bearbeiten</value>
+    </data>
+    <data name="BookmarkEditPageAddTitle" xml:space="preserve">
+        <value>Lesezeichen hinzufügen</value>
+    </data>
+    <data name="BookmarkEditPageStartPageLabel" xml:space="preserve">
+        <value>Startseite</value>
+    </data>
+    <data name="BookmarkEditPageEndPageLabel" xml:space="preserve">
+        <value>Endseite (optional)</value>
+    </data>
+    <data name="BookmarkEditPageNoteLabel" xml:space="preserve">
+        <value>Notiz</value>
+    </data>
+    <data name="BookmarkEditPageSaveButtonText" xml:space="preserve">
+        <value>Speichern</value>
+    </data>
+    <data name="BookmarkEditPageStartPageEmptyError" xml:space="preserve">
+        <value>Startseite muss eine positive Zahl sein</value>
+    </data>
+    <data name="BookmarkEditPageEndPageRangeError" xml:space="preserve">
+        <value>Endseite muss größer oder gleich der Startseite sein</value>
+    </data>
+    <data name="BookmarkEditPageNoteMaxLengthError" xml:space="preserve">
+        <value>Notiz überschreitet maximale Länge von 1000 Zeichen</value>
+    </data>
 </root>

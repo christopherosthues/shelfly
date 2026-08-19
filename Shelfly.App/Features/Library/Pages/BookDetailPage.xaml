@@ -1,8 +1,92 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<pages:ShelflyContentPageBase
     x:Class="Shelfly.App.Features.Library.Pages.BookDetailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Book Details">
-    <VerticalStackLayout />
-</ContentPage>
+    xmlns:local="using:Shelfly.App.Resources.Localization"
+    xmlns:viewModels="clr-namespace:Shelfly.App.Features.Library.ViewModels"
+    xmlns:model="clr-namespace:Shelfly.App.Data.Entities"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    x:DataType="viewModels:BookDetailViewModel"
+    Title="{x:Static local:AppResources.BookDetailPageTitle}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static local:AppResources.BookDetailPageDeleteBookButtonText}"
+                     Command="{Binding DeleteBookCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16" Padding="16">
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               HorizontalOptions="Center"
+                               HeightRequest="40"
+                               WidthRequest="40" />
+
+            <VerticalStackLayout IsVisible="{Binding Book, Converter={toolkit:IsNotNullConverter}}" Spacing="8">
+                <Label Text="{Binding Book.Title}" FontSize="24" FontAttributes="Bold" SemanticProperties.HeadingLevel="1" />
+                <Label Text="{Binding Book.Author}" FontSize="16" SemanticProperties.Description="Author" />
+                <Label Text="{Binding Book.ISBN}" FontSize="14" Opacity="0.7" SemanticProperties.Description="ISBN" />
+                <Label Text="{Binding Book.Publisher}" FontSize="14" SemanticProperties.Description="Publisher" />
+                <Label Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}" FontSize="14" IsVisible="{Binding Book.PublishDate}" SemanticProperties.Description="Publish Date" />
+            </VerticalStackLayout>
+
+            <Label Text="{x:Static local:AppResources.BookDetailPageBookmarksTitle}"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   Margin="0,16,0,8"
+                   SemanticProperties.HeadingLevel="2" />
+
+            <CollectionView ItemsSource="{Binding Bookmarks}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:BookmarkEntity">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItem Text="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
+                                           BackgroundColor="Red"
+                                           Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                           CommandParameter="{Binding}" />
+                            </SwipeView.RightItems>
+
+                            <Grid ColumnDefinitions="*, Auto, Auto" Padding="8">
+                                <Label Grid.Column="0"
+                                       Text="{Binding StartPage, StringFormat='Page {0}'}"
+                                       VerticalOptions="Center"
+                                       SemanticProperties.HeadingLevel="3" />
+
+                                <Label Grid.Column="0"
+                                       Text="{Binding EndPage, StringFormat=' - {0}'}"
+                                       VerticalOptions="Center"
+                                       IsVisible="{Binding EndPage}" />
+
+                                <ImageButton Grid.Column="1"
+                                             Source="note_icon.png"
+                                             WidthRequest="24"
+                                             HeightRequest="24"
+                                             Margin="8,0,8,0"
+                                             IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
+                                             Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                             CommandParameter="{Binding Note}"
+                                             SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageNoteIndicatorTooltip}" />
+
+                                <ImageButton Grid.Column="2"
+                                             Source="edit_icon.png"
+                                             WidthRequest="24"
+                                             HeightRequest="24"
+                                             Margin="8,0,0,0"
+                                             Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                             CommandParameter="{Binding}"
+                                             SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkButtonText}" />
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="{x:Static local:AppResources.BookDetailPageAddBookmarkButtonText}"
+                    Command="{Binding AddBookmarkCommand}"
+                    Margin="0,16,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</pages:ShelflyContentPageBase>
