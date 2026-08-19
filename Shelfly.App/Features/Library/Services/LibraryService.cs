@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.Library.Services;
 
@@ -58,6 +59,63 @@ public class LibraryService(LocalDbContext dbContext)
         }
 
         return book;
+    }
+
+    public async Task<Result<BookEntity>> AddBookAsync(string title, string author, string isbn, string publisher, DateTime? publishDate, CancellationToken cancellationToken = default)
+    {
+        BookEntity? existingBook = await dbContext.Books
+            .FirstOrDefaultAsync(b => b.ISBN == isbn, cancellationToken);
+
+        if (existingBook is not null)
+        {
+            return Result<BookEntity>.Failure("ISBN already exists");
+        }
+
+        BookEntity book = new()
+        {
+            Id = IdGenerator.NewId(),
+            Title = title,
+            Author = author,
+            ISBN = isbn,
+            Publisher = publisher,
+            PublishDate = publishDate,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        dbContext.Books.Add(book);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<BookEntity>.Success(book);
+    }
+
+    public async Task<Result<BookEntity>> UpdateBookAsync(Guid bookId, string title, string author, string isbn, string publisher, DateTime? publishDate, CancellationToken cancellationToken = default)
+    {
+        BookEntity? book = await dbContext.Books
+            .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt == null, cancellationToken);
+
+        if (book is null)
+        {
+            return Result<BookEntity>.Failure("Book not found");
+        }
+
+        BookEntity? existingBook = await dbContext.Books
+            .FirstOrDefaultAsync(b => b.ISBN == isbn && b.Id != bookId, cancellationToken);
+
+        if (existingBook is not null)
+        {
+            return Result<BookEntity>.Failure("ISBN already exists");
+        }
+
+        book.Title = title;
+        book.Author = author;
+        book.ISBN = isbn;
+        book.Publisher = publisher;
+        book.PublishDate = publishDate;
+        book.LastModifiedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result<BookEntity>.Success(book);
     }
 }
 

@@ -72,4 +72,52 @@
     <data name="BookListPageSwipeToDeleteCommand" xml:space="preserve">
         <value>Löschen</value>
     </data>
+    <data name="BookEditPageTitle" xml:space="preserve">
+        <value>Buch bearbeiten</value>
+    </data>
+    <data name="BookEditPageAddTitle" xml:space="preserve">
+        <value>Buch hinzufügen</value>
+    </data>
+    <data name="BookEditPageTitleLabel" xml:space="preserve">
+        <value>Titel</value>
+    </data>
+    <data name="BookEditPageAuthorLabel" xml:space="preserve">
+        <value>Autor</value>
+    </data>
+    <data name="BookEditPagePublisherLabel" xml:space="preserve">
+        <value>Verlag</value>
+    </data>
+    <data name="BookEditPageISBNLabel" xml:space="preserve">
+        <value>ISBN</value>
+    </data>
+    <data name="BookEditPagePublishDateLabel" xml:space="preserve">
+        <value>Erscheinungsdatum</value>
+    </data>
+    <data name="BookEditPageSaveButtonText" xml:space="preserve">
+        <value>Speichern</value>
+    </data>
+    <data name="BookEditPageTitleEmptyError" xml:space="preserve">
+        <value>Titel darf nicht leer sein</value>
+    </data>
+    <data name="BookEditPageAuthorEmptyError" xml:space="preserve">
+        <value>Autor darf nicht leer sein</value>
+    </data>
+    <data name="BookEditPagePublisherEmptyError" xml:space="preserve">
+        <value>Verlag darf nicht leer sein</value>
+    </data>
+    <data name="BookEditPageISBNFormatError" xml:space="preserve">
+        <value>Ungültiges ISBN-Format (ISBN-10 oder ISBN-13 erwartet)</value>
+    </data>
+    <data name="BookEditPageISBNDuplicateError" xml:space="preserve">
+        <value>ISBN existiert bereits</value>
+    </data>
+    <data name="BookEditPageTitleMaxLengthError" xml:space="preserve">
+        <value>Titel überschreitet maximale Länge von 256 Zeichen</value>
+    </data>
+    <data name="BookEditPageAuthorMaxLengthError" xml:space="preserve">
+        <value>Autor überschreitet maximale Länge von 256 Zeichen</value>
+    </data>
+    <data name="BookEditPagePublisherMaxLengthError" xml:space="preserve">
+        <value>Verlag überschreitet maximale Länge von 256 Zeichen</value>
+    </data>
 </root>

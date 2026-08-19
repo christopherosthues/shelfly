@@ -7,10 +7,12 @@
     xmlns:model="clr-namespace:Shelfly.App.Data.Entities"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     x:DataType="local:BookListViewModel"
-    Title="Books">
+    Title="{x:Static resx:AppResources.BookListPageSortByTitle}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="+" Command="{Binding SortCommand}" />
+        <ToolbarItem
+            Text="{x:Static resx:AppResources.BookListPageAddBookButtonText}"
+            Command="{Binding NavigateToAddBookCommand}" />
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, *, Auto">
@@ -39,7 +41,7 @@
                             <SwipeItem
                                 BackgroundColor="Red"
                                 Text="{x:Static resx:AppResources.BookListPageSwipeToDeleteCommand}"
-                                Command="{Binding SoftDeleteCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                 CommandParameter="{Binding Id}" />
                         </SwipeView.RightItems>
 
@@ -47,6 +49,12 @@
                             Padding="12"
                             ColumnDefinitions="*"
                             RowDefinitions="Auto, Auto, Auto">
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                    CommandParameter="{Binding Id}" />
+                            </Grid.GestureRecognizers>
 
                             <Label
                                 Grid.Row="0"

@@ -3,6 +3,85 @@
     x:Class="Shelfly.App.Features.BookEditor.Pages.BookEditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Book">
-    <VerticalStackLayout />
+    xmlns:local="using:Shelfly.App.Resources.Localization"
+    xmlns:viewModels="clr-namespace:Shelfly.App.Features.BookEditor.ViewModels"
+    x:DataType="viewModels:BookEditViewModel"
+    Title="{x:Static local:AppResources.BookEditPageTitle}">
+    <ScrollView>
+        <Grid
+            RowDefinitions="*,*,*,*,*,*,*,*,*,*"
+            RowSpacing="16"
+            Padding="16">
+
+            <Editor
+                Grid.Row="0"
+                x:Name="TitleEditor"
+                Placeholder="{x:Static local:AppResources.BookEditPageTitleLabel}"
+                Text="{Binding Title, Mode=TwoWay}"
+                MaxLength="256" />
+
+            <Label
+                Grid.Row="1"
+                Margin="0,-8,0,0"
+                FontSize="12"
+                Text="{Binding TitleError}"
+                TextColor="Red" />
+
+            <Editor
+                Grid.Row="2"
+                x:Name="AuthorEditor"
+                Placeholder="{x:Static local:AppResources.BookEditPageAuthorLabel}"
+                Text="{Binding Author, Mode=TwoWay}"
+                MaxLength="256" />
+
+            <Label
+                Grid.Row="3"
+                Margin="0,-8,0,0"
+                FontSize="12"
+                Text="{Binding AuthorError}"
+                TextColor="Red" />
+
+            <Editor
+                Grid.Row="4"
+                x:Name="PublisherEditor"
+                Placeholder="{x:Static local:AppResources.BookEditPagePublisherLabel}"
+                Text="{Binding Publisher, Mode=TwoWay}"
+                MaxLength="256" />
+
+            <Label
+                Grid.Row="5"
+                Margin="0,-8,0,0"
+                FontSize="12"
+                Text="{Binding PublisherError}"
+                TextColor="Red" />
+
+            <Entry
+                Grid.Row="6"
+                x:Name="ISBNEntry"
+                Keyboard="Text"
+                Placeholder="{x:Static local:AppResources.BookEditPageISBNLabel}"
+                Text="{Binding ISBN, Mode=TwoWay}" />
+
+            <Label
+                Grid.Row="7"
+                Margin="0,-8,0,0"
+                FontSize="12"
+                Text="{Binding ISBNError}"
+                TextColor="Red" />
+
+            <DatePicker
+                Grid.Row="8"
+                x:Name="PublishDatePicker"
+                Format="MMMM dd, yyyy"
+                Date="{Binding PublishDate, Mode=TwoWay}" />
+
+            <Button
+                Grid.Row="9"
+                Margin="0,16,0,0"
+                Text="{x:Static local:AppResources.BookEditPageSaveButtonText}"
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="Fill" />
+
+        </Grid>
+    </ScrollView>
 </ContentPage>

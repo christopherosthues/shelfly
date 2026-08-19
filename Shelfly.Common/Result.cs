@@ -9,9 +9,19 @@ public class Result(bool isSuccess, string? error = null)
     public static Result Failure(string error) => new(false, error);
 }
 
-public class Result<T>(T value) : Result(true)
+public class Result<T>
 {
-    public T Value { get; } = value;
+    public T Value { get; }
+    public bool IsSuccess { get; }
+    public string? Error { get; }
 
-    public static Result<T> Success(T value) => new(value);
+    private Result(T value, bool isSuccess, string? error = null)
+    {
+        Value = value;
+        IsSuccess = isSuccess;
+        Error = error;
+    }
+
+    public static Result<T> Success(T value) => new(value, true);
+    public static Result<T> Failure(string error) => new(default!, false, error);
 }

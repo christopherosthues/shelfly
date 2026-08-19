@@ -60,6 +60,222 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Book.
+        /// </summary>
+        internal static string BookEditPageAddTitle {
+            get {
+                return ResourceManager.GetString("BookEditPageAddTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author cannot be empty.
+        /// </summary>
+        internal static string BookEditPageAuthorEmptyError {
+            get {
+                return ResourceManager.GetString("BookEditPageAuthorEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        internal static string BookEditPageAuthorLabel {
+            get {
+                return ResourceManager.GetString("BookEditPageAuthorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author exceeds maximum length of 256 characters.
+        /// </summary>
+        internal static string BookEditPageAuthorMaxLengthError {
+            get {
+                return ResourceManager.GetString("BookEditPageAuthorMaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISBN already exists.
+        /// </summary>
+        internal static string BookEditPageISBNDuplicateError {
+            get {
+                return ResourceManager.GetString("BookEditPageISBNDuplicateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid ISBN format (expected ISBN-10 or ISBN-13).
+        /// </summary>
+        internal static string BookEditPageISBNFormatError {
+            get {
+                return ResourceManager.GetString("BookEditPageISBNFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISBN.
+        /// </summary>
+        internal static string BookEditPageISBNLabel {
+            get {
+                return ResourceManager.GetString("BookEditPageISBNLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publish Date.
+        /// </summary>
+        internal static string BookEditPagePublishDateLabel {
+            get {
+                return ResourceManager.GetString("BookEditPagePublishDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publisher cannot be empty.
+        /// </summary>
+        internal static string BookEditPagePublisherEmptyError {
+            get {
+                return ResourceManager.GetString("BookEditPagePublisherEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publisher.
+        /// </summary>
+        internal static string BookEditPagePublisherLabel {
+            get {
+                return ResourceManager.GetString("BookEditPagePublisherLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publisher exceeds maximum length of 256 characters.
+        /// </summary>
+        internal static string BookEditPagePublisherMaxLengthError {
+            get {
+                return ResourceManager.GetString("BookEditPagePublisherMaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string BookEditPageSaveButtonText {
+            get {
+                return ResourceManager.GetString("BookEditPageSaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Book.
+        /// </summary>
+        internal static string BookEditPageTitle {
+            get {
+                return ResourceManager.GetString("BookEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title cannot be empty.
+        /// </summary>
+        internal static string BookEditPageTitleEmptyError {
+            get {
+                return ResourceManager.GetString("BookEditPageTitleEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        internal static string BookEditPageTitleLabel {
+            get {
+                return ResourceManager.GetString("BookEditPageTitleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title exceeds maximum length of 256 characters.
+        /// </summary>
+        internal static string BookEditPageTitleMaxLengthError {
+            get {
+                return ResourceManager.GetString("BookEditPageTitleMaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Book.
+        /// </summary>
+        internal static string BookListPageAddBookButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageAddBookButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No books yet. Tap + to add your first book..
+        /// </summary>
+        internal static string BookListPageEmptyStateMessage {
+            get {
+                return ResourceManager.GetString("BookListPageEmptyStateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search by title, author, publisher, or ISBN.
+        /// </summary>
+        internal static string BookListPageSearchPlaceholder {
+            get {
+                return ResourceManager.GetString("BookListPageSearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        internal static string BookListPageSortByAuthor {
+            get {
+                return ResourceManager.GetString("BookListPageSortByAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publish Date.
+        /// </summary>
+        internal static string BookListPageSortByPublishDate {
+            get {
+                return ResourceManager.GetString("BookListPageSortByPublishDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publisher.
+        /// </summary>
+        internal static string BookListPageSortByPublisher {
+            get {
+                return ResourceManager.GetString("BookListPageSortByPublisher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        internal static string BookListPageSortByTitle {
+            get {
+                return ResourceManager.GetString("BookListPageSortByTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string BookListPageSwipeToDeleteCommand {
+            get {
+                return ResourceManager.GetString("BookListPageSwipeToDeleteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         internal static string LoginPageLoginButtonText {
@@ -146,78 +362,6 @@ namespace Shelfly.App.Resources.Localization {
         internal static string RegistrationPageUserNamePlaceholder {
             get {
                 return ResourceManager.GetString("RegistrationPageUserNamePlaceholder", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to No books yet. Start adding your library!.
-        /// </summary>
-        internal static string BookListPageEmptyStateMessage {
-            get {
-                return ResourceManager.GetString("BookListPageEmptyStateMessage", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Search by title, author, publisher or ISBN.
-        /// </summary>
-        internal static string BookListPageSearchPlaceholder {
-            get {
-                return ResourceManager.GetString("BookListPageSearchPlaceholder", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Sort by Title.
-        /// </summary>
-        internal static string BookListPageSortByTitle {
-            get {
-                return ResourceManager.GetString("BookListPageSortByTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Sort by Author.
-        /// </summary>
-        internal static string BookListPageSortByAuthor {
-            get {
-                return ResourceManager.GetString("BookListPageSortByAuthor", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Sort by Publisher.
-        /// </summary>
-        internal static string BookListPageSortByPublisher {
-            get {
-                return ResourceManager.GetString("BookListPageSortByPublisher", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Sort by Publish Date.
-        /// </summary>
-        internal static string BookListPageSortByPublishDate {
-            get {
-                return ResourceManager.GetString("BookListPageSortByPublishDate", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Add Book.
-        /// </summary>
-        internal static string BookListPageAddBookButtonText {
-            get {
-                return ResourceManager.GetString("BookListPageAddBookButtonText", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        internal static string BookListPageSwipeToDeleteCommand {
-            get {
-                return ResourceManager.GetString("BookListPageSwipeToDeleteCommand", resourceCulture);
             }
         }
     }

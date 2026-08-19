@@ -89,6 +89,18 @@ public partial class BookListViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private static async Task NavigateToAddBookAsync()
+    {
+        await Shell.Current!.GoToAsync($"//{Routes.BookEditPage}");
+    }
+
+    [RelayCommand]
+    private static async Task NavigateToEditBookAsync(Guid bookId)
+    {
+        await Shell.Current!.GoToAsync($"{Routes.BookEditPage}/{bookId}", new Dictionary<string, object> { ["bookId"] = bookId });
+    }
+
     private async Task LoadBooksAsync()
     {
         IsLoading = true;

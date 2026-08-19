@@ -72,4 +72,52 @@
     <data name="BookListPageSwipeToDeleteCommand" xml:space="preserve">
         <value>Delete</value>
     </data>
+    <data name="BookEditPageTitle" xml:space="preserve">
+        <value>Edit Book</value>
+    </data>
+    <data name="BookEditPageAddTitle" xml:space="preserve">
+        <value>Add Book</value>
+    </data>
+    <data name="BookEditPageTitleLabel" xml:space="preserve">
+        <value>Title</value>
+    </data>
+    <data name="BookEditPageAuthorLabel" xml:space="preserve">
+        <value>Author</value>
+    </data>
+    <data name="BookEditPagePublisherLabel" xml:space="preserve">
+        <value>Publisher</value>
+    </data>
+    <data name="BookEditPageISBNLabel" xml:space="preserve">
+        <value>ISBN</value>
+    </data>
+    <data name="BookEditPagePublishDateLabel" xml:space="preserve">
+        <value>Publish Date</value>
+    </data>
+    <data name="BookEditPageSaveButtonText" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="BookEditPageTitleEmptyError" xml:space="preserve">
+        <value>Title cannot be empty</value>
+    </data>
+    <data name="BookEditPageAuthorEmptyError" xml:space="preserve">
+        <value>Author cannot be empty</value>
+    </data>
+    <data name="BookEditPagePublisherEmptyError" xml:space="preserve">
+        <value>Publisher cannot be empty</value>
+    </data>
+    <data name="BookEditPageISBNFormatError" xml:space="preserve">
+        <value>Invalid ISBN format (expected ISBN-10 or ISBN-13)</value>
+    </data>
+    <data name="BookEditPageISBNDuplicateError" xml:space="preserve">
+        <value>ISBN already exists</value>
+    </data>
+    <data name="BookEditPageTitleMaxLengthError" xml:space="preserve">
+        <value>Title exceeds maximum length of 256 characters</value>
+    </data>
+    <data name="BookEditPageAuthorMaxLengthError" xml:space="preserve">
+        <value>Author exceeds maximum length of 256 characters</value>
+    </data>
+    <data name="BookEditPagePublisherMaxLengthError" xml:space="preserve">
+        <value>Publisher exceeds maximum length of 256 characters</value>
+    </data>
 </root>
