@@ -9,6 +9,7 @@ using Shelfly.App.Features.BookmarkEditor.ViewModels;
 using Shelfly.App.Features.Library.Pages;
 using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Features.Library.ViewModels;
+using Shelfly.App.Services;
 
 namespace Shelfly.App;
 
@@ -42,6 +43,7 @@ public static class MauiProgram
         builder.Services.AddDbContext<LocalDbContext>();
         builder.Services.AddSingleton<AuditTimestampInterceptor>();
         builder.Services.AddScoped<LibraryService>();
+        builder.Services.AddSingleton<LibraryExportService>();
 
         builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>(Routes.BookListPage);
         builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>(Routes.BookEditPage);

@@ -1,14 +1,18 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NLog;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.BookEditor.ViewModels;
 using Shelfly.App.Features.Library.Services;
+using Shelfly.App.Resources.Localization;
+using Shelfly.App.Services;
 using Shelfly.App.ViewModels;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.Library.ViewModels;
 
-public partial class BookListViewModel(LibraryService libraryService) : ShelflyViewModelBase
+public partial class BookListViewModel(LibraryService libraryService, LibraryExportService exportService) : ShelflyViewModelBase
 {
     private CancellationTokenSource? _debounceTokenSource;
 
@@ -101,6 +105,42 @@ public partial class BookListViewModel(LibraryService libraryService) : ShelflyV
     private static async Task NavigateToEditBookAsync(Guid bookId)
     {
         await Shell.Current.GoToAsync(Routes.BookEditPage, new Dictionary<string, object> { [nameof(BookEditViewModel.BookId)] = bookId });
+    }
+
+    [RelayCommand]
+    private async Task ExportLibraryAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            Result<string> exportResult = await exportService.ExportLibraryToJsonAsync();
+
+            if (exportResult.IsSuccess)
+            {
+                string fileName = $"shelfly_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.json";
+                string documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string fullPath = Path.Combine(documentsFolder, fileName);
+
+                await File.WriteAllTextAsync(fullPath, exportResult.Value);
+
+                _ = Application.Current?.Windows[0]?.Page?.DisplayAlertAsync(
+                    AppResources.BookListPageExportSuccessMessage,
+                    $"File saved to: {fullPath}",
+                    "OK");
+            }
+            else
+            {
+                LogManager.GetCurrentClassLogger().Warn("Export failed: {Error}", exportResult.Error);
+                _ = Application.Current?.Windows[0]?.Page?.DisplayAlertAsync(
+                    AppResources.BookListPageExportErrorMessage,
+                    exportResult.Error ?? "Unknown error",
+                    "OK");
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private async Task RefreshBooksAsync()

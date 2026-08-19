@@ -127,10 +127,10 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T041 Implement LibraryExportService in `Shelfly.App/Services/LibraryExportService.cs` for JSON export of library data (books and bookmarks) to device storage file (FR-031)
-- [ ] T042 Add export button to BookListPage toolbar/menu with file picker integration; on selection, invoke LibraryExportService to write JSON backup containing all active books and their bookmarks to device storage path (FR-031)
-- [ ] T043 Add loading indicator UI components across all pages (`BookListPage.xaml`, `BookDetailPage.xaml`) showing/hiding during async data operations (FR-032)
-- [ ] T044 Implement database error handling wrapper in `Shelfly.App/Services/LocalStorageService.cs` that catches SQLite errors, logs via NLog structured logging using Result pattern return types, and displays toast with error message to user
+- [X] T041 Implement LibraryExportService in `Shelfly.App/Services/LibraryExportService.cs` for JSON export of library data (books and bookmarks) to device storage file (FR-031)
+- [X] T042 Add export button to BookListPage toolbar/menu with file picker integration; on selection, invoke LibraryExportService to write JSON backup containing all active books and their bookmarks to device storage path (FR-031)
+- [X] T043 Add loading indicator UI components across all pages (`BookListPage.xaml`, `BookDetailPage.xaml`) showing/hiding during async data operations (FR-032)
+- [X] T044 Implement database error handling wrapper in `Shelfly.App/Services/LocalStorageService.cs` that catches SQLite errors, logs via NLog structured logging using Result pattern return types, and displays toast with error message to user
 - [ ] T045 [P] Add icon fonts for note indicator, edit, delete icons in `Shelfly.App/Resources/Fonts/` with platform-specific configuration
 - [ ] T046 Verify solution builds successfully: `dotnet build Shelfly.slnx`
 - [ ] T047 Run quickstart.md validation scenarios to confirm all acceptance criteria pass

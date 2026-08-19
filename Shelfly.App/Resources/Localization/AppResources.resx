@@ -234,6 +234,18 @@
     <data name="BookmarkEditPageNoteFieldDescription" xml:space="preserve">
         <value>Bookmark note (maximum 1000 characters)</value>
     </data>
+    <data name="BookListPageExportLibraryButtonText" xml:space="preserve">
+        <value>Export Library</value>
+    </data>
+    <data name="BookListPageExportLibraryDescription" xml:space="preserve">
+        <value>Export library to JSON file</value>
+    </data>
+    <data name="BookListPageExportSuccessMessage" xml:space="preserve">
+        <value>Library exported successfully</value>
+    </data>
+    <data name="BookListPageExportErrorMessage" xml:space="preserve">
+        <value>Export failed</value>
+    </data>
     <data name="BookListPageBookEntryDescription" xml:space="preserve">
         <value>Book entry. Tap to edit book. Swipe left to delete.</value>
     </data>

@@ -15,6 +15,10 @@
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageAddNewBookDescription}"
             Text="{x:Static resx:AppResources.BookListPageAddBookButtonText}"
             Command="{Binding NavigateToAddBookCommand}" />
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageExportLibraryDescription}"
+            Text="{x:Static resx:AppResources.BookListPageExportLibraryButtonText}"
+            Command="{Binding ExportLibraryCommand}" />
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, *, Auto">

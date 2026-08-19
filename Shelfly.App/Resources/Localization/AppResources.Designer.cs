@@ -456,6 +456,42 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export failed.
+        /// </summary>
+        internal static string BookListPageExportErrorMessage {
+            get {
+                return ResourceManager.GetString("BookListPageExportErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Library.
+        /// </summary>
+        internal static string BookListPageExportLibraryButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageExportLibraryButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export library to JSON file.
+        /// </summary>
+        internal static string BookListPageExportLibraryDescription {
+            get {
+                return ResourceManager.GetString("BookListPageExportLibraryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library exported successfully.
+        /// </summary>
+        internal static string BookListPageExportSuccessMessage {
+            get {
+                return ResourceManager.GetString("BookListPageExportSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No books found.
         /// </summary>
         internal static string BookListPageNoBooksFoundDescription {

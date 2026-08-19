@@ -234,6 +234,18 @@
     <data name="BookmarkEditPageNoteFieldDescription" xml:space="preserve">
         <value>Lesezeichennote (maximal 1000 Zeichen)</value>
     </data>
+    <data name="BookListPageExportLibraryButtonText" xml:space="preserve">
+        <value>Bibliothek exportieren</value>
+    </data>
+    <data name="BookListPageExportLibraryDescription" xml:space="preserve">
+        <value>Bibliothek als JSON-Datei exportieren</value>
+    </data>
+    <data name="BookListPageExportSuccessMessage" xml:space="preserve">
+        <value>Bibliothek erfolgreich exportiert</value>
+    </data>
+    <data name="BookListPageExportErrorMessage" xml:space="preserve">
+        <value>Export fehlgeschlagen</value>
+    </data>
     <data name="BookListPageBookEntryDescription" xml:space="preserve">
         <value>Bucheintrag. Tippen zum Bearbeiten. Nach links wischen zum Löschen.</value>
     </data>
