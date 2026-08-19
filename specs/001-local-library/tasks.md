@@ -89,13 +89,13 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T025 [P] [US2] Add English localization strings to `Shelfly.App/Resources/Strings/en-US/AppResources.resx` for book editor UI (field labels, validation messages: empty field errors, ISBN format error, duplicate ISBN error, max length exceeded)
-- [ ] T026 [P] [US2] Add German localization strings to `Shelfly.App/Resources/Strings/de-DE/AppResources.resx` for corresponding book editor translations and validation messages
-- [ ] T027 [P] [US2] Implement ISBN validation utility in `Shelfly.Common/IsbnValidator.cs` supporting both ISBN-10 and ISBN-13 formats (including dashes) with checksum verification
-- [ ] T028 [US2] Extend LibraryService in `Shelfly.App/Features/Library/Services/LibraryService.cs` with methods: AddBook (with ISBN uniqueness check across all books including soft-deleted), UpdateBook, SoftDeleteBook — returning Result pattern outcomes
-- [ ] T029 [US2] Implement BookEditViewModel in `Shelfly.App/Features/BookEditor/ViewModels/BookEditViewModel.cs` with ObservableProperty for Title, Author, Publisher, ISBN, PublishDate?; inline validation errors using .NET MAUI equivalent of Android supporting text (FR-017, FR-018, FR-025, FR-026); RelayCommand for save action
-- [ ] T030 [US2] Create BookEditPage XAML in `Shelfly.App/Features/BookEditor/Pages/BookEditPage.xaml` with text fields for title (max 256), author (max 256), publisher (max 256), ISBN, DatePicker for publish date; inline validation error display on each field using supporting text pattern
-- [ ] T031 [US2] Implement navigation from BookListPage to BookEditPage in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs` with book data passing for edit mode (existing book) or add mode (new book)
+- [X] T025 [P] [US2] Add English localization strings to `Shelfly.App/Resources/Strings/en-US/AppResources.resx` for book editor UI (field labels, validation messages: empty field errors, ISBN format error, duplicate ISBN error, max length exceeded)
+- [X] T026 [P] [US2] Add German localization strings to `Shelfly.App/Resources/Strings/de-DE/AppResources.resx` for corresponding book editor translations and validation messages
+- [X] T027 [P] [US2] Implement ISBN validation utility in `Shelfly.Common/IsbnValidator.cs` supporting both ISBN-10 and ISBN-13 formats (including dashes) with checksum verification
+- [X] T028 [US2] Extend LibraryService in `Shelfly.App/Features/Library/Services/LibraryService.cs` with methods: AddBook (with ISBN uniqueness check across all books including soft-deleted), UpdateBook, SoftDeleteBook — returning Result pattern outcomes
+- [X] T029 [US2] Implement BookEditViewModel in `Shelfly.App/Features/BookEditor/ViewModels/BookEditViewModel.cs` with ObservableProperty for Title, Author, Publisher, ISBN, PublishDate?; inline validation errors using .NET MAUI equivalent of Android supporting text (FR-017, FR-018, FR-025, FR-026); RelayCommand for save action
+- [X] T030 [US2] Create BookEditPage XAML in `Shelfly.App/Features/BookEditor/Pages/BookEditPage.xaml` with text fields for title (max 256), author (max 256), publisher (max 256), ISBN, DatePicker for publish date; inline validation error display on each field using supporting text pattern
+- [X] T031 [US2] Implement navigation from BookListPage to BookEditPage in `Shelfly.App/Features/Library/Pages/BookListPage.xaml.cs` with book data passing for edit mode (existing book) or add mode (new book)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
