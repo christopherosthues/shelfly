@@ -681,6 +681,42 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die lokale Datenbank konnte nicht initialisiert werden..
+        /// </summary>
+        internal static string LoadingPageErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadingPageErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialisierung fehlgeschlagen.
+        /// </summary>
+        internal static string LoadingPageErrorTitle {
+            get {
+                return ResourceManager.GetString("LoadingPageErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erneut versuchen.
+        /// </summary>
+        internal static string LoadingPageRetryButtonText {
+            get {
+                return ResourceManager.GetString("LoadingPageRetryButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deine Bibliothek wird vorbereitet....
+        /// </summary>
+        internal static string LoadingPageStatusText {
+            get {
+                return ResourceManager.GetString("LoadingPageStatusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registrieren.
         /// </summary>
         internal static string LoginPageLoginButtonText {

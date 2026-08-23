@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Shelfly.App.LoadingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization">
+
+    <Grid>
+        <!-- Loading State -->
+        <VerticalStackLayout
+            x:Name="LoadingContent"
+            HorizontalOptions="Center"
+            Spacing="16"
+            VerticalOptions="Center">
+
+            <ActivityIndicator
+                IsRunning="True"
+                SemanticProperties.Description="{x:Static resx:AppResources.LoadingPageStatusText}" />
+
+            <Label Text="{x:Static resx:AppResources.LoadingPageStatusText}" />
+        </VerticalStackLayout>
+
+        <!-- Error State -->
+        <VerticalStackLayout
+            x:Name="ErrorContent"
+            HorizontalOptions="Center"
+            IsVisible="False"
+            Spacing="16"
+            VerticalOptions="Center">
+
+            <Label
+                FontAttributes="Bold"
+                SemanticProperties.Description="{x:Static resx:AppResources.LoadingPageErrorTitle}"
+                Text="{x:Static resx:AppResources.LoadingPageErrorTitle}" />
+
+            <Label
+                HorizontalOptions="Center"
+                SemanticProperties.Description="{x:Static resx:AppResources.LoadingPageErrorMessage}"
+                Text="{x:Static resx:AppResources.LoadingPageErrorMessage}" />
+
+            <Button
+                Clicked="OnRetryClicked"
+                SemanticProperties.Description="{x:Static resx:AppResources.LoadingPageRetryButtonText}"
+                Text="{x:Static resx:AppResources.LoadingPageRetryButtonText}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

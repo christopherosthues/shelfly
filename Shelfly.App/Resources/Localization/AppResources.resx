@@ -255,4 +255,16 @@
     <data name="BookmarkEditPageSaveChangesDescription" xml:space="preserve">
         <value>Save bookmark changes</value>
     </data>
+    <data name="LoadingPageStatusText" xml:space="preserve">
+        <value>Preparing your library...</value>
+    </data>
+    <data name="LoadingPageErrorTitle" xml:space="preserve">
+        <value>Initialization failed</value>
+    </data>
+    <data name="LoadingPageErrorMessage" xml:space="preserve">
+        <value>The local database could not be initialized.</value>
+    </data>
+    <data name="LoadingPageRetryButtonText" xml:space="preserve">
+        <value>Retry</value>
+    </data>
 </root>

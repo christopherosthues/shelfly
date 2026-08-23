@@ -1,4 +1,5 @@
-﻿using Shelfly.App.Data;
+﻿using NLog;
+using Shelfly.App.Data;
 
 namespace Shelfly.App;
 
@@ -14,16 +15,27 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        Window window = new Window(new LoadingPage());
+        LoadingPage loadingPage = new();
+        Window window = new Window(loadingPage);
 
-        _ = InitializeAsync(window);
+        loadingPage.RetryRequested += async (_, _) => await InitializeAsync(window, loadingPage);
+
+        _ = InitializeAsync(window, loadingPage);
         return window;
     }
 
-    private async Task InitializeAsync(Window window)
+    private async Task InitializeAsync(Window window, LoadingPage loadingPage)
     {
-        await _localDbContext.EnsureDatabaseCreatedAsync();
+        try
+        {
+            await _localDbContext.EnsureDatabaseCreatedAsync();
 
-        window.Page = new AppShell();
+            window.Page = new AppShell();
+        }
+        catch (Exception exception)
+        {
+            LogManager.GetCurrentClassLogger().Error(exception, "Failed to initialize the local database.");
+            loadingPage.ShowError();
+        }
     }
 }
