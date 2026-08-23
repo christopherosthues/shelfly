@@ -3,18 +3,10 @@ using Shelfly.App.Data.Entities;
 
 namespace Shelfly.App.Data;
 
-public partial class LocalDbContext : DbContext
+public partial class LocalDbContext(DbContextOptions<LocalDbContext> options) : DbContext(options)
 {
-    private static readonly string DatabasePath = Path.Combine(
-        FileSystem.AppDataDirectory, "shelfly.db");
-
     public DbSet<BookEntity> Books => Set<BookEntity>();
     public DbSet<BookmarkEntity> Bookmarks => Set<BookmarkEntity>();
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite($"Data Source={DatabasePath}");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

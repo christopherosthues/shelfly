@@ -53,6 +53,7 @@
     <PackageReference Include="CommunityToolkit.Maui" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Data.Sqlite" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Maui.Controls" />
@@ -63,6 +64,7 @@
     <PackageReference Include="StrawberryShake.Maui" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shelfly.App.Data\Shelfly.App.Data.csproj" />
     <ProjectReference Include="..\Shelfly.Common\Shelfly.Common.csproj" />
   </ItemGroup>
   <ItemGroup>

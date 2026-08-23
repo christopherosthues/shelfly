@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog;
+#if RELEASE
+using NLog.Extensions.Logging;
+#endif
 using Shelfly.App.Data;
 using Shelfly.App.Features.BookEditor.Pages;
 using Shelfly.App.Features.BookEditor.ViewModels;
@@ -40,7 +44,11 @@ public static class MauiProgram
         builder.Logging.ClearProviders().AddNLog();
 #endif
 
-        builder.Services.AddDbContext<LocalDbContext>();
+        builder.Services.AddDbContext<LocalDbContext>(options =>
+        {
+            string databasePath = Path.Combine(FileSystem.AppDataDirectory, "shelfly.db");
+            options.UseSqlite($"Data Source={databasePath}");
+        });
         builder.Services.AddSingleton<AuditTimestampInterceptor>();
         builder.Services.AddScoped<LibraryService>();
         builder.Services.AddSingleton<LibraryExportService>();

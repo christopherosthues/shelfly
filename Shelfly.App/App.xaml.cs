@@ -7,8 +7,6 @@ public partial class App : Application
 {
     private readonly LocalDbContext _localDbContext;
 
-    public LocalDbContext DbContext => _localDbContext;
-
     public App(LocalDbContext localDbContext)
     {
         _localDbContext = localDbContext;

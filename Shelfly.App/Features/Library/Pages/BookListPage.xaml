@@ -4,9 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Shelfly.App.Features.Library.ViewModels"
-    xmlns:model="clr-namespace:Shelfly.App.Data.Entities"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     x:DataType="local:BookListViewModel"
     Title="{x:Static resx:AppResources.BookListPageSortByTitle}">
 
@@ -44,7 +44,7 @@
             </CollectionView.EmptyView>
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:BookEntity">
+                <DataTemplate x:DataType="entities:BookEntity">
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItem

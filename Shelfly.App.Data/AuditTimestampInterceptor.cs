@@ -5,10 +5,9 @@ using Shelfly.App.Data.Entities;
 
 namespace Shelfly.App.Data;
 
-internal sealed class AuditTimestampInterceptor : SaveChangesInterceptor
+public sealed class AuditTimestampInterceptor : SaveChangesInterceptor
 {
-    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
-        CancellationToken cancellationToken = new CancellationToken())
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = new())
     {
         if (eventData.Context is not null)
         {
