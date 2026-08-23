@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shelfly.App.Data;
+﻿using Shelfly.App.Data;
 
 namespace Shelfly.App;
 
@@ -15,14 +14,16 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        _localDbContext.EnsureDatabaseCreatedAsync().ContinueWith(_ =>
-        {
-            Current?.Dispatcher.Dispatch(async () =>
-            {
-                await _localDbContext.Database.MigrateAsync();
-            });
-        }, TaskContinuationOptions.OnlyOnFaulted);
+        Window window = new Window(new LoadingPage());
 
-        return new(new AppShell());
+        _ = InitializeAsync(window);
+        return window;
+    }
+
+    private async Task InitializeAsync(Window window)
+    {
+        await _localDbContext.EnsureDatabaseCreatedAsync();
+
+        window.Page = new AppShell();
     }
 }

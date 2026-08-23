@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Shelfly.App.Data.Migrations
+namespace Shelfly.App.Migrations.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
