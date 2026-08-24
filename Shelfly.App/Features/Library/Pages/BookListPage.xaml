@@ -57,7 +57,7 @@
                             <SwipeItem
                                 BackgroundColor="Red"
                                 Text="{x:Static resx:AppResources.BookListPageSwipeToDeleteCommand}"
-                                Command="{Binding SoftDeleteAsyncCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                Command="{Binding SoftDeleteCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                 CommandParameter="{Binding Id}" />
                         </SwipeView.RightItems>
 

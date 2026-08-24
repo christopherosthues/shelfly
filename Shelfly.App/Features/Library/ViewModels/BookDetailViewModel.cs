@@ -51,6 +51,11 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         {
             Book = null;
             Bookmarks = [];
+            await Shell.Current.GoToAsync($"//{Routes.BookListPage}");
+        }
+        else
+        {
+            await Shell.Current.DisplayAlertAsync("Deletion failed", "Failed to delete the book", "OK");
         }
     }
 
