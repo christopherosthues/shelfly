@@ -149,8 +149,8 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
                     {
                         await page.DisplayAlertAsync(
                             AppResources.BookListPageExportSuccessMessage,
-                            $"File saved to: {fullPath}",
-                            "OK");
+                            $"{AppResources.BookListPageExportFileSavedPrefix} {fullPath}",
+                            AppResources.CommonOkButton);
                     }
                 }
             }
@@ -162,8 +162,8 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
                 {
                     await page.DisplayAlertAsync(
                         AppResources.BookListPageExportErrorMessage,
-                        exportResult.Error ?? "Unknown error",
-                        "OK");
+                        exportResult.Error ?? AppResources.BookListPageUnknownErrorMessage,
+                        AppResources.CommonOkButton);
                 }
             }
         }

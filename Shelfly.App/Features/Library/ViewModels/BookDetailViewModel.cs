@@ -55,7 +55,7 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         }
         else
         {
-            await Shell.Current.DisplayAlertAsync("Deletion failed", "Failed to delete the book", "OK");
+            await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageDeletionFailedTitle, AppResources.BookDetailPageDeletionFailedMessage, AppResources.CommonOkButton);
         }
     }
 
@@ -85,7 +85,7 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
     [RelayCommand]
     private async Task ShowNoteAsync(string? note, CancellationToken cancellationToken = default)
     {
-        await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageNoteAlertTitle, note, "OK");
+        await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageNoteAlertTitle, note, AppResources.CommonOkButton);
     }
 
     [RelayCommand]

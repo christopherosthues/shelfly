@@ -45,7 +45,7 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
             }
             else
             {
-                await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageBookmarkNotFoundTitle, AppResources.BookmarkEditPageBookmarkNotFoundMessage, "Ok");
+                await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageBookmarkNotFoundTitle, AppResources.BookmarkEditPageBookmarkNotFoundMessage, AppResources.CommonOkButton);
             }
         }
     }
@@ -98,7 +98,7 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
         }
         else
         {
-            await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageSaveFailedTitle, AppResources.BookmarkEditPageSaveFailedMessage, "Ok");
+            await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageSaveFailedTitle, AppResources.BookmarkEditPageSaveFailedMessage, AppResources.CommonOkButton);
         }
     }
 

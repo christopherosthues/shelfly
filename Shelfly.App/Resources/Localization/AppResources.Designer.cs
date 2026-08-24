@@ -195,6 +195,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to delete the book.
+        /// </summary>
+        internal static string BookDetailPageDeletionFailedMessage {
+            get {
+                return ResourceManager.GetString("BookDetailPageDeletionFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion failed.
+        /// </summary>
+        internal static string BookDetailPageDeletionFailedTitle {
+            get {
+                return ResourceManager.GetString("BookDetailPageDeletionFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string BookDetailPageEditBookmarkButtonText {
@@ -375,6 +393,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ✕.
+        /// </summary>
+        internal static string BookEditPagePublishDateClearButtonText {
+            get {
+                return ResourceManager.GetString("BookEditPagePublishDateClearButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Publish Date.
         /// </summary>
         internal static string BookEditPagePublishDateLabel {
@@ -510,6 +537,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File saved to:.
+        /// </summary>
+        internal static string BookListPageExportFileSavedPrefix {
+            get {
+                return ResourceManager.GetString("BookListPageExportFileSavedPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Library.
         /// </summary>
         internal static string BookListPageExportLibraryButtonText {
@@ -605,6 +641,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookListPageSwipeToDeleteCommand {
             get {
                 return ResourceManager.GetString("BookListPageSwipeToDeleteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error.
+        /// </summary>
+        internal static string BookListPageUnknownErrorMessage {
+            get {
+                return ResourceManager.GetString("BookListPageUnknownErrorMessage", resourceCulture);
             }
         }
         
@@ -758,6 +803,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageTitle {
             get {
                 return ResourceManager.GetString("BookmarkEditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string CommonOkButton {
+            get {
+                return ResourceManager.GetString("CommonOkButton", resourceCulture);
             }
         }
         

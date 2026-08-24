@@ -90,7 +90,7 @@
                     Grid.Column="1"
                     Margin="8,0,0,0"
                     SemanticProperties.Description="{x:Static local:AppResources.BookEditPagePublishDateClearButtonDescription}"
-                    Text="✕"
+                    Text="{x:Static local:AppResources.BookEditPagePublishDateClearButtonText}"
                     FontSize="12"
                     WidthRequest="30"
                     HeightRequest="30"

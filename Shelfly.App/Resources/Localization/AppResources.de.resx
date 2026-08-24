@@ -267,4 +267,49 @@
     <data name="LoadingPageRetryButtonText" xml:space="preserve">
         <value>Erneut versuchen</value>
     </data>
+    <data name="AppShellBooksTitle" xml:space="preserve">
+        <value>Bücher</value>
+    </data>
+    <data name="BookDetailPageBookmarkPageLabel" xml:space="preserve">
+        <value>Seite {0}</value>
+    </data>
+    <data name="BookDetailPageBookmarkRangeLabel" xml:space="preserve">
+        <value> - {0}</value>
+    </data>
+    <data name="BookDetailPageNoteAlertTitle" xml:space="preserve">
+        <value>Notiz</value>
+    </data>
+    <data name="BookmarkEditPageBookmarkNotFoundTitle" xml:space="preserve">
+        <value>Lesezeichen nicht gefunden</value>
+    </data>
+    <data name="BookmarkEditPageBookmarkNotFoundMessage" xml:space="preserve">
+        <value>Lesezeichen nicht gefunden</value>
+    </data>
+    <data name="BookmarkEditPageSaveFailedTitle" xml:space="preserve">
+        <value>Speichern fehlgeschlagen</value>
+    </data>
+    <data name="BookmarkEditPageSaveFailedMessage" xml:space="preserve">
+        <value>Speichern fehlgeschlagen</value>
+    </data>
+    <data name="BookEditPagePublishDateClearButtonDescription" xml:space="preserve">
+        <value>Erscheinungsdatum löschen</value>
+    </data>
+    <data name="BookDetailPageDeletionFailedTitle" xml:space="preserve">
+        <value>Löschen fehlgeschlagen</value>
+    </data>
+    <data name="BookDetailPageDeletionFailedMessage" xml:space="preserve">
+        <value>Buch konnte nicht gelöscht werden</value>
+    </data>
+    <data name="BookListPageExportFileSavedPrefix" xml:space="preserve">
+        <value>Datei gespeichert unter:</value>
+    </data>
+    <data name="BookListPageUnknownErrorMessage" xml:space="preserve">
+        <value>Unbekannter Fehler</value>
+    </data>
+    <data name="BookEditPagePublishDateClearButtonText" xml:space="preserve">
+        <value>✕</value>
+    </data>
+    <data name="CommonOkButton" xml:space="preserve">
+        <value>OK</value>
+    </data>
 </root>
