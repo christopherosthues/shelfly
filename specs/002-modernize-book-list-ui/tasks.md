@@ -82,10 +82,10 @@ Paths are relative to repository root (`D:\home\git\pi-services\shelfly`). MAUI 
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T011 [P] Verify accessibility semantic properties preserved on all card elements in `Shelfly.App/Controls/BookCardView.xaml`
-- [ ] T012 [US2] Ensure ActivityIndicator is centered on screen (HorizontalOptions="Center", VerticalOptions="Center") in `Shelfly.App/Features/Library/Pages/BookListPage.xaml`
-- [ ] T013 [P] Verify empty state message remains visible and centered when no books exist in `Shelfly.App/Features/Library/Pages/BookListPage.xaml`
-- [ ] T014 Run quickstart.md validation scenarios to confirm all acceptance criteria pass
+- [X] T011 [P] Verify accessibility semantic properties preserved on all card elements in `Shelfly.App/Controls/BookCardView.xaml`
+- [X] T012 [US2] Ensure ActivityIndicator is centered on screen (HorizontalOptions="Center", VerticalOptions="Center") in `Shelfly.App/Features/Library/Pages/BookListPage.xaml`
+- [X] T013 [P] Verify empty state message remains visible and centered when no books exist in `Shelfly.App/Features/Library/Pages/BookListPage.xaml`
+- [X] T014 Run quickstart.md validation scenarios to confirm all acceptance criteria pass
 
 ---
 
