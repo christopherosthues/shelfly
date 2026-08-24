@@ -7,6 +7,7 @@
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="local:BookListViewModel"
     Title="{x:Static resx:AppResources.BookListPageSortByTitle}">
 
@@ -28,7 +29,13 @@
             Margin="8"
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
             Placeholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
-            Text="{Binding SearchQuery}" />
+            Text="{Binding SearchQuery, Mode=TwoWay}">
+            <SearchBar.Behaviors>
+                <toolkit:EventToCommandBehavior
+                    EventName="TextChanged"
+                    Command="{Binding SearchCommand}" />
+            </SearchBar.Behaviors>
+        </SearchBar>
 
         <!-- Book List -->
         <CollectionView
@@ -50,7 +57,7 @@
                             <SwipeItem
                                 BackgroundColor="Red"
                                 Text="{x:Static resx:AppResources.BookListPageSwipeToDeleteCommand}"
-                                Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                Command="{Binding SoftDeleteAsyncCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                 CommandParameter="{Binding Id}" />
                         </SwipeView.RightItems>
 
@@ -62,7 +69,7 @@
 
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer
-                                    Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                    Command="{Binding NavigateToDetailBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                     CommandParameter="{Binding Id}" />
                             </Grid.GestureRecognizers>
 
@@ -96,10 +103,18 @@
         <!-- Sort Selector -->
         <Picker
             Grid.Row="2"
+            x:Name="SortPicker"
             Margin="8"
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
-            Title="Sort by"
+            Title="{x:Static resx:AppResources.BookListPageSortByTitle}"
             ItemsSource="{Binding SortOptions}"
-            SelectedItem="{Binding SortCriterion}" />
+            SelectedItem="{Binding SortCriterion, Mode=TwoWay}">
+            <Picker.Behaviors>
+                <toolkit:EventToCommandBehavior
+                    EventName="SelectedIndexChanged"
+                    Command="{Binding SortCommand}"
+                    CommandParameter="{Binding SelectedItem, Source={x:Reference SortPicker}}"/>
+            </Picker.Behaviors>
+        </Picker>
     </Grid>
 </pages:ShelflyContentPageBase>

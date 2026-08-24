@@ -37,6 +37,9 @@ public partial class BookEditViewModel(LibraryService libraryService) : Observab
     public partial string? ISBNError { get; set; }
 
     [ObservableProperty]
+    public partial string? IsbnDuplicateError { get; set; }
+
+    [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
 
     public Guid BookId { get; private set; }
@@ -50,6 +53,12 @@ public partial class BookEditViewModel(LibraryService libraryService) : Observab
         Publisher = book.Publisher;
         ISBN = book.ISBN;
         PublishDate = book.PublishDate;
+    }
+
+    [RelayCommand]
+    private void ClearPublishDate()
+    {
+        PublishDate = null;
     }
 
     [RelayCommand]
@@ -82,6 +91,10 @@ public partial class BookEditViewModel(LibraryService libraryService) : Observab
                     PublishDate = null;
                     BookId = Guid.Empty;
                 });
+            }
+            else if (result.Error?.Contains("ISBN", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                IsbnDuplicateError = AppResources.BookEditPageISBNDuplicateError;
             }
         }
         finally

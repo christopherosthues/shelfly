@@ -50,6 +50,7 @@ public static class MauiProgram
             string databasePath = Path.Combine(FileSystem.AppDataDirectory, "shelfly.db");
             options.UseSqlite($"Data Source={databasePath}",
                 sql => sql.MigrationsAssembly(typeof(DesignTimeDbContextFactory).Assembly.GetName().Name));
+            options.AddInterceptors(new AuditTimestampInterceptor());
         });
         builder.Services.AddScoped<AuditTimestampInterceptor>();
         builder.Services.AddScoped<LibraryService>();

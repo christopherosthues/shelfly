@@ -30,8 +30,23 @@ public sealed class AuditTimestampInterceptor : SaveChangesInterceptor
     private static void UpdateAuditableEntities(DbContext context)
     {
         DateTime utcNow = DateTime.UtcNow;
-        IEnumerable<EntityEntry<BookEntity>> entities = context.ChangeTracker.Entries<BookEntity>();
-        foreach (EntityEntry<BookEntity> entry in entities)
+
+        IEnumerable<EntityEntry<BookEntity>> bookEntries = context.ChangeTracker.Entries<BookEntity>();
+        foreach (EntityEntry<BookEntity> entry in bookEntries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAt = utcNow;
+            }
+
+            if (entry.State == EntityState.Modified)
+            {
+                entry.Entity.LastModifiedAt = utcNow;
+            }
+        }
+
+        IEnumerable<EntityEntry<BookmarkEntity>> bookmarkEntries = context.ChangeTracker.Entries<BookmarkEntity>();
+        foreach (EntityEntry<BookmarkEntity> entry in bookmarkEntries)
         {
             if (entry.State == EntityState.Added)
             {

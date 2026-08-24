@@ -49,35 +49,35 @@
                                            CommandParameter="{Binding}" />
                             </SwipeView.RightItems>
 
-                            <Grid ColumnDefinitions="*, Auto, Auto" Padding="8"
-                                  SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
+                            <Grid ColumnDefinitions="Auto, Auto, Auto, Auto" Padding="8"
+                                   SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
                                 <Label Grid.Column="0"
-                                        Text="{Binding StartPage, StringFormat='Page {0}'}"
+                                        Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
                                         VerticalOptions="Center" />
 
-                                <Label Grid.Column="0"
-                                        Text="{Binding EndPage, StringFormat=' - {0}'}"
+                                <Label Grid.Column="1"
+                                        Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
                                         VerticalOptions="Center"
                                         IsVisible="{Binding EndPage}" />
 
-                                <ImageButton Grid.Column="1"
-                                              SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
-                                              Source="note_icon.png"
-                                              WidthRequest="24"
-                                              HeightRequest="24"
-                                              Margin="8,0,8,0"
-                                              IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
-                                              Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                              CommandParameter="{Binding Note}" />
-
                                 <ImageButton Grid.Column="2"
-                                              SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
-                                              Source="edit_icon.png"
-                                              WidthRequest="24"
-                                              HeightRequest="24"
-                                              Margin="8,0,0,0"
-                                              Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                              CommandParameter="{Binding}" />
+                                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
+                                               Source="note_icon.png"
+                                               WidthRequest="24"
+                                               HeightRequest="24"
+                                               Margin="8,0,8,0"
+                                               IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
+                                               Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                               CommandParameter="{Binding Note}" />
+
+                                <ImageButton Grid.Column="3"
+                                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
+                                               Source="edit_icon.png"
+                                               WidthRequest="24"
+                                               HeightRequest="24"
+                                               Margin="8,0,0,0"
+                                               Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                               CommandParameter="{Binding}" />
                             </Grid>
                         </SwipeView>
                     </DataTemplate>

@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.Library.Services;
+using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
 using Shelfly.Common;
 
@@ -44,7 +45,7 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
             }
             else
             {
-                await Shell.Current.DisplayAlertAsync("Bookmark not found", "Bookmark not found", "Ok");
+                await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageBookmarkNotFoundTitle, AppResources.BookmarkEditPageBookmarkNotFoundMessage, "Ok");
             }
         }
     }
@@ -61,13 +62,13 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
 
     partial void OnNoteChanged(string? value)
     {
-        NoteError = value is not null && value.Length > 1000 ? "Note exceeds maximum length of 1000 characters" : null;
+        NoteError = value is not null && value.Length > 1000 ? AppResources.BookmarkEditPageNoteMaxLengthError : null;
     }
 
     private void ValidatePages()
     {
-        StartPageError = StartPage <= 0 ? "Start page must be a positive number" : null;
-        EndPageError = EndPage.HasValue && EndPage.Value < StartPage ? "End page must be greater than or equal to start page" : null;
+        StartPageError = StartPage <= 0 ? AppResources.BookmarkEditPageStartPageEmptyError : null;
+        EndPageError = EndPage.HasValue && EndPage.Value < StartPage ? AppResources.BookmarkEditPageEndPageRangeError : null;
     }
 
     [RelayCommand]
@@ -97,7 +98,7 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
         }
         else
         {
-            await Shell.Current.DisplayAlertAsync("Save failed", "Save failed", "Ok");
+            await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageSaveFailedTitle, AppResources.BookmarkEditPageSaveFailedMessage, "Ok");
         }
     }
 

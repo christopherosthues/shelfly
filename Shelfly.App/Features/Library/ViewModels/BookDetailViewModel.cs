@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.BookmarkEditor.ViewModels;
 using Shelfly.App.Features.Library.Services;
+using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
 using Shelfly.Common;
 
@@ -79,7 +80,7 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
     [RelayCommand]
     private async Task ShowNoteAsync(string? note, CancellationToken cancellationToken = default)
     {
-        await Shell.Current.DisplayAlertAsync("Note", note, "OK");
+        await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageNoteAlertTitle, note, "OK");
     }
 
     [RelayCommand]

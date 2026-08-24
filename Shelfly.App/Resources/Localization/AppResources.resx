@@ -267,4 +267,31 @@
     <data name="LoadingPageRetryButtonText" xml:space="preserve">
         <value>Retry</value>
     </data>
+    <data name="AppShellBooksTitle" xml:space="preserve">
+        <value>Books</value>
+    </data>
+    <data name="BookDetailPageBookmarkPageLabel" xml:space="preserve">
+        <value>Page {0}</value>
+    </data>
+    <data name="BookDetailPageBookmarkRangeLabel" xml:space="preserve">
+        <value> - {0}</value>
+    </data>
+    <data name="BookDetailPageNoteAlertTitle" xml:space="preserve">
+        <value>Note</value>
+    </data>
+    <data name="BookmarkEditPageBookmarkNotFoundTitle" xml:space="preserve">
+        <value>Bookmark not found</value>
+    </data>
+    <data name="BookmarkEditPageBookmarkNotFoundMessage" xml:space="preserve">
+        <value>Bookmark not found</value>
+    </data>
+    <data name="BookmarkEditPageSaveFailedTitle" xml:space="preserve">
+        <value>Save failed</value>
+    </data>
+    <data name="BookmarkEditPageSaveFailedMessage" xml:space="preserve">
+        <value>Save failed</value>
+    </data>
+    <data name="BookEditPagePublishDateClearButtonDescription" xml:space="preserve">
+        <value>Clear publish date</value>
+    </data>
 </root>

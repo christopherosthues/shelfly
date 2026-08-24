@@ -9,7 +9,7 @@
     Title="{x:Static local:AppResources.BookEditPageTitle}">
     <ScrollView>
         <Grid
-            RowDefinitions="*,*,*,*,*,*,*,*,*,*"
+            RowDefinitions="*,*,*,*,*,*,*,*,*,*,*"
             RowSpacing="16"
             Padding="16">
 
@@ -69,14 +69,37 @@
                 Text="{Binding ISBNError}"
                 TextColor="Red" />
 
-            <DatePicker
+            <Label
                 Grid.Row="8"
-                x:Name="PublishDatePicker"
-                Format="MMMM dd, yyyy"
-                Date="{Binding PublishDate, Mode=TwoWay}" />
+                Margin="0,-8,0,0"
+                FontSize="12"
+                Text="{Binding IsbnDuplicateError}"
+                TextColor="Red"
+                IsVisible="{Binding IsbnDuplicateError}" />
+
+            <Grid
+                Grid.Row="9"
+                ColumnDefinitions="*, Auto">
+                <DatePicker
+                    Grid.Column="0"
+                    x:Name="PublishDatePicker"
+                    Format="MMMM dd, yyyy"
+                    Date="{Binding PublishDate, Mode=TwoWay}" />
+
+                <Button
+                    Grid.Column="1"
+                    Margin="8,0,0,0"
+                    SemanticProperties.Description="{x:Static local:AppResources.BookEditPagePublishDateClearButtonDescription}"
+                    Text="✕"
+                    FontSize="12"
+                    WidthRequest="30"
+                    HeightRequest="30"
+                    IsVisible="{Binding PublishDate}"
+                    Command="{Binding ClearPublishDateCommand}" />
+            </Grid>
 
             <Button
-                Grid.Row="9"
+                Grid.Row="10"
                 Margin="0,16,0,0"
                 Text="{x:Static local:AppResources.BookEditPageSaveButtonText}"
                 Command="{Binding SaveCommand}"

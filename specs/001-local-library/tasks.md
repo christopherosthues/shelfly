@@ -125,7 +125,30 @@ description: "Task list template for feature implementation"
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Improvements that affect multiple user stories, plus bug fixes from converge analysis
+
+### Converge Findings — HIGH Priority (Blocking)
+
+- [X] T048 [US3] Fix book detail view navigation in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` — change tap gesture binding from NavigateToEditBookCommand to GoToAsync(Routes.BookDetailPage); ensure BookId query parameter is passed (FR-014, FR-013)
+- [X] T049 [US1] Wire SearchBar TextChanged event in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` — bind to SearchCommand or add TextChanged handler that triggers debounced search; reduce debounce from 500ms to ≤200ms to meet SC-002 budget (FR-004)
+- [X] T050 [US1] Wire Picker SelectedIndexChanged in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` — bind to SortCommand or add handler that invokes BookListViewModel.SortAsync; ensure search results respect selected sort order (FR-005)
+- [X] T051 [US1] Fix swipe-to-delete command binding in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` — change SwipeItem Command from NavigateToEditBookCommand to SoftDeleteAsyncCommand; verify cascade delete of bookmarks works (FR-006, FR-027)
+- [X] T052 [US2] Wire duplicate ISBN inline validation in `Shelfly.App/Features/BookEditor/ViewModels/BookEditViewModel.cs` — extend SaveAsync to check result.Error and set IsbnDuplicateError property; bind error display in BookEditPage.xaml using resx key BookEditPageISBNDuplicateError (FR-018)
+- [X] T053 [US3] Fix bookmark page-range label overlap in `Shelfly.App/Features/Library/Pages/BookDetailPage.xaml` — place StartPage label at Grid.Column="0" and EndPage label at Grid.Column="1"; use proper grid column definitions for range display (FR-010, FR-029)
+
+### Converge Findings — MEDIUM Priority
+
+- [X] T054 [P] Add missing icon assets in `Shelfly.App/Resources/Images/` — add note_icon.png and edit_icon.png; add delete_icon.png for FR-012 inline deletion (currently swipe-only); update BookDetailPage.xaml Source bindings
+- [X] T055 [US1] Replace hardcoded export path with file picker in `Shelfly.App/Features/Library/ViewModels/BookListViewModel.cs` — use CommunityToolkit.Maui.Media.FilePicker to let user choose save location; localize alert text using resx keys (FR-031, FR-019)
+- [X] T056 Register AuditTimestampInterceptor in `Shelfly.App/MauiProgram.cs` — add AddInterceptors(AuditTimestampInterceptor) to DbContext options; extend interceptor to handle BookmarkEntity timestamps (Clarifications requirement)
+- [X] T057 [P] Replace hardcoded English strings with resx bindings: BookDetailPage.xaml StringFormat='Page {0}' → localized key; BookListPage.xaml Title="Sort by" and picker items → localized enum display names; AppShell.xaml Title="Books" → resx binding; BookDetailViewModel.cs alert messages → resx keys; BookmarkEditViewModel.cs validation/alert messages → existing resx keys (FR-019)
+- [X] T058 [US2] Add clear mechanism for optional PublishDate in `Shelfly.App/Features/BookEditor/Pages/BookEditPage.xaml` — add clear button or nullable indicator next to DatePicker; ensure edit mode can reset existing publish date to null (FR-024)
+
+### Converge Findings — LOW Priority
+
+- [ ] T059 [US3] Add navigation back after book deletion in `Shelfly.App/Features/Library/ViewModels/BookDetailViewModel.cs` — extend DeleteBookAsync to navigate back to BookListPage after soft-delete completes (US3 AC9)
+
+### Original Phase 6 Tasks
 
 - [X] T041 Implement LibraryExportService in `Shelfly.App/Services/LibraryExportService.cs` for JSON export of library data (books and bookmarks) to device storage file (FR-031)
 - [X] T042 Add export button to BookListPage toolbar/menu with file picker integration; on selection, invoke LibraryExportService to write JSON backup containing all active books and their bookmarks to device storage path (FR-031)

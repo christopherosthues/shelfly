@@ -54,7 +54,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         _debounceTokenSource = new();
         CancellationToken token = _debounceTokenSource.Token;
 
-        await Task.Delay(500, token);
+        await Task.Delay(200, token);
         if (token.IsCancellationRequested)
         {
             return;
@@ -102,6 +102,12 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     }
 
     [RelayCommand]
+    private static async Task NavigateToDetailBookAsync(Guid bookId)
+    {
+        await Shell.Current.GoToAsync(Routes.BookDetailPage, new Dictionary<string, object> { [nameof(BookDetailViewModel.BookId)] = bookId });
+    }
+
+    [RelayCommand]
     private static async Task NavigateToEditBookAsync(Guid bookId)
     {
         await Shell.Current.GoToAsync(Routes.BookEditPage, new Dictionary<string, object> { [nameof(BookEditViewModel.BookId)] = bookId });
@@ -117,24 +123,48 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
 
             if (exportResult.IsSuccess)
             {
-                string fileName = $"shelfly_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.json";
-                string documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string fullPath = Path.Combine(documentsFolder, fileName);
+                FilePickerFileType customFileType = new FilePickerFileType(
+                    new Dictionary<DevicePlatform, IEnumerable<string>>
+                    {
+                        { DevicePlatform.iOS, [".json"] },
+                        { DevicePlatform.Android, [".json"] },
+                        { DevicePlatform.WinUI, [".json"] },
+                        { DevicePlatform.Tizen, [".json"] },
+                        { DevicePlatform.macOS, [".json"] },
+                    });
+                FileResult? fileResult = await FilePicker.Default.PickAsync(new PickOptions()
+                {
+                    PickerTitle = AppResources.BookListPageExportLibraryButtonText,
+                    FileTypes = customFileType
+                });
+                // DefaultFileName = $"shelfly_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.json",
 
-                await File.WriteAllTextAsync(fullPath, exportResult.Value);
+                if (fileResult is not null)
+                {
+                    string fullPath = fileResult.FullPath;
+                    await File.WriteAllTextAsync(fullPath, exportResult.Value);
 
-                _ = Application.Current?.Windows[0]?.Page?.DisplayAlertAsync(
-                    AppResources.BookListPageExportSuccessMessage,
-                    $"File saved to: {fullPath}",
-                    "OK");
+                    Page? page = Application.Current?.Windows[0].Page;
+                    if (page is not null)
+                    {
+                        await page.DisplayAlertAsync(
+                            AppResources.BookListPageExportSuccessMessage,
+                            $"File saved to: {fullPath}",
+                            "OK");
+                    }
+                }
             }
             else
             {
                 LogManager.GetCurrentClassLogger().Warn("Export failed: {Error}", exportResult.Error);
-                _ = Application.Current?.Windows[0]?.Page?.DisplayAlertAsync(
-                    AppResources.BookListPageExportErrorMessage,
-                    exportResult.Error ?? "Unknown error",
-                    "OK");
+                Page? page = Application.Current?.Windows[0].Page;
+                if (page is not null)
+                {
+                    await page.DisplayAlertAsync(
+                        AppResources.BookListPageExportErrorMessage,
+                        exportResult.Error ?? "Unknown error",
+                        "OK");
+                }
             }
         }
         finally
