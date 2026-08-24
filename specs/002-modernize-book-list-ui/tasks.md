@@ -70,9 +70,9 @@ Paths are relative to repository root (`D:\home\git\pi-services\shelfly`). MAUI 
 
 ### Implementation for User Story 2
 
-- [ ] T008 [P] [US2] Configure BookCardView styling in `Shelfly.App/Controls/BookCardView.xaml` with Border shadow (Radius=15, Opacity=0.5), rounded corners via StrokeShape="RoundRectangle" and CornerRadius=5, Margin="16, 0" for horizontal spacing, and MinimumHeightRequest="48"
-- [ ] T009 [US2] Update CollectionView ItemTemplate in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` to use BookCardView inside SwipeView (SwipeView wraps BookCardView) maintaining existing TapGestureRecognizer and binding context
-- [ ] T010 [US2] Add card-specific styles to `Shelfly.App/Resources/Styles/Styles.xaml` for consistent visual separation between adjacent cards (spacing, elevation effects)
+- [X] T008 [P] [US2] Configure BookCardView styling in `Shelfly.App/Controls/BookCardView.xaml` with Border shadow (Radius=15, Opacity=0.5), rounded corners via StrokeShape="RoundRectangle" and CornerRadius=5, Margin="16, 0" for horizontal spacing, and MinimumHeightRequest="48"
+- [X] T009 [US2] Update CollectionView ItemTemplate in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` to use BookCardView inside SwipeView (SwipeView wraps BookCardView) maintaining existing TapGestureRecognizer and binding context
+- [X] T010 [US2] Add card-specific styles to `Shelfly.App/Resources/Styles/Styles.xaml` for consistent visual separation between adjacent cards (spacing, elevation effects)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 

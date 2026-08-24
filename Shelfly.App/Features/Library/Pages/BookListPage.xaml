@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Shelfly.App.Features.Library.ViewModels"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:controls="clr-namespace:Shelfly.App.Controls"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="local:BookListViewModel"
@@ -88,32 +89,15 @@
                                 CommandParameter="{Binding Id}" />
                         </SwipeView.RightItems>
 
-                        <Grid
-                            Padding="12"
-                            ColumnDefinitions="*"
-                            RowDefinitions="Auto, Auto, Auto"
+                        <controls:BookCardView
                             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}">
 
-                            <Grid.GestureRecognizers>
+                            <controls:BookCardView.GestureRecognizers>
                                 <TapGestureRecognizer
                                     Command="{Binding NavigateToDetailBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                     CommandParameter="{Binding Id}" />
-                            </Grid.GestureRecognizers>
-
-                            <Label
-                                Grid.Row="0"
-                                FontAttributes="Bold"
-                                Text="{Binding Title}" />
-
-                            <Label
-                                Grid.Row="1"
-                                Text="{Binding Author}" />
-
-                            <Label
-                                Grid.Row="2"
-                                Opacity="0.6"
-                                Text="{Binding Publisher}" />
-                        </Grid>
+                            </controls:BookCardView.GestureRecognizers>
+                        </controls:BookCardView>
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
