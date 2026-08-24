@@ -45,6 +45,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItem Text="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
                                            BackgroundColor="Red"
+                                           IconImageSource="delete_icon.svg"
                                            Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
                                            CommandParameter="{Binding}" />
                             </SwipeView.RightItems>
@@ -62,7 +63,7 @@
 
                                 <ImageButton Grid.Column="2"
                                                SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
-                                               Source="note_icon.png"
+                                               Source="note_icon.svg"
                                                WidthRequest="24"
                                                HeightRequest="24"
                                                Margin="8,0,8,0"
@@ -72,7 +73,7 @@
 
                                 <ImageButton Grid.Column="3"
                                                SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
-                                               Source="edit_icon.png"
+                                               Source="edit_icon.svg"
                                                WidthRequest="24"
                                                HeightRequest="24"
                                                Margin="8,0,0,0"
