@@ -1,9 +1,9 @@
 <!-- Sync Impact Report:
-  Version change: 2.4.1 → 2.5.0 (MINOR - new principle added for localization coverage)
+  Version change: 2.5.0 → 2.6.0 (MINOR - new principle added for asset format standardization)
   Modified principles: N/A
-  Added sections: VIII. Localization & Internationalization
+  Added sections: IX. Asset & Resource Formats
   Removed sections: N/A
-  Changes: All user-facing text, including semantic accessibility properties and validation error messages, MUST be localized via resource files
+  Changes: All images MUST be in SVG format unless explicitly requested otherwise
   Deferred TODOs: N/A
 -->
 
@@ -63,6 +63,12 @@ All user-facing text in the MAUI client (`Shelfly.App`) MUST be localized via re
 
 **Rationale**: Comprehensive localization ensures consistent user experience across supported languages and enables future expansion without structural changes. Including semantic accessibility properties in localization guarantees screen reader support matches the visual UI language. Centralizing strings in `.resx` files enables translation management, reduces duplication, and simplifies maintenance.
 
+### IX. Asset & Resource Formats
+
+All images MUST be in SVG format unless explicitly requested in a different format. Raster formats (PNG, JPG, WebP) are only acceptable when the specific use case requires them (e.g., photographic content, complex gradients not achievable with SVG). Icon assets, illustrations, and vector graphics SHOULD prefer SVG for scalability, small file size, and theme adaptability. When raster images are used, they MUST be optimized for web delivery (compressed, appropriate resolution).
+
+**Rationale**: SVG provides resolution-independent scaling, smaller file sizes for icons and illustrations, and CSS/theme adaptability essential for modern UIs. Standardizing on SVG reduces asset duplication across device densities and simplifies maintenance. Explicit exceptions for raster formats prevent over-engineering while maintaining the default preference for vector graphics.
+
 ## Testing & Observability
 
 ### Testing Strategy
@@ -109,4 +115,4 @@ No additional NuGet packages or libraries added without explicit approval. Alway
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 2.5.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-19
+**Version**: 2.6.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-24
