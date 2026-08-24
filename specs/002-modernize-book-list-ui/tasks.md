@@ -54,9 +54,9 @@ Paths are relative to repository root (`D:\home\git\pi-services\shelfly`). MAUI 
 
 ### Implementation for User Story 1
 
-- [ ] T005 [P] [US1] Restructure BookListPage root Grid at `Shelfly.App/Features/Library/Pages/BookListPage.xaml` to use FlexLayout or responsive Grid for top controls area (search bar + sort picker side-by-side on wide screens, stacked on narrow screens)
-- [ ] T006 [US1] Move Picker element from bottom row to new top controls area in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` with appropriate margin and spacing relative to search bar
-- [ ] T007 [US1] Adjust CollectionView row placement in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` to occupy remaining space below top controls area
+- [X] T005 [P] [US1] Restructure BookListPage root Grid at `Shelfly.App/Features/Library/Pages/BookListPage.xaml` to use FlexLayout or responsive Grid for top controls area (search bar + sort picker side-by-side on wide screens, stacked on narrow screens)
+- [X] T006 [US1] Move Picker element from bottom row to new top controls area in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` with appropriate margin and spacing relative to search bar
+- [X] T007 [US1] Adjust CollectionView row placement in `Shelfly.App/Features/Library/Pages/BookListPage.xaml` to occupy remaining space below top controls area
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

@@ -24,20 +24,44 @@
             Command="{Binding ExportLibraryCommand}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, *, Auto">
-        <!-- Search Bar -->
-        <SearchBar
+    <Grid RowDefinitions="Auto, *">
+        <!-- Top Controls: Search Bar + Sort Picker -->
+        <FlexLayout
             Grid.Row="0"
-            Margin="8"
-            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
-            Placeholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
-            Text="{Binding SearchQuery, Mode=TwoWay}">
-            <SearchBar.Behaviors>
-                <toolkit:EventToCommandBehavior
-                    EventName="TextChanged"
-                    Command="{Binding SearchCommand}" />
-            </SearchBar.Behaviors>
-        </SearchBar>
+            Direction="Row"
+            Wrap="Wrap"
+            JustifyContent="Start"
+            AlignItems="Center"
+            Margin="8">
+
+            <SearchBar
+                FlexLayout.Order="1"
+                SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
+                Placeholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
+                Text="{Binding SearchQuery, Mode=TwoWay}">
+                <SearchBar.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="TextChanged"
+                        Command="{Binding SearchCommand}" />
+                </SearchBar.Behaviors>
+            </SearchBar>
+
+            <Picker
+                x:Name="SortPicker"
+                FlexLayout.Order="2"
+                Margin="8, 0, 0, 0"
+                SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
+                Title="{x:Static resx:AppResources.BookListPageSortByTitle}"
+                ItemsSource="{Binding SortOptions}"
+                SelectedItem="{Binding SortCriterion, Mode=TwoWay}">
+                <Picker.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="SelectedIndexChanged"
+                        Command="{Binding SortCommand}"
+                        CommandParameter="{Binding SelectedItem, Source={x:Reference SortPicker}}"/>
+                </Picker.Behaviors>
+            </Picker>
+        </FlexLayout>
 
         <!-- Book List -->
         <CollectionView
@@ -102,22 +126,5 @@
             VerticalOptions="Center"
             IsRunning="{Binding IsLoading}"
             IsVisible="{Binding IsLoading}" />
-
-        <!-- Sort Selector -->
-        <Picker
-            Grid.Row="2"
-            x:Name="SortPicker"
-            Margin="8"
-            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
-            Title="{x:Static resx:AppResources.BookListPageSortByTitle}"
-            ItemsSource="{Binding SortOptions}"
-            SelectedItem="{Binding SortCriterion, Mode=TwoWay}">
-            <Picker.Behaviors>
-                <toolkit:EventToCommandBehavior
-                    EventName="SelectedIndexChanged"
-                    Command="{Binding SortCommand}"
-                    CommandParameter="{Binding SelectedItem, Source={x:Reference SortPicker}}"/>
-            </Picker.Behaviors>
-        </Picker>
     </Grid>
 </pages:ShelflyContentPageBase>
