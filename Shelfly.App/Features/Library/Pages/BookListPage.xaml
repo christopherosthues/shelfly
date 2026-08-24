@@ -14,10 +14,12 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageAddNewBookDescription}"
+            IconImageSource="add_icon.svg"
             Text="{x:Static resx:AppResources.BookListPageAddBookButtonText}"
             Command="{Binding NavigateToAddBookCommand}" />
         <ToolbarItem
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageExportLibraryDescription}"
+            IconImageSource="export_icon.svg"
             Text="{x:Static resx:AppResources.BookListPageExportLibraryButtonText}"
             Command="{Binding ExportLibraryCommand}" />
     </ContentPage.ToolbarItems>
