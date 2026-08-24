@@ -94,7 +94,7 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
 
         if (result.IsSuccess)
         {
-            await Shell.Current.Navigation.PopAsync();
+            await Shell.Current.GoToAsync("..");
         }
         else
         {
