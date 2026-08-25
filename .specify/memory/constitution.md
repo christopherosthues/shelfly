@@ -1,9 +1,9 @@
 <!-- Sync Impact Report:
-  Version change: 2.5.0 → 2.6.0 (MINOR - new principle added for asset format standardization)
-  Modified principles: N/A
-  Added sections: IX. Asset & Resource Formats
+  Version change: 2.8.1 → 2.9.0 (MINOR - principle XI materially expanded with tool catalog)
+  Modified principles: XI. IDE-Assisted Refactoring (detailed tool list + usage guidance added)
+  Added sections: N/A
   Removed sections: N/A
-  Changes: All images MUST be in SVG format unless explicitly requested otherwise
+  Changes: Each Rider MCP refactoring tool now documented with purpose and when to use
   Deferred TODOs: N/A
 -->
 
@@ -69,6 +69,28 @@ All images MUST be in SVG format unless explicitly requested in a different form
 
 **Rationale**: SVG provides resolution-independent scaling, smaller file sizes for icons and illustrations, and CSS/theme adaptability essential for modern UIs. Standardizing on SVG reduces asset duplication across device densities and simplifies maintenance. Explicit exceptions for raster formats prevent over-engineering while maintaining the default preference for vector graphics.
 
+### X. Microsoft Documentation Sourcing
+
+Tasks involving Microsoft technical frameworks — including EF Core, .NET MAUI, Community Toolkit, ASP.NET Core, Minimal APIs, and related technologies — MUST use the `microsoft-learn` MCP server to obtain the latest official documentation before implementation. The Spec Kit prompt SHOULD invoke `microsoft_docs_search`, `microsoft_code_sample_search`, or `microsoft_docs_fetch` as appropriate to ground answers in current Microsoft Learn content. Cached or assumed knowledge MAY be used only when MCP retrieval confirms alignment with official sources.
+
+**Rationale**: Microsoft frameworks evolve rapidly across .NET versions. Official documentation via the microsoft-learn MCP server ensures implementations reflect current APIs, best practices, and deprecation notices. Grounding code generation in verified Microsoft sources reduces hallucination risk, prevents deprecated pattern usage, and maintains compatibility with target framework versions.
+
+### XI. IDE-Assisted Refactoring
+
+Code refactorings MUST use available refactoring tools from the Rider MCP server to safely transform the codebase. Manual text-based refactoring SHOULD be reserved for cases where no equivalent IDE tool exists. When using Rider MCP refactorings, the agent MUST verify that all usages are updated consistently across the solution before accepting the result.
+
+**Available Refactoring Tools**:
+
+- **`rename_refactoring`** — Rename symbols (classes, methods, fields, properties, namespaces) across all usages. Use when renaming types, members, or namespaces to improve naming consistency or clarify intent.
+- **`extract_interface`** — Extract an interface from an existing class based on selected members. Use when applying Dependency Inversion Principle, creating abstractions for DI registration, or decoupling implementations from callers.
+- **`extract_base_class`** — Extract a common base class from multiple classes sharing identical members. Use when consolidating duplicate code into shared inheritance hierarchies or implementing Template Method patterns.
+- **`extract_method`** — Extract selected code blocks into a new method. Use when reducing method complexity, isolating reusable logic, or improving readability by giving named context to inline operations.
+- **`change_api_signature`** — Change method signatures (add/remove parameters, change return types) safely across all call sites. Use when evolving public APIs, adding optional parameters, or adapting methods to new requirements without manual search-and-replace.
+- **`move_type_to_namespace`** — Move types between namespaces. Use when reorganizing project structure, aligning with vertical slice boundaries, or consolidating related types under a common namespace.
+- **`safe_delete`** — Safely delete symbols with full usage analysis before removal. Use when removing unused code, deprecated members, or obsolete classes to ensure no hidden dependencies remain.
+
+**Rationale**: IDE-assisted refactorings leverage semantic code analysis to ensure all references, implementations, and call sites are updated atomically — reducing the risk of missed usages, broken inheritance chains, or inconsistent naming. Manual text replacement is error-prone for structural changes like interface extraction or method relocation, where the IDE understands type hierarchies and override relationships.
+
 ## Testing & Observability
 
 ### Testing Strategy
@@ -115,4 +137,4 @@ No additional NuGet packages or libraries added without explicit approval. Alway
 
 This constitution supersedes all other development practices and conventions for the Shelfly project. Amendments require documentation of the change rationale, stakeholder approval, and a migration plan if existing code is affected. All pull requests and code reviews MUST verify compliance with the active principles. Complexity additions (new dependencies, architectural patterns) MUST be justified in writing against the relevant principle. Use `AGENTS.md` for runtime development guidance on project structure, commands, and quirks.
 
-**Version**: 2.6.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-24
+**Version**: 2.9.0 | **Ratified**: 2026-08-13 | **Last Amended**: 2026-08-25
