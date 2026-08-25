@@ -72,6 +72,9 @@
     <data name="BookListPageSwipeToDeleteCommand" xml:space="preserve">
         <value>Löschen</value>
     </data>
+    <data name="BookListPageSwipeToEditCommand" xml:space="preserve">
+        <value>Bearbeiten</value>
+    </data>
     <data name="BookEditPageTitle" xml:space="preserve">
         <value>Buch bearbeiten</value>
     </data>

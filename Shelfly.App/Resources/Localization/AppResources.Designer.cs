@@ -645,6 +645,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string BookListPageSwipeToEditCommand {
+            get {
+                return ResourceManager.GetString("BookListPageSwipeToEditCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown error.
         /// </summary>
         internal static string BookListPageUnknownErrorMessage {

@@ -80,6 +80,15 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="entities:BookEntity">
                     <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItem
+                                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                                IconImageSource="edit_icon.svg"
+                                Text="{x:Static resx:AppResources.BookListPageSwipeToEditCommand}"
+                                Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                                CommandParameter="{Binding Id}" />
+                        </SwipeView.LeftItems>
+
                         <SwipeView.RightItems>
                             <SwipeItem
                                 BackgroundColor="Red"
