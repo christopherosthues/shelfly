@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<pages:ShelflyContentPageBase
     x:Class="Shelfly.App.Features.BookEditor.Pages.BookEditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="using:Shelfly.App.Resources.Localization"
     xmlns:viewModels="clr-namespace:Shelfly.App.Features.BookEditor.ViewModels"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
     x:DataType="viewModels:BookEditViewModel"
     Title="{x:Static local:AppResources.BookEditPageTitle}">
     <ScrollView>
@@ -107,4 +108,4 @@
 
         </Grid>
     </ScrollView>
-</ContentPage>
+</pages:ShelflyContentPageBase>

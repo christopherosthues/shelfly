@@ -195,6 +195,12 @@
     <data name="BookListPageSortBooksByDescription" xml:space="preserve">
         <value>Sort books by</value>
     </data>
+    <data name="BookDetailPageEditBookButtonText" xml:space="preserve">
+        <value>Edit Book</value>
+    </data>
+    <data name="BookDetailPageEditBookDescription" xml:space="preserve">
+        <value>Edit book details</value>
+    </data>
     <data name="BookDetailPageSoftDeleteBookDescription" xml:space="preserve">
         <value>Soft delete book and all bookmarks</value>
     </data>

@@ -1,17 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using Shelfly.App.Data;
-using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.BookEditor.ViewModels;
+using Shelfly.App.Pages;
 
 namespace Shelfly.App.Features.BookEditor.Pages;
 
-public partial class BookEditPage : ContentPage
+public partial class BookEditPage : ShelflyContentPageBase
 {
-    public BookEditViewModel ViewModel { get; }
-
-    public BookEditPage(BookEditViewModel viewModel, LocalDbContext dbContext)
+    public BookEditPage(BookEditViewModel viewModel)
     {
-        ViewModel = viewModel;
         BindingContext = viewModel;
         InitializeComponent();
     }

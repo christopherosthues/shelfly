@@ -12,6 +12,10 @@
     Title="{x:Static local:AppResources.BookDetailPageTitle}">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookDescription}"
+                     Text="{x:Static local:AppResources.BookDetailPageEditBookButtonText}"
+                     Command="{Binding EditBookCommand}" />
+
         <ToolbarItem SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageSoftDeleteBookDescription}"
                      Text="{x:Static local:AppResources.BookDetailPageDeleteBookButtonText}"
                      Command="{Binding DeleteBookCommand}" />

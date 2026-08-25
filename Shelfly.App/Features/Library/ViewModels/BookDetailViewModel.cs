@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
+using Shelfly.App.Features.BookEditor.ViewModels;
 using Shelfly.App.Features.BookmarkEditor.ViewModels;
 using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Resources.Localization;
@@ -98,6 +99,22 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         };
 
         await Shell.Current.GoToAsync(Routes.BookmarkEditPage, parameters);
+    }
+
+    [RelayCommand]
+    private async Task EditBookAsync(CancellationToken cancellationToken = default)
+    {
+        if (Book is null)
+        {
+            return;
+        }
+
+        Dictionary<string, object> parameters = new()
+        {
+            [nameof(BookEditViewModel.BookId)] = Book.Id
+        };
+
+        await Shell.Current.GoToAsync(Routes.BookEditPage, parameters);
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)

@@ -195,6 +195,12 @@
     <data name="BookListPageSortBooksByDescription" xml:space="preserve">
         <value>Bücher sortieren nach</value>
     </data>
+    <data name="BookDetailPageEditBookButtonText" xml:space="preserve">
+        <value>Buch bearbeiten</value>
+    </data>
+    <data name="BookDetailPageEditBookDescription" xml:space="preserve">
+        <value>Buchdetails bearbeiten</value>
+    </data>
     <data name="BookDetailPageSoftDeleteBookDescription" xml:space="preserve">
         <value>Buch und alle Lesezeichen weich löschen</value>
     </data>

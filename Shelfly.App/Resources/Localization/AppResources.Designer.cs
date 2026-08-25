@@ -213,6 +213,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Book.
+        /// </summary>
+        internal static string BookDetailPageEditBookButtonText {
+            get {
+                return ResourceManager.GetString("BookDetailPageEditBookButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit book details.
+        /// </summary>
+        internal static string BookDetailPageEditBookDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageEditBookDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string BookDetailPageEditBookmarkButtonText {

@@ -3,11 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Resources.Localization;
+using Shelfly.App.ViewModels;
 using Shelfly.Common;
 
 namespace Shelfly.App.Features.BookEditor.ViewModels;
 
-public partial class BookEditViewModel(LibraryService libraryService) : ObservableObject
+public partial class BookEditViewModel(LibraryService libraryService) : ShelflyViewModelBase, IQueryAttributable
 {
     [ObservableProperty]
     public partial string Title { get; set; } = string.Empty;
@@ -43,16 +44,43 @@ public partial class BookEditViewModel(LibraryService libraryService) : Observab
     public partial bool IsLoading { get; set; } = false;
 
     public Guid BookId { get; private set; }
+
     public bool IsEditMode => BookId != Guid.Empty;
 
-    public void LoadBook(BookEntity book)
+    protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        BookId = book.Id;
-        Title = book.Title;
-        Author = book.Author;
-        Publisher = book.Publisher;
-        ISBN = book.ISBN;
-        PublishDate = book.PublishDate;
+        if (BookId == Guid.Empty)
+        {
+            return;
+        }
+
+        IsLoading = true;
+        try
+        {
+            BookEntity? book = await libraryService.GetBookByIdAsync(BookId, cancellationToken);
+            if (book is not null)
+            {
+                Title = book.Title;
+                Author = book.Author;
+                Publisher = book.Publisher;
+                ISBN = book.ISBN;
+                PublishDate = book.PublishDate;
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid id)
+        {
+            return;
+        }
+
+        BookId = id;
     }
 
     [RelayCommand]
