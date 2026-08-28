@@ -14,8 +14,6 @@ namespace Shelfly.App.Features.Library.ViewModels;
 
 public partial class BookListViewModel(LibraryService libraryService, LibraryExportService exportService) : ShelflyViewModelBase
 {
-    private CancellationTokenSource? _debounceTokenSource;
-
     [ObservableProperty]
     public partial ObservableCollection<BookEntity> Books { get; set; } = [];
 
@@ -44,23 +42,15 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         }
     }
 
-    [RelayCommand]
-    private async Task SearchAsync(string? query)
+    partial void OnSearchQueryChanged(string value)
     {
-        if (_debounceTokenSource != null)
-        {
-            await _debounceTokenSource.CancelAsync();
-        }
-        _debounceTokenSource = new();
-        CancellationToken token = _debounceTokenSource.Token;
+        SearchCommand.Execute(null);
+    }
 
-        await Task.Delay(200, token);
-        if (token.IsCancellationRequested)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(query))
+    [RelayCommand]
+    private async Task SearchAsync(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(SearchQuery))
         {
             await RefreshBooksAsync();
             return;
@@ -69,7 +59,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await libraryService.SearchBooksAsync(query);
+            List<BookEntity> books = await libraryService.SearchBooksAsync(SearchQuery, cancellationToken);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally
