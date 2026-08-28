@@ -129,7 +129,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
                 Application.Current?.Dispatcher.DispatchAsync(async () =>
                 {
                     await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-                    await Shell.Current!.GoToAsync($"//{Routes.BookListPage}");
+                    await Shell.Current!.GoToAsync("..");
                     Title = string.Empty;
                     Author = string.Empty;
                     Publisher = string.Empty;

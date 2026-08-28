@@ -12,6 +12,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Shelfly.App</RootNamespace>
     <UseMaui>true</UseMaui>
+    <UseMaterial3>true</UseMaterial3>
     <SingleProject>true</SingleProject>
     <!-- Enable XAML source generation for faster build times and improved performance.
              This generates C# code from XAML at compile time instead of runtime inflation.
@@ -91,5 +92,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AppResources.de.resx</DependentUpon>
     </Compile>
+    <Compile Remove="Controls\FloatingLabelEditor.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <MauiXaml Remove="Controls\FloatingLabelEditor.xaml" />
   </ItemGroup>
 </Project>

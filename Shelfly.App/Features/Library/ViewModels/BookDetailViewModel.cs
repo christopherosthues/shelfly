@@ -90,7 +90,7 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
 
         if (result.IsSuccess)
         {
-            Bookmarks.Remove(bookmark);
+            Bookmarks = [.. Bookmarks.Where(b => b.Id != bookmark.Id)];
         }
     }
 

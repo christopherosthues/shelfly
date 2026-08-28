@@ -16,7 +16,7 @@
                 RowSpacing="16"
                 Padding="16">
 
-                <Editor
+                <Entry
                     Grid.Row="0"
                     x:Name="TitleEditor"
                     Placeholder="{x:Static local:AppResources.BookEditPageTitleLabel}"
@@ -30,7 +30,7 @@
                     Text="{Binding TitleError}"
                     TextColor="Red" />
 
-                <Editor
+                <Entry
                     Grid.Row="2"
                     x:Name="AuthorEditor"
                     Placeholder="{x:Static local:AppResources.BookEditPageAuthorLabel}"
@@ -44,7 +44,7 @@
                     Text="{Binding AuthorError}"
                     TextColor="Red" />
 
-                <Editor
+                <Entry
                     Grid.Row="4"
                     x:Name="PublisherEditor"
                     Placeholder="{x:Static local:AppResources.BookEditPagePublisherLabel}"
