@@ -46,9 +46,14 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
     [ObservableProperty]
     public partial bool IsSaving { get; set; } = false;
 
-    public Guid BookId { get; private set; }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PageTitle))]
+    public partial Guid BookId { get; private set; }
 
-    public bool IsEditMode => BookId != Guid.Empty;
+    private bool IsEditMode => BookId != Guid.Empty;
+
+    public string PageTitle =>
+        IsEditMode ? AppResources.BookEditPageEditBookTitle : AppResources.BookEditPageNewBookTitle;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
@@ -73,15 +78,6 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
                     await Shell.Current.GoToAsync("..");
                 }
             }
-            else
-            {
-                Title = string.Empty;
-                Author = string.Empty;
-                Publisher = string.Empty;
-                ISBN = string.Empty;
-                PublishDate = null;
-                ClearErrors();
-            }
         }
         finally
         {
@@ -98,6 +94,24 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
         }
 
         BookId = id;
+    }
+
+    public override void OnNavigatingFrom()
+    {
+        base.OnNavigatingFrom();
+
+        BookId = Guid.Empty;
+        Title = string.Empty;
+        Author = string.Empty;
+        Publisher = string.Empty;
+        ISBN = string.Empty;
+        PublishDate = null;
+        ClearErrors();
+
+        if (SaveCommand.CanBeCanceled)
+        {
+            SaveCommand.Cancel();
+        }
     }
 
     [RelayCommand]
@@ -126,17 +140,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
 
             if (result.IsSuccess)
             {
-                Application.Current?.Dispatcher.DispatchAsync(async () =>
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-                    await Shell.Current!.GoToAsync("..");
-                    Title = string.Empty;
-                    Author = string.Empty;
-                    Publisher = string.Empty;
-                    ISBN = string.Empty;
-                    PublishDate = null;
-                    BookId = Guid.Empty;
-                });
+                await Shell.Current!.GoToAsync("..");
             }
             else if (result.Error?.Contains("ISBN", StringComparison.OrdinalIgnoreCase) == true)
             {

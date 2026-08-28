@@ -78,7 +78,7 @@
     <data name="BookListPageSwipeToEditCommand" xml:space="preserve">
         <value>Bearbeiten</value>
     </data>
-    <data name="BookEditPageTitle" xml:space="preserve">
+    <data name="BookEditPageEditBookTitle" xml:space="preserve">
         <value>Buch bearbeiten</value>
     </data>
     <data name="BookEditPageAddTitle" xml:space="preserve">
@@ -159,7 +159,7 @@
     <data name="BookDetailPageNoteIndicatorTooltip" xml:space="preserve">
         <value>Notiz anzeigen</value>
     </data>
-    <data name="BookmarkEditPageTitle" xml:space="preserve">
+    <data name="BookmarkEditPageEditBookmarkTitle" xml:space="preserve">
         <value>Lesezeichen bearbeiten</value>
     </data>
     <data name="BookmarkEditPageAddTitle" xml:space="preserve">
@@ -329,5 +329,11 @@
     </data>
     <data name="BookEditPageBookNotFoundTitle" xml:space="preserve">
         <value>Buch nicht gefunden</value>
+    </data>
+    <data name="BookEditPageNewBookTitle" xml:space="preserve">
+        <value>Neues Buch</value>
+    </data>
+    <data name="BookmarkEditPageNewBookmarkTitle" xml:space="preserve">
+        <value>Neues Lesezeichen</value>
     </data>
 </root>

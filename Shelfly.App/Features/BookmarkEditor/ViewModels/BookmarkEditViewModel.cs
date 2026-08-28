@@ -35,7 +35,16 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
     [ObservableProperty]
     public partial bool IsSaving { get; set; } = false;
 
-    public Guid BookmarkId { get; set; } = Guid.Empty;
+    private bool IsEditMode => BookmarkId != Guid.Empty;
+
+    public string PageTitle => IsEditMode
+        ? AppResources.BookmarkEditPageEditBookmarkTitle
+        : AppResources.BookmarkEditPageNewBookmarkTitle;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PageTitle))]
+    public partial Guid BookmarkId { get; set; }
+
     public Guid BookId { get; set; }
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
@@ -59,12 +68,6 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
                     await Shell.Current.GoToAsync("..");
                 }
             }
-            else
-            {
-                StartPage = 1;
-                EndPage = null;
-                Note = null;
-            }
         }
         finally
         {
@@ -77,13 +80,29 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
         if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid bookGuid ||
             !query.TryGetValue(nameof(BookmarkId), out var bookmarkId) || bookmarkId is not Guid bookmarkGuid)
         {
-            BookId = Guid.Empty;
-            BookmarkId = Guid.Empty;
             return;
         }
 
         BookId = bookGuid;
         BookmarkId = bookmarkGuid;
+    }
+
+    public override void OnNavigatingFrom()
+    {
+        base.OnNavigatingFrom();
+
+        BookId = Guid.Empty;
+        BookmarkId = Guid.Empty;
+        StartPage = 1;
+        EndPage = null;
+        Note = null;
+        StartPageError = null;
+        EndPageError = null;
+
+        if (SaveCommand.CanBeCanceled)
+        {
+            SaveCommand.Cancel();
+        }
     }
 
     partial void OnStartPageChanged(int value)
@@ -120,20 +139,12 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
         IsSaving = true;
         try
         {
-            Result<BookmarkEntity> result;
-
-            if (BookmarkId == Guid.Empty)
-            {
-                result = await libraryService.AddBookmarkAsync(BookId, StartPage, EndPage, Note, cancellationToken);
-            }
-            else
-            {
-                result = await libraryService.UpdateBookmarkAsync(BookmarkId, StartPage, EndPage, Note, cancellationToken);
-            }
+            Result<BookmarkEntity> result = IsEditMode
+                ? await libraryService.UpdateBookmarkAsync(BookmarkId, StartPage, EndPage, Note, cancellationToken)
+                : await libraryService.AddBookmarkAsync(BookId, StartPage, EndPage, Note, cancellationToken);
 
             if (result.IsSuccess)
             {
-                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
                 await Shell.Current.GoToAsync("..");
             }
             else

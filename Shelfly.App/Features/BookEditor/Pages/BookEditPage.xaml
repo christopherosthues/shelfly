@@ -8,7 +8,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     x:DataType="viewModels:BookEditViewModel"
-    Title="{x:Static local:AppResources.BookEditPageTitle}">
+    Title="{Binding PageTitle}">
     <Grid RowDefinitions="*, Auto">
         <ScrollView Grid.Row="0" IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
             <Grid

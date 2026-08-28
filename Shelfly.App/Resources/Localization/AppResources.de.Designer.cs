@@ -393,6 +393,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buch bearbeiten.
+        /// </summary>
+        internal static string BookEditPageEditBookTitle {
+            get {
+                return ResourceManager.GetString("BookEditPageEditBookTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ISBN existiert bereits.
         /// </summary>
         internal static string BookEditPageISBNDuplicateError {
@@ -416,6 +425,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookEditPageISBNLabel {
             get {
                 return ResourceManager.GetString("BookEditPageISBNLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neues Buch.
+        /// </summary>
+        internal static string BookEditPageNewBookTitle {
+            get {
+                return ResourceManager.GetString("BookEditPageNewBookTitle", resourceCulture);
             }
         }
         
@@ -479,15 +497,6 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookEditPageSaveButtonText {
             get {
                 return ResourceManager.GetString("BookEditPageSaveButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Buch bearbeiten.
-        /// </summary>
-        internal static string BookEditPageTitle {
-            get {
-                return ResourceManager.GetString("BookEditPageTitle", resourceCulture);
             }
         }
         
@@ -735,6 +744,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lesezeichen bearbeiten.
+        /// </summary>
+        internal static string BookmarkEditPageEditBookmarkTitle {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageEditBookmarkTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Endseitennummer (optional).
         /// </summary>
         internal static string BookmarkEditPageEndingPageDescription {
@@ -758,6 +776,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageEndPageRangeError {
             get {
                 return ResourceManager.GetString("BookmarkEditPageEndPageRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neues Lesezeichen.
+        /// </summary>
+        internal static string BookmarkEditPageNewBookmarkTitle {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageNewBookmarkTitle", resourceCulture);
             }
         }
         
@@ -848,15 +875,6 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageStartPageLabel {
             get {
                 return ResourceManager.GetString("BookmarkEditPageStartPageLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Lesezeichen bearbeiten.
-        /// </summary>
-        internal static string BookmarkEditPageTitle {
-            get {
-                return ResourceManager.GetString("BookmarkEditPageTitle", resourceCulture);
             }
         }
         
