@@ -43,6 +43,9 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
     [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
 
+    [ObservableProperty]
+    public partial bool IsSaving { get; set; } = false;
+
     public Guid BookId { get; private set; }
 
     public bool IsEditMode => BookId != Guid.Empty;
@@ -77,6 +80,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
                 Publisher = string.Empty;
                 ISBN = string.Empty;
                 PublishDate = null;
+                ClearErrors();
             }
         }
         finally
@@ -103,7 +107,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
     }
 
     [RelayCommand]
-    private async Task SaveAsync()
+    private async Task SaveAsync(CancellationToken cancellationToken = default)
     {
         ClearErrors();
         bool isValid = Validate();
@@ -113,17 +117,18 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
             return;
         }
 
-        IsLoading = true;
+        IsSaving = true;
         try
         {
             Result<BookEntity> result = IsEditMode
-                ? await libraryService.UpdateBookAsync(BookId, Title, Author, ISBN, Publisher, PublishDate)
-                : await libraryService.AddBookAsync(Title, Author, ISBN, Publisher, PublishDate);
+                ? await libraryService.UpdateBookAsync(BookId, Title, Author, ISBN, Publisher, PublishDate, cancellationToken)
+                : await libraryService.AddBookAsync(Title, Author, ISBN, Publisher, PublishDate, cancellationToken);
 
             if (result.IsSuccess)
             {
                 Application.Current?.Dispatcher.DispatchAsync(async () =>
                 {
+                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
                     await Shell.Current!.GoToAsync($"//{Routes.BookListPage}");
                     Title = string.Empty;
                     Author = string.Empty;
@@ -140,7 +145,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
         }
         finally
         {
-            IsLoading = false;
+            IsSaving = false;
         }
     }
 

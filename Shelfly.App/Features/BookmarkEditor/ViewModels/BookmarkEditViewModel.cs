@@ -32,6 +32,9 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
     [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
 
+    [ObservableProperty]
+    public partial bool IsSaving { get; set; } = false;
+
     public Guid BookmarkId { get; set; } = Guid.Empty;
     public Guid BookId { get; set; }
 
@@ -114,24 +117,33 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
             return;
         }
 
-        Result<BookmarkEntity> result;
+        IsSaving = true;
+        try
+        {
+            Result<BookmarkEntity> result;
 
-        if (BookmarkId == Guid.Empty)
-        {
-            result = await libraryService.AddBookmarkAsync(BookId, StartPage, EndPage, Note, cancellationToken);
-        }
-        else
-        {
-            result = await libraryService.UpdateBookmarkAsync(BookmarkId, StartPage, EndPage, Note, cancellationToken);
-        }
+            if (BookmarkId == Guid.Empty)
+            {
+                result = await libraryService.AddBookmarkAsync(BookId, StartPage, EndPage, Note, cancellationToken);
+            }
+            else
+            {
+                result = await libraryService.UpdateBookmarkAsync(BookmarkId, StartPage, EndPage, Note, cancellationToken);
+            }
 
-        if (result.IsSuccess)
-        {
-            await Shell.Current.GoToAsync("..");
+            if (result.IsSuccess)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+                await Shell.Current.GoToAsync("..");
+            }
+            else
+            {
+                await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageSaveFailedTitle, AppResources.BookmarkEditPageSaveFailedMessage, AppResources.CommonOkButton);
+            }
         }
-        else
+        finally
         {
-            await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageSaveFailedTitle, AppResources.BookmarkEditPageSaveFailedMessage, AppResources.CommonOkButton);
+            IsSaving = false;
         }
     }
 }

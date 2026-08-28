@@ -5,45 +5,73 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:viewModels="clr-namespace:Shelfly.App.Features.BookmarkEditor.ViewModels"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     x:DataType="viewModels:BookmarkEditViewModel"
     Title="{x:Static localization:AppResources.BookmarkEditPageTitle}">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="16" Padding="16">
-            <Entry x:Name="StartPageEntry" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageStartingPageDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
-                    Text="{Binding StartPage, Mode=TwoWay, StringFormat='{0}'}"
-                    Keyboard="Numeric" />
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0" IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
+            <VerticalStackLayout Spacing="16" Padding="16">
+                <Entry x:Name="StartPageEntry" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageStartingPageDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
+                        Text="{Binding StartPage, Mode=TwoWay, StringFormat='{0}'}"
+                        Keyboard="Numeric" />
 
-            <Label Text="{Binding StartPageError}"
-                   SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageStartingPageDescription}"
-                   TextColor="Red"
-                    FontSize="12"
-                    IsVisible="{Binding StartPageError}" />
+                <Label Text="{Binding StartPageError}"
+                       SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageStartingPageDescription}"
+                       TextColor="Red"
+                        FontSize="12"
+                        IsVisible="{Binding StartPageError}" />
 
-            <Entry x:Name="EndPageEntry" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageEndingPageDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
-                    Text="{Binding EndPage, Mode=TwoWay, StringFormat='{0}'}"
-                    Keyboard="Numeric" />
+                <Entry x:Name="EndPageEntry" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageEndingPageDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
+                        Text="{Binding EndPage, Mode=TwoWay, StringFormat='{0}'}"
+                        Keyboard="Numeric" />
 
-            <Label Text="{Binding EndPageError}"
-                   SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageEndingPageDescription}"
-                   TextColor="Red"
-                    FontSize="12"
-                    IsVisible="{Binding EndPageError}" />
+                <Label Text="{Binding EndPageError}"
+                       SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageEndingPageDescription}"
+                       TextColor="Red"
+                        FontSize="12"
+                        IsVisible="{Binding EndPageError}" />
 
-            <Editor x:Name="NoteEditor" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageNoteFieldDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
-                     Text="{Binding Note, Mode=TwoWay}"
-                     HeightRequest="100" />
+                <Editor x:Name="NoteEditor" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageNoteFieldDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
+                         Text="{Binding Note, Mode=TwoWay}"
+                         HeightRequest="100" />
 
-            <Label Text="{Binding NoteError}"
-                   SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageNoteFieldDescription}"
-                   TextColor="Red"
-                    FontSize="12"
-                    IsVisible="{Binding NoteError}" />
+                <Label Text="{Binding NoteError}"
+                       SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageNoteFieldDescription}"
+                       TextColor="Red"
+                        FontSize="12"
+                        IsVisible="{Binding NoteError}" />
 
-            <Button x:Name="SaveButton" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageSaveChangesDescription}" Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
-                     Command="{Binding SaveCommand}"
-                     Margin="0,16,0,0" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <Grid Margin="0,16,0,0">
+                    <Button
+                        SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageSaveChangesDescription}"
+                        Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
+                        Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}" />
+
+                    <ActivityIndicator
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        IsRunning="{Binding IsSaving}"
+                        IsVisible="{Binding IsSaving}" />
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <BoxView
+            Grid.Row="0"
+            Opacity="0.5"
+            BackgroundColor="Black"
+            IsVisible="{Binding IsLoading}" />
+
+        <ActivityIndicator
+            Grid.Row="0"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="40"
+            HeightRequest="40"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}" />
+    </Grid>
 </pages:ShelflyContentPageBase>
