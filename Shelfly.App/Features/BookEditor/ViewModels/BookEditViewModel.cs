@@ -49,22 +49,34 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        if (BookId == Guid.Empty)
-        {
-            return;
-        }
-
         IsLoading = true;
         try
         {
-            BookEntity? book = await libraryService.GetBookByIdAsync(BookId, cancellationToken);
-            if (book is not null)
+            if (BookId != Guid.Empty)
             {
-                Title = book.Title;
-                Author = book.Author;
-                Publisher = book.Publisher;
-                ISBN = book.ISBN;
-                PublishDate = book.PublishDate;
+                BookEntity? book = await libraryService.GetBookByIdAsync(BookId, cancellationToken);
+                if (book is not null)
+                {
+                    Title = book.Title;
+                    Author = book.Author;
+                    Publisher = book.Publisher;
+                    ISBN = book.ISBN;
+                    PublishDate = book.PublishDate;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlertAsync(AppResources.BookEditPageBookNotFoundTitle,
+                        AppResources.BookEditPageBookNotFoundMessage, AppResources.CommonOkButton);
+                    await Shell.Current.GoToAsync("..");
+                }
+            }
+            else
+            {
+                Title = string.Empty;
+                Author = string.Empty;
+                Publisher = string.Empty;
+                ISBN = string.Empty;
+                PublishDate = null;
             }
         }
         finally
@@ -77,6 +89,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
     {
         if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid id)
         {
+            BookId = Guid.Empty;
             return;
         }
 

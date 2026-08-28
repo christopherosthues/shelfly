@@ -27,5 +27,5 @@ public class BookmarkEntity
 
     [ForeignKey(nameof(BookId))]
     [DeleteBehavior(DeleteBehavior.Cascade)]
-    public BookEntity? Book { get; set; } = new();
+    public BookEntity? Book { get; set; }
 }

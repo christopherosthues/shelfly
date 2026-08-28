@@ -321,4 +321,10 @@
     <data name="CommonOkButton" xml:space="preserve">
         <value>OK</value>
     </data>
+    <data name="BookEditPageBookNotFoundMessage" xml:space="preserve">
+        <value>Buch nicht gefunden</value>
+    </data>
+    <data name="BookEditPageBookNotFoundTitle" xml:space="preserve">
+        <value>Buch nicht gefunden</value>
+    </data>
 </root>

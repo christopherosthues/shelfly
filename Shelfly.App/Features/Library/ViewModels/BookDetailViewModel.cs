@@ -38,6 +38,17 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         }
     }
 
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid id)
+        {
+            BookId = Guid.Empty;
+            return;
+        }
+
+        BookId = id;
+    }
+
     [RelayCommand]
     private async Task DeleteBookAsync(CancellationToken cancellationToken = default)
     {
@@ -115,15 +126,5 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         };
 
         await Shell.Current.GoToAsync(Routes.BookEditPage, parameters);
-    }
-
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid id)
-        {
-            return;
-        }
-
-        BookId = id;
     }
 }

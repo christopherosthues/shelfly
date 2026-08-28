@@ -29,25 +29,58 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
     [ObservableProperty]
     public partial string? NoteError { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsLoading { get; set; } = false;
+
     public Guid BookmarkId { get; set; } = Guid.Empty;
     public Guid BookId { get; set; }
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        if (BookmarkId != Guid.Empty)
+        IsLoading = true;
+        try
         {
-            BookmarkEntity? bookmark = await libraryService.GetBookmarkByIdAsync(BookmarkId, cancellationToken);
-            if (bookmark is not null)
+            if (BookmarkId != Guid.Empty)
             {
-                StartPage = bookmark.StartPage;
-                EndPage = bookmark.EndPage;
-                Note = bookmark.Note;
+                BookmarkEntity? bookmark = await libraryService.GetBookmarkByIdAsync(BookmarkId, cancellationToken);
+                if (bookmark is not null)
+                {
+                    StartPage = bookmark.StartPage;
+                    EndPage = bookmark.EndPage;
+                    Note = bookmark.Note;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageBookmarkNotFoundTitle,
+                        AppResources.BookmarkEditPageBookmarkNotFoundMessage, AppResources.CommonOkButton);
+                    await Shell.Current.GoToAsync("..");
+                }
             }
             else
             {
-                await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageBookmarkNotFoundTitle, AppResources.BookmarkEditPageBookmarkNotFoundMessage, AppResources.CommonOkButton);
+                StartPage = 1;
+                EndPage = null;
+                Note = null;
             }
         }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid bookGuid ||
+            !query.TryGetValue(nameof(BookmarkId), out var bookmarkId) || bookmarkId is not Guid bookmarkGuid)
+        {
+            BookId = Guid.Empty;
+            BookmarkId = Guid.Empty;
+            return;
+        }
+
+        BookId = bookGuid;
+        BookmarkId = bookmarkGuid;
     }
 
     partial void OnStartPageChanged(int value)
@@ -100,22 +133,5 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
         {
             await Shell.Current.DisplayAlertAsync(AppResources.BookmarkEditPageSaveFailedTitle, AppResources.BookmarkEditPageSaveFailedMessage, AppResources.CommonOkButton);
         }
-    }
-
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid bookGuid)
-        {
-            return;
-        }
-
-        BookId = bookGuid;
-
-        if (!query.TryGetValue(nameof(BookmarkId), out var bookmarkId) || bookmarkId is not Guid bookmarkGuid)
-        {
-            return;
-        }
-
-        BookmarkId = bookmarkGuid;
     }
 }

@@ -375,6 +375,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Book not found.
+        /// </summary>
+        internal static string BookEditPageBookNotFoundMessage {
+            get {
+                return ResourceManager.GetString("BookEditPageBookNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Book not found.
+        /// </summary>
+        internal static string BookEditPageBookNotFoundTitle {
+            get {
+                return ResourceManager.GetString("BookEditPageBookNotFoundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ISBN already exists.
         /// </summary>
         internal static string BookEditPageISBNDuplicateError {
