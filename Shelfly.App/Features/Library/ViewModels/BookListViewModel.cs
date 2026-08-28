@@ -15,6 +15,7 @@ namespace Shelfly.App.Features.Library.ViewModels;
 public partial class BookListViewModel(LibraryService libraryService, LibraryExportService exportService) : ShelflyViewModelBase
 {
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EmptyStateMessage))]
     public partial ObservableCollection<BookEntity> Books { get; set; } = [];
 
     [ObservableProperty]
@@ -25,6 +26,12 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
 
     [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
+
+    public string EmptyStateMessage => Books.Count == 0
+        ? (string.IsNullOrWhiteSpace(SearchQuery)
+            ? AppResources.BookListPageEmptyStateMessage
+            : AppResources.BookListPageSearchEmptyMessage)
+        : string.Empty;
 
     public List<SortCriterion> SortOptions { get; } = [.. Enum.GetValues<SortCriterion>()];
 
@@ -45,6 +52,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     partial void OnSearchQueryChanged(string value)
     {
         SearchCommand.Execute(null);
+        OnPropertyChanged(nameof(EmptyStateMessage));
     }
 
     [RelayCommand]

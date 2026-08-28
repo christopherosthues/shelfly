@@ -51,6 +51,9 @@
     <data name="BookListPageEmptyStateMessage" xml:space="preserve">
         <value>No books yet. Tap + to add your first book.</value>
     </data>
+    <data name="BookListPageSearchEmptyMessage" xml:space="preserve">
+        <value>No books matched your search.</value>
+    </data>
     <data name="BookListPageSearchPlaceholder" xml:space="preserve">
         <value>Search by title, author, publisher, or ISBN</value>
     </data>

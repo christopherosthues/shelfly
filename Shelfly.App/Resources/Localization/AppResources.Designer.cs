@@ -618,6 +618,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No books matched your search..
+        /// </summary>
+        internal static string BookListPageSearchEmptyMessage {
+            get {
+                return ResourceManager.GetString("BookListPageSearchEmptyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search by title, author, publisher, or ISBN.
         /// </summary>
         internal static string BookListPageSearchPlaceholder {

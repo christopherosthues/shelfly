@@ -74,7 +74,7 @@
                 <Label
                     HorizontalOptions="Center"
                     SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}"
-                    Text="{x:Static resx:AppResources.BookListPageEmptyStateMessage}" />
+                    Text="{Binding EmptyStateMessage}" />
             </CollectionView.EmptyView>
 
             <CollectionView.ItemTemplate>
