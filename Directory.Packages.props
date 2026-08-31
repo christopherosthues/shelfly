@@ -45,6 +45,8 @@
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.18.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.18.0" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.17.2" />
+    <PackageVersion Include="Scalar.AspNetCore.Microsoft" Version="2.17.2" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="StrawberryShake" Version="16.6.1" />
     <PackageVersion Include="StrawberryShake.Maui" Version="16.6.1" />
