@@ -144,9 +144,6 @@
     <data name="BookDetailPageBookmarksTitle" xml:space="preserve">
         <value>Bookmarks</value>
     </data>
-    <data name="BookDetailPageAddBookmarkButtonText" xml:space="preserve">
-        <value>Add Bookmark</value>
-    </data>
     <data name="BookDetailPageDeleteBookButtonText" xml:space="preserve">
         <value>Delete Book</value>
     </data>

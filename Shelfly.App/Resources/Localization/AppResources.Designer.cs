@@ -69,15 +69,6 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Bookmark.
-        /// </summary>
-        internal static string BookDetailPageAddBookmarkButtonText {
-            get {
-                return ResourceManager.GetString("BookDetailPageAddBookmarkButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add new bookmark to this book.
         /// </summary>
         internal static string BookDetailPageAddNewBookmarkDescription {
