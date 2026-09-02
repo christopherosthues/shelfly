@@ -69,6 +69,15 @@
     <data name="BookListPageSortByPublishDate" xml:space="preserve">
         <value>Publish Date</value>
     </data>
+    <data name="BookListPageTitle" xml:space="preserve">
+        <value>My Library</value>
+    </data>
+    <data name="SortDirectionAscending" xml:space="preserve">
+        <value>Ascending</value>
+    </data>
+    <data name="SortDirectionDescending" xml:space="preserve">
+        <value>Descending</value>
+    </data>
     <data name="BookListPageAddBookButtonText" xml:space="preserve">
         <value>Add Book</value>
     </data>

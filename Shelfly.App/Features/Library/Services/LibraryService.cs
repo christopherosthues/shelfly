@@ -32,18 +32,22 @@ public class LibraryService(LocalDbContext dbContext)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<BookEntity>> SortBooksAsync(SortCriterion criterion, CancellationToken cancellationToken = default)
+    public async Task<List<BookEntity>> SortBooksAsync(SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken = default)
     {
         List<BookEntity> books = await GetAllBooksAsync(cancellationToken);
 
-        return criterion switch
+        IEnumerable<BookEntity> sortedBooks = criterion switch
         {
-            SortCriterion.Title => [.. books.OrderBy(b => b.Title)],
-            SortCriterion.Author => [.. books.OrderBy(b => b.Author)],
-            SortCriterion.Publisher => [.. books.OrderBy(b => b.Publisher)],
-            SortCriterion.PublishDate => [.. books.OrderBy(b => b.PublishDate ?? DateTime.MinValue)],
+            SortCriterion.Title => direction == SortDirection.Ascending ? books.OrderBy(b => b.Title) : books.OrderByDescending(b => b.Title),
+            SortCriterion.Author => direction == SortDirection.Ascending ? books.OrderBy(b => b.Author) : books.OrderByDescending(b => b.Author),
+            SortCriterion.Publisher => direction == SortDirection.Ascending ? books.OrderBy(b => b.Publisher) : books.OrderByDescending(b => b.Publisher),
+            SortCriterion.PublishDate => direction == SortDirection.Ascending
+                ? books.OrderBy(b => b.PublishDate ?? DateTime.MinValue)
+                : books.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
             _ => books
         };
+
+        return [.. sortedBooks];
     }
 
     public async Task<BookEntity?> SoftDeleteBookAsync(Guid bookId, CancellationToken cancellationToken = default)
@@ -239,12 +243,4 @@ public class LibraryService(LocalDbContext dbContext)
 
         return Result<bool>.Success(true);
     }
-}
-
-public enum SortCriterion
-{
-    Title,
-    Author,
-    Publisher,
-    PublishDate
 }

@@ -717,6 +717,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Library.
+        /// </summary>
+        internal static string BookListPageTitle {
+            get {
+                return ResourceManager.GetString("BookListPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown error.
         /// </summary>
         internal static string BookListPageUnknownErrorMessage {
@@ -1028,6 +1037,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string RegistrationPageUserNamePlaceholder {
             get {
                 return ResourceManager.GetString("RegistrationPageUserNamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ascending.
+        /// </summary>
+        internal static string SortDirectionAscending {
+            get {
+                return ResourceManager.GetString("SortDirectionAscending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descending.
+        /// </summary>
+        internal static string SortDirectionDescending {
+            get {
+                return ResourceManager.GetString("SortDirectionDescending", resourceCulture);
             }
         }
     }

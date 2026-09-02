@@ -717,6 +717,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Meine Bibliothek.
+        /// </summary>
+        internal static string BookListPageTitle {
+            get {
+                return ResourceManager.GetString("BookListPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unbekannter Fehler.
         /// </summary>
         internal static string BookListPageUnknownErrorMessage {
@@ -839,6 +848,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageSaveChangesDescription {
             get {
                 return ResourceManager.GetString("BookmarkEditPageSaveChangesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lesezeichen über schwebende Aktionsschaltfläche speichern.
+        /// </summary>
+        internal static string BookmarkEditPageSaveFabDescription {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageSaveFabDescription", resourceCulture);
             }
         }
         
@@ -1019,6 +1037,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string RegistrationPageUserNamePlaceholder {
             get {
                 return ResourceManager.GetString("RegistrationPageUserNamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aufsteigend.
+        /// </summary>
+        internal static string SortDirectionAscending {
+            get {
+                return ResourceManager.GetString("SortDirectionAscending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Absteigend.
+        /// </summary>
+        internal static string SortDirectionDescending {
+            get {
+                return ResourceManager.GetString("SortDirectionDescending", resourceCulture);
             }
         }
     }
