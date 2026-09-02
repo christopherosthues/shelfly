@@ -240,6 +240,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit book via floating action button.
+        /// </summary>
+        internal static string BookDetailPageEditFabDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageEditFabDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to International Standard Book Number.
         /// </summary>
         internal static string BookDetailPageISBNDescription {
@@ -488,6 +497,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookEditPageSaveButtonText {
             get {
                 return ResourceManager.GetString("BookEditPageSaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save book changes via floating action button.
+        /// </summary>
+        internal static string BookEditPageSaveFabDescription {
+            get {
+                return ResourceManager.GetString("BookEditPageSaveFabDescription", resourceCulture);
             }
         }
         
@@ -821,6 +839,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageSaveChangesDescription {
             get {
                 return ResourceManager.GetString("BookmarkEditPageSaveChangesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save bookmark via floating action button.
+        /// </summary>
+        internal static string BookmarkEditPageSaveFabDescription {
+            get {
+                return ResourceManager.GetString("BookmarkEditPageSaveFabDescription", resourceCulture);
             }
         }
         

@@ -13,11 +13,6 @@
     Title="{x:Static local:AppResources.BookDetailPageTitle}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookDescription}"
-                     Text="{x:Static local:AppResources.BookDetailPageEditBookButtonText}"
-                     IconImageSource="edit_icon.svg"
-                     Command="{Binding EditBookCommand}" />
-
         <ToolbarItem
             SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageSoftDeleteBookDescription}"
             Text="{x:Static local:AppResources.BookDetailPageDeleteBookButtonText}"
@@ -25,156 +20,188 @@
             Command="{Binding DeleteBookCommand}" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="16" Padding="16">
-            <ActivityIndicator IsRunning="{Binding IsLoading}"
-                               IsVisible="{Binding IsLoading}"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               HeightRequest="40"
-                               WidthRequest="40" />
-
-            <VerticalStackLayout IsVisible="{Binding Book, Converter={toolkit:IsNotNullConverter}}"
-                                 Spacing="8">
-                <!-- Title (prominent heading) -->
-                <Label x:Name="TitleLabel"
-                       SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookTitleDescription}"
-                       Text="{Binding Book.Title}"
-                       FontSize="24"
-                       FontAttributes="Bold" />
-
-                <!-- Author with label -->
-                <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
-                    <Label Grid.Column="0"
-                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookAuthorDescription}"
-                           Text="{x:Static local:AppResources.BookDetailPageAuthorLabel}"
-                           FontSize="16"
-                           VerticalOptions="Center"
-                           Margin="0,0,8,0" />
-                    <Label Grid.Column="1"
-                           Text="{Binding Book.Author}"
-                           FontSize="18"
-                           VerticalOptions="Center" />
-                </Grid>
-
-                <!-- ISBN with label -->
-                <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
-                    <Label Grid.Column="0"
-                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageISBNDescription}"
-                           Text="{x:Static local:AppResources.BookDetailPageISBNLabel}"
-                           FontSize="14"
-                           VerticalOptions="Center"
-                           Margin="0,0,8,0"
-                           Opacity="0.7" />
-                    <Label Grid.Column="1"
-                           Text="{Binding Book.ISBN}"
-                           FontSize="16"
-                           VerticalOptions="Center"
-                           Opacity="0.7" />
-                </Grid>
-
-                <!-- Publisher with label -->
-                <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
-                    <Label Grid.Column="0"
-                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookPublisherDescription}"
-                           Text="{x:Static local:AppResources.BookDetailPagePublisherLabel}"
-                           FontSize="14"
-                           VerticalOptions="Center"
-                           Margin="0,0,8,0" />
-                    <Label Grid.Column="1"
-                           Text="{Binding Book.Publisher}"
-                           FontSize="16"
-                           VerticalOptions="Center" />
-                </Grid>
-
-                <!-- Publish Date with label -->
-                <Grid ColumnDefinitions="Auto, *"
-                      Padding="0,4,0,0"
-                      IsVisible="{Binding Book.PublishDate, Converter={toolkit:IsStringNotNullOrWhiteSpaceConverter}}">
-                    <Label Grid.Column="0"
-                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPagePublicationDateDescription}"
-                           Text="{x:Static local:AppResources.BookDetailPagePublishDateLabel}"
-                           FontSize="14"
-                           VerticalOptions="Center"
-                           Margin="0,0,8,0" />
-                    <Label Grid.Column="1" Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}"
-                           FontSize="16"
-                           VerticalOptions="Center" />
-                </Grid>
-            </VerticalStackLayout>
-
-            <HorizontalStackLayout Margin="0,16,0,8">
-                <Label x:Name="BookmarksTitleLabel"
-                       SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarksSectionDescription}"
-                       Text="{x:Static local:AppResources.BookDetailPageBookmarksTitle}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       VerticalOptions="Center"
-                       Margin="0,0,16,0" />
-
-                <ImageButton
-                    SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageAddNewBookmarkDescription}"
-                    Source="add_icon.svg"
-                    Command="{Binding AddBookmarkCommand}"
-                    VerticalOptions="Center"
-                    Margin="0,0,0,0" />
-            </HorizontalStackLayout>
-
-            <CollectionView
-                SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkListDescription}"
-                ItemsSource="{Binding Bookmarks}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="entities:BookmarkEntity">
-                        <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
-                              SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
-                            <Label Grid.Column="0"
-                                   Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
-                                   FontSize="16"
-                                   VerticalOptions="Center" />
-
-                            <Label Grid.Column="1"
-                                   Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
+    <Grid RowDefinitions="*" ColumnDefinitions="*">
+        <!-- Book Details -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="16" Padding="16">
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"
+                                   HorizontalOptions="Center"
                                    VerticalOptions="Center"
-                                   FontSize="16"
-                                   IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
+                                   HeightRequest="40"
+                                   WidthRequest="40" />
 
-                            <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
-                                <ImageButton
-                                    SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
-                                    Source="note_icon.svg"
-                                    WidthRequest="32"
-                                    HeightRequest="32"
-                                    MaximumHeightRequest="32"
-                                    MaximumWidthRequest="32"
-                                    Margin="8,0,0,0"
-                                    IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
-                                    Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                    CommandParameter="{Binding Note}" />
+                <VerticalStackLayout IsVisible="{Binding Book, Converter={toolkit:IsNotNullConverter}}"
+                                     Spacing="8">
+                    <!-- Title (prominent heading) -->
+                    <Label x:Name="TitleLabel"
+                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookTitleDescription}"
+                           Text="{Binding Book.Title}"
+                           FontSize="24"
+                           FontAttributes="Bold" />
 
-                                <ImageButton
-                                    SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
-                                    Source="edit_icon.svg"
-                                    WidthRequest="32"
-                                    HeightRequest="32"
-                                    MaximumHeightRequest="32"
-                                    MaximumWidthRequest="32"
-                                    Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                    CommandParameter="{Binding}" />
+                    <!-- Author with label -->
+                    <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
+                        <Label Grid.Column="0"
+                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookAuthorDescription}"
+                               Text="{x:Static local:AppResources.BookDetailPageAuthorLabel}"
+                               FontSize="16"
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Book.Author}"
+                               FontSize="18"
+                               VerticalOptions="Center" />
+                    </Grid>
 
-                                <ImageButton
-                                    SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
-                                    Source="delete_icon.svg"
-                                    WidthRequest="32"
-                                    HeightRequest="32"
-                                    MaximumHeightRequest="32"
-                                    MaximumWidthRequest="32"
-                                    Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                    CommandParameter="{Binding}" />
-                            </HorizontalStackLayout>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+                    <!-- ISBN with label -->
+                    <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
+                        <Label Grid.Column="0"
+                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageISBNDescription}"
+                               Text="{x:Static local:AppResources.BookDetailPageISBNLabel}"
+                               FontSize="14"
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0"
+                               Opacity="0.7" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Book.ISBN}"
+                               FontSize="16"
+                               VerticalOptions="Center"
+                               Opacity="0.7" />
+                    </Grid>
+
+                    <!-- Publisher with label -->
+                    <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
+                        <Label Grid.Column="0"
+                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookPublisherDescription}"
+                               Text="{x:Static local:AppResources.BookDetailPagePublisherLabel}"
+                               FontSize="14"
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Book.Publisher}"
+                               FontSize="16"
+                               VerticalOptions="Center" />
+                    </Grid>
+
+                    <!-- Publish Date with label -->
+                    <Grid ColumnDefinitions="Auto, *"
+                          Padding="0,4,0,0"
+                          IsVisible="{Binding Book.PublishDate, Converter={toolkit:IsStringNotNullOrWhiteSpaceConverter}}">
+                        <Label Grid.Column="0"
+                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPagePublicationDateDescription}"
+                               Text="{x:Static local:AppResources.BookDetailPagePublishDateLabel}"
+                               FontSize="14"
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0" />
+                        <Label Grid.Column="1" Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}"
+                               FontSize="16"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <HorizontalStackLayout Margin="0,16,0,8">
+                    <Label x:Name="BookmarksTitleLabel"
+                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarksSectionDescription}"
+                           Text="{x:Static local:AppResources.BookDetailPageBookmarksTitle}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           Margin="0,0,16,0" />
+
+                    <ImageButton
+                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageAddNewBookmarkDescription}"
+                        Source="add_icon.svg"
+                        Command="{Binding AddBookmarkCommand}"
+                        VerticalOptions="Center"
+                        Margin="0,0,0,0" />
+                </HorizontalStackLayout>
+
+                <CollectionView
+                    SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkListDescription}"
+                    ItemsSource="{Binding Bookmarks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="entities:BookmarkEntity">
+                            <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
+                                  SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
+                                <Label Grid.Column="0"
+                                       Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
+                                       FontSize="16"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
+                                       VerticalOptions="Center"
+                                       FontSize="16"
+                                       IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
+
+                                <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
+                                    <ImageButton
+                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
+                                        Source="note_icon.svg"
+                                        WidthRequest="32"
+                                        HeightRequest="32"
+                                        MaximumHeightRequest="32"
+                                        MaximumWidthRequest="32"
+                                        Margin="8,0,0,0"
+                                        IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
+                                        Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                        CommandParameter="{Binding Note}" />
+
+                                    <ImageButton
+                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
+                                        Source="edit_icon.svg"
+                                        WidthRequest="32"
+                                        HeightRequest="32"
+                                        MaximumHeightRequest="32"
+                                        MaximumWidthRequest="32"
+                                        Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                        CommandParameter="{Binding}" />
+
+                                    <ImageButton
+                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
+                                        Source="delete_icon.svg"
+                                        WidthRequest="32"
+                                        HeightRequest="32"
+                                        MaximumHeightRequest="32"
+                                        MaximumWidthRequest="32"
+                                        Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                        CommandParameter="{Binding}" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Floating Action Button (FAB) -->
+        <Grid
+            x:Name="FabContainer"
+            Grid.Row="0"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="16">
+
+            <BoxView
+                WidthRequest="64"
+                HeightRequest="64"
+                CornerRadius="32"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+
+            <ImageButton
+                WidthRequest="48"
+                HeightRequest="48"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditFabDescription}"
+                Source="edit_icon.svg"
+                Command="{Binding EditBookCommand}">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior
+                        TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                </ImageButton.Behaviors>
+            </ImageButton>
+        </Grid>
+    </Grid>
 </pages:ShelflyContentPageBase>

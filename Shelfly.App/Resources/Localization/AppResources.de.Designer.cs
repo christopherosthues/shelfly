@@ -240,6 +240,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buch über schwebende Aktionsschaltfläche bearbeiten.
+        /// </summary>
+        internal static string BookDetailPageEditFabDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageEditFabDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Internationale Standard-Buchnummer.
         /// </summary>
         internal static string BookDetailPageISBNDescription {
@@ -488,6 +497,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookEditPageSaveButtonText {
             get {
                 return ResourceManager.GetString("BookEditPageSaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buchänderungen über schwebende Aktionsschaltfläche speichern.
+        /// </summary>
+        internal static string BookEditPageSaveFabDescription {
+            get {
+                return ResourceManager.GetString("BookEditPageSaveFabDescription", resourceCulture);
             }
         }
         

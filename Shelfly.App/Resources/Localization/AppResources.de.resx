@@ -102,6 +102,9 @@
     <data name="BookEditPageSaveButtonText" xml:space="preserve">
         <value>Speichern</value>
     </data>
+    <data name="BookEditPageSaveFabDescription" xml:space="preserve">
+        <value>Buchänderungen über schwebende Aktionsschaltfläche speichern</value>
+    </data>
     <data name="BookEditPageTitleEmptyError" xml:space="preserve">
         <value>Titel darf nicht leer sein</value>
     </data>
@@ -201,6 +204,9 @@
     <data name="BookDetailPageEditBookDescription" xml:space="preserve">
         <value>Buchdetails bearbeiten</value>
     </data>
+    <data name="BookDetailPageEditFabDescription" xml:space="preserve">
+        <value>Buch über schwebende Aktionsschaltfläche bearbeiten</value>
+    </data>
     <data name="BookDetailPageSoftDeleteBookDescription" xml:space="preserve">
         <value>Buch und alle Lesezeichen weich löschen</value>
     </data>
@@ -263,6 +269,9 @@
     </data>
     <data name="BookmarkEditPageSaveChangesDescription" xml:space="preserve">
         <value>Lesezeichenänderungen speichern</value>
+    </data>
+    <data name="BookmarkEditPageSaveFabDescription" xml:space="preserve">
+        <value>Lesezeichen über schwebende Aktionsschaltfläche speichern</value>
     </data>
     <data name="LoadingPageStatusText" xml:space="preserve">
         <value>Deine Bibliothek wird vorbereitet...</value>

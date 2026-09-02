@@ -9,80 +9,68 @@
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     x:DataType="viewModels:BookEditViewModel"
     Title="{Binding PageTitle}">
-    <Grid RowDefinitions="*, Auto">
+    <Grid RowDefinitions="*" ColumnDefinitions="*">
         <ScrollView Grid.Row="0" IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
-            <Grid
-                RowDefinitions="*,*,*,*,*,*,*,*,*,*,*"
-                RowSpacing="16"
+            <VerticalStackLayout
+                Spacing="16"
                 Padding="16">
 
                 <Entry
-                    Grid.Row="0"
                     x:Name="TitleEditor"
                     Placeholder="{x:Static local:AppResources.BookEditPageTitleLabel}"
                     Text="{Binding Title, Mode=TwoWay}"
                     MaxLength="256" />
 
                 <Label
-                    Grid.Row="1"
                     Margin="0,-8,0,0"
                     FontSize="12"
                     Text="{Binding TitleError}"
                     TextColor="Red" />
 
                 <Entry
-                    Grid.Row="2"
                     x:Name="AuthorEditor"
                     Placeholder="{x:Static local:AppResources.BookEditPageAuthorLabel}"
                     Text="{Binding Author, Mode=TwoWay}"
                     MaxLength="256" />
 
                 <Label
-                    Grid.Row="3"
                     Margin="0,-8,0,0"
                     FontSize="12"
                     Text="{Binding AuthorError}"
                     TextColor="Red" />
 
                 <Entry
-                    Grid.Row="4"
                     x:Name="PublisherEditor"
                     Placeholder="{x:Static local:AppResources.BookEditPagePublisherLabel}"
                     Text="{Binding Publisher, Mode=TwoWay}"
                     MaxLength="256" />
 
                 <Label
-                    Grid.Row="5"
                     Margin="0,-8,0,0"
                     FontSize="12"
                     Text="{Binding PublisherError}"
                     TextColor="Red" />
 
                 <Entry
-                    Grid.Row="6"
                     x:Name="ISBNEntry"
                     Keyboard="Text"
                     Placeholder="{x:Static local:AppResources.BookEditPageISBNLabel}"
                     Text="{Binding ISBN, Mode=TwoWay}" />
 
                 <Label
-                    Grid.Row="7"
                     Margin="0,-8,0,0"
                     FontSize="12"
                     Text="{Binding ISBNError}"
                     TextColor="Red" />
 
                 <Label
-                    Grid.Row="8"
                     Margin="0,-8,0,0"
                     FontSize="12"
                     Text="{Binding IsbnDuplicateError}"
                     TextColor="Red"
                     IsVisible="{Binding IsbnDuplicateError}" />
 
-                <Grid
-                    Grid.Row="9"
-                    ColumnDefinitions="*, Auto">
+                <Grid ColumnDefinitions="*, Auto">
                     <DatePicker
                         Grid.Column="0"
                         x:Name="PublishDatePicker"
@@ -101,26 +89,7 @@
                         Command="{Binding ClearPublishDateCommand}" />
                 </Grid>
 
-                <Grid
-                    Grid.Row="10"
-                    Margin="0,16,0,0"
-                    ColumnDefinitions="*">
-                    <Button
-                        Grid.Column="0"
-                        Text="{x:Static local:AppResources.BookEditPageSaveButtonText}"
-                        Command="{Binding SaveCommand}"
-                        HorizontalOptions="Fill"
-                        IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}" />
-
-                    <ActivityIndicator
-                        Grid.Column="0"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        IsRunning="{Binding IsSaving}"
-                        IsVisible="{Binding IsSaving}" />
-                </Grid>
-
-            </Grid>
+            </VerticalStackLayout>
         </ScrollView>
 
         <BoxView
@@ -137,5 +106,42 @@
             HeightRequest="40"
             IsRunning="{Binding IsLoading}"
             IsVisible="{Binding IsLoading}" />
+
+        <!-- Floating Action Button (FAB) -->
+        <Grid
+            x:Name="FabContainer"
+            Grid.Row="0"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="16">
+
+            <BoxView
+                WidthRequest="64"
+                HeightRequest="64"
+                CornerRadius="32"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+
+            <ImageButton
+                WidthRequest="48"
+                HeightRequest="48"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                SemanticProperties.Description="{x:Static local:AppResources.BookEditPageSaveFabDescription}"
+                Source="check_icon.svg"
+                Command="{Binding SaveCommand}"
+                IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                </ImageButton.Behaviors>
+            </ImageButton>
+
+            <ActivityIndicator
+                WidthRequest="24"
+                HeightRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsRunning="{Binding IsSaving}"
+                IsVisible="{Binding IsSaving}" />
+        </Grid>
     </Grid>
 </pages:ShelflyContentPageBase>

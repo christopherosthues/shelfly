@@ -102,6 +102,9 @@
     <data name="BookEditPageSaveButtonText" xml:space="preserve">
         <value>Save</value>
     </data>
+    <data name="BookEditPageSaveFabDescription" xml:space="preserve">
+        <value>Save book changes via floating action button</value>
+    </data>
     <data name="BookEditPageTitleEmptyError" xml:space="preserve">
         <value>Title cannot be empty</value>
     </data>
@@ -201,6 +204,9 @@
     <data name="BookDetailPageEditBookDescription" xml:space="preserve">
         <value>Edit book details</value>
     </data>
+    <data name="BookDetailPageEditFabDescription" xml:space="preserve">
+        <value>Edit book via floating action button</value>
+    </data>
     <data name="BookDetailPageSoftDeleteBookDescription" xml:space="preserve">
         <value>Soft delete book and all bookmarks</value>
     </data>
@@ -263,6 +269,9 @@
     </data>
     <data name="BookmarkEditPageSaveChangesDescription" xml:space="preserve">
         <value>Save bookmark changes</value>
+    </data>
+    <data name="BookmarkEditPageSaveFabDescription" xml:space="preserve">
+        <value>Save bookmark via floating action button</value>
     </data>
     <data name="LoadingPageStatusText" xml:space="preserve">
         <value>Preparing your library...</value>

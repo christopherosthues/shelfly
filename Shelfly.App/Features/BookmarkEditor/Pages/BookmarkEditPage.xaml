@@ -10,7 +10,7 @@
     x:DataType="viewModels:BookmarkEditViewModel"
     Title="{Binding PageTitle}">
 
-    <Grid RowDefinitions="*, Auto">
+    <Grid RowDefinitions="*" ColumnDefinitions="*">
         <ScrollView Grid.Row="0" IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
             <VerticalStackLayout Spacing="16" Padding="16">
                 <Entry x:Name="StartPageEntry" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageStartingPageDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageStartPageLabel}"
@@ -20,8 +20,8 @@
                 <Label Text="{Binding StartPageError}"
                        SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageStartingPageDescription}"
                        TextColor="Red"
-                        FontSize="12"
-                        IsVisible="{Binding StartPageError}" />
+                       FontSize="12"
+                       IsVisible="{Binding StartPageError}" />
 
                 <Entry x:Name="EndPageEntry" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageEndingPageDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageEndPageLabel}"
                         Text="{Binding EndPage, Mode=TwoWay, StringFormat='{0}'}"
@@ -30,8 +30,8 @@
                 <Label Text="{Binding EndPageError}"
                        SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageEndingPageDescription}"
                        TextColor="Red"
-                        FontSize="12"
-                        IsVisible="{Binding EndPageError}" />
+                       FontSize="12"
+                       IsVisible="{Binding EndPageError}" />
 
                 <Editor x:Name="NoteEditor" SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageNoteFieldDescription}" Placeholder="{x:Static localization:AppResources.BookmarkEditPageNoteLabel}"
                          Text="{Binding Note, Mode=TwoWay}"
@@ -40,22 +40,8 @@
                 <Label Text="{Binding NoteError}"
                        SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageNoteFieldDescription}"
                        TextColor="Red"
-                        FontSize="12"
-                        IsVisible="{Binding NoteError}" />
-
-                <Grid Margin="0,16,0,0">
-                    <Button
-                        SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageSaveChangesDescription}"
-                        Text="{x:Static localization:AppResources.BookmarkEditPageSaveButtonText}"
-                        Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}" />
-
-                    <ActivityIndicator
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        IsRunning="{Binding IsSaving}"
-                        IsVisible="{Binding IsSaving}" />
-                </Grid>
+                       FontSize="12"
+                       IsVisible="{Binding NoteError}" />
             </VerticalStackLayout>
         </ScrollView>
 
@@ -73,5 +59,42 @@
             HeightRequest="40"
             IsRunning="{Binding IsLoading}"
             IsVisible="{Binding IsLoading}" />
+
+        <!-- Floating Action Button (FAB) -->
+        <Grid
+            x:Name="FabContainer"
+            Grid.Row="0"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="16">
+
+            <BoxView
+                WidthRequest="64"
+                HeightRequest="64"
+                CornerRadius="32"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+
+            <ImageButton
+                WidthRequest="48"
+                HeightRequest="48"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                SemanticProperties.Description="{x:Static localization:AppResources.BookmarkEditPageSaveFabDescription}"
+                Source="check_icon.svg"
+                Command="{Binding SaveCommand}"
+                IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                </ImageButton.Behaviors>
+            </ImageButton>
+
+            <ActivityIndicator
+                WidthRequest="24"
+                HeightRequest="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsRunning="{Binding IsSaving}"
+                IsVisible="{Binding IsSaving}" />
+        </Grid>
     </Grid>
 </pages:ShelflyContentPageBase>
