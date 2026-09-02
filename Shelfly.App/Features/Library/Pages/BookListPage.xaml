@@ -14,18 +14,13 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageAddNewBookDescription}"
-            IconImageSource="add_icon.svg"
-            Text="{x:Static resx:AppResources.BookListPageAddBookButtonText}"
-            Command="{Binding NavigateToAddBookCommand}" />
-        <ToolbarItem
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageExportLibraryDescription}"
             IconImageSource="export_icon.svg"
             Text="{x:Static resx:AppResources.BookListPageExportLibraryButtonText}"
             Command="{Binding ExportLibraryCommand}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, *">
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
         <!-- Top Controls: Search Bar + Sort Picker -->
         <FlexLayout
             Grid.Row="0"
@@ -119,5 +114,33 @@
             VerticalOptions="Center"
             IsRunning="{Binding IsLoading}"
             IsVisible="{Binding IsLoading}" />
+
+        <!-- Floating Action Button (FAB) -->
+        <Grid
+            x:Name="FabContainer"
+            Grid.Row="1"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="16">
+
+            <BoxView
+                WidthRequest="64"
+                HeightRequest="64"
+                CornerRadius="32"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+
+            <ImageButton
+                WidthRequest="48"
+                HeightRequest="48"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                SemanticProperties.Description="{x:Static resx:AppResources.BookListPageAddNewBookDescription}"
+                Source="add_icon.svg"
+                Command="{Binding NavigateToAddBookCommand}">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                </ImageButton.Behaviors>
+            </ImageButton>
+        </Grid>
     </Grid>
 </pages:ShelflyContentPageBase>
