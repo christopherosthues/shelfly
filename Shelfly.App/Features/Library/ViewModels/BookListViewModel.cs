@@ -57,7 +57,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await libraryService.SortBooksAsync(SortCriterion.Title, SortDirection.Ascending, cancellationToken);
+            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(string.Empty, SortCriterion.Title, SortDirection.Ascending, cancellationToken);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally
@@ -80,16 +80,10 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     [RelayCommand]
     private async Task SearchAsync(CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(SearchQuery))
-        {
-            await RefreshBooksAsync();
-            return;
-        }
-
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await libraryService.SearchBooksAsync(SearchQuery, cancellationToken);
+            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(SearchQuery, SortCriterion, SortDirection, cancellationToken);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally
@@ -211,7 +205,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await libraryService.SortBooksAsync(SortCriterion, SortDirection);
+            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(SearchQuery, SortCriterion, SortDirection);
             Books = new ObservableCollection<BookEntity>(books);
         }
         finally

@@ -53,31 +53,41 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     public bool IsRestoreSelectedVisible => IsSelectionMode && SelectedItemIds.Any();
     public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItemIds.Any();
 
-    public string SortDirectionDescription => CurrentSortDirection == SortDirection.Ascending 
-        ? AppResources.SortDirectionAscending 
+    public string SortDirectionDescription => CurrentSortDirection == SortDirection.Ascending
+        ? AppResources.SortDirectionAscending
         : AppResources.SortDirectionDescending;
 
-    public string SortIconSource => CurrentSortDirection == SortDirection.Ascending 
-        ? "sort_asc.svg" 
+    public string SortIconSource => CurrentSortDirection == SortDirection.Ascending
+        ? "sort_asc.svg"
         : "sort_desc.svg";
 
     public event EventHandler? ToolbarVisibilityChanged;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        List<BookEntity> books = await trashService.GetSortedTrashBooksAsync(
-            SortOptions[SelectedSortOptionIndex].Criterion,
-            CurrentSortDirection,
-            cancellationToken);
-        
-        TrashBooks.Clear();
-
-        foreach (BookEntity book in books)
+        IsLoading = true;
+        try
         {
-            TrashBooks.Add(book);
-        }
+            List<BookEntity> books = await trashService.SearchSortedTrashBooksAsync(
+                string.Empty,
+                SortOptions[SelectedSortOptionIndex].Criterion,
+                CurrentSortDirection,
+                cancellationToken);
 
-        OnToolbarVisibilityChanged();
+            TrashBooks = new ObservableCollection<BookEntity>(books);
+
+            OnToolbarVisibilityChanged();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    partial void OnSearchQueryChanged(string value)
+    {
+        SearchCommand.Execute(null);
+        OnPropertyChanged(nameof(EmptyStateMessage));
     }
 
     private async Task LoadSearchResultsAsync()
@@ -86,7 +96,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
             SearchQuery,
             SortOptions[SelectedSortOptionIndex].Criterion,
             CurrentSortDirection);
-        
+
         TrashBooks.Clear();
 
         foreach (BookEntity book in books)
@@ -118,7 +128,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     private async Task ToggleSortDirectionAsync()
     {
         CurrentSortDirection = CurrentSortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending;
-        
+
         await LoadSearchResultsAsync();
     }
 
