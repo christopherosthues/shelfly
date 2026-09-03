@@ -351,4 +351,76 @@
     <data name="BookmarkEditPageNewBookmarkTitle" xml:space="preserve">
         <value>Neues Lesezeichen</value>
     </data>
+    <data name="AppShellTrashTitle" xml:space="preserve">
+        <value>Mülleimer</value>
+    </data>
+    <data name="TrashListPageTitle" xml:space="preserve">
+        <value>Mülleimer</value>
+    </data>
+    <data name="TrashListPageEmptyStateMessage" xml:space="preserve">
+        <value>Keine Elemente im Mülleimer.</value>
+    </data>
+    <data name="TrashListPageSearchEmptyMessage" xml:space="preserve">
+        <value>Keine Elemente haben deine Suche erfüllt.</value>
+    </data>
+    <data name="TrashListPageSearchPlaceholder" xml:space="preserve">
+        <value>Nach Titel, Autor, Verlag oder ISBN suchen</value>
+    </data>
+    <data name="TrashListPageRestoreAllButtonText" xml:space="preserve">
+        <value>Alle wiederherstellen</value>
+    </data>
+    <data name="TrashListPageDeleteAllButtonText" xml:space="preserve">
+        <value>Alle löschen</value>
+    </data>
+    <data name="TrashListPageRestoreSelectedButtonText" xml:space="preserve">
+        <value>Ausgewählte wiederherstellen</value>
+    </data>
+    <data name="TrashListPageDeleteSelectedButtonText" xml:space="preserve">
+        <value>Ausgewählte löschen</value>
+    </data>
+    <data name="TrashListPageDoneButtonText" xml:space="preserve">
+        <value>Fertig</value>
+    </data>
+    <data name="TrashListPageSwipeToRestoreCommand" xml:space="preserve">
+        <value>Wiederherstellen</value>
+    </data>
+    <data name="TrashListPageSwipeToDeleteCommand" xml:space="preserve">
+        <value>Löschen</value>
+    </data>
+    <data name="TrashListPageBookEntryDescription" xml:space="preserve">
+        <value>Mülleimereintrag. Tippen zum Anzeigen der Details. Nach links wischen zum Wiederherstellen, nach rechts wischen zum Löschen.</value>
+    </data>
+    <data name="TrashListPageRestoreAllDescription" xml:space="preserve">
+        <value>Alle Elemente aus dem Mülleimer wiederherstellen</value>
+    </data>
+    <data name="TrashListPageDeleteAllDescription" xml:space="preserve">
+        <value>Alle Elemente endgültig löschen</value>
+    </data>
+    <data name="TrashListPageRestoreSelectedDescription" xml:space="preserve">
+        <value>Ausgewählte Elemente in die Bibliothek wiederherstellen</value>
+    </data>
+    <data name="TrashListPageDeleteSelectedDescription" xml:space="preserve">
+        <value>Ausgewählte Elemente endgültig löschen</value>
+    </data>
+    <data name="TrashListPageDoneSelectionDescription" xml:space="preserve">
+        <value>Auswahlmodus beenden</value>
+    </data>
+    <data name="TrashBookDetailPageTitle" xml:space="preserve">
+        <value>Buchdetails</value>
+    </data>
+    <data name="TrashBookmarkDetailPageTitle" xml:space="preserve">
+        <value>Notiz</value>
+    </data>
+    <data name="TrashListPageRestoreAllDialogTitle" xml:space="preserve">
+        <value>Alle Elemente wiederherstellen?</value>
+    </data>
+    <data name="TrashListPageRestoreAllDialogMessage" xml:space="preserve">
+        <value>Dadurch werden alle Elemente aus dem Mülleimer in deine Bibliothek zurückgebracht.</value>
+    </data>
+    <data name="TrashListPageDeleteAllDialogTitle" xml:space="preserve">
+        <value>Alle Elemente löschen?</value>
+    </data>
+    <data name="TrashListPageDeleteAllDialogMessage" xml:space="preserve">
+        <value>Dadurch werden alle Elemente endgültig aus dem Mülleimer gelöscht.</value>
+    </data>
 </root>

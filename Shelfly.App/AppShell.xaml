@@ -4,11 +4,22 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:libraryPages="clr-namespace:Shelfly.App.Features.Library.Pages"
+    xmlns:trashPages="clr-namespace:Shelfly.App.Features.Trash.Pages"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     Title="Shelfly">
 
-    <ShellContent
+    <FlyoutItem
         Title="{x:Static resx:AppResources.AppShellBooksTitle}"
-        ContentTemplate="{DataTemplate libraryPages:BookListPage}" />
+        Icon="library_icon.svg">
+        <ShellContent
+            ContentTemplate="{DataTemplate libraryPages:BookListPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="{x:Static resx:AppResources.AppShellTrashTitle}"
+        Icon="trash_icon.svg">
+        <ShellContent
+            ContentTemplate="{DataTemplate trashPages:TrashListPage}" />
+    </FlyoutItem>
 
 </Shell>

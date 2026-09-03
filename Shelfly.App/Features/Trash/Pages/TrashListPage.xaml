@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:ShelflyContentPageBase
+    x:Class="Shelfly.App.Features.Trash.Pages.TrashListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Shelfly.App.Features.Trash.ViewModels"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="local:TrashListViewModel"
+    Title="{x:Static resx:AppResources.TrashListPageTitle}">
+
+    <ContentPage.ToolbarItems>
+        <!-- Bulk Operations (visible when not in selection mode) -->
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageRestoreAllDescription}"
+            IconImageSource="restore_icon.svg"
+            Text="{x:Static resx:AppResources.TrashListPageRestoreAllButtonText}"
+            Command="{Binding RestoreAllCommand}"
+            Order="Secondary" />
+
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageDeleteAllDescription}"
+            IconImageSource="delete_icon.svg"
+            Text="{x:Static resx:AppResources.TrashListPageDeleteAllButtonText}"
+            Command="{Binding DeleteAllCommand}"
+            Order="Secondary" />
+
+        <!-- Selection Mode Toolbar -->
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageRestoreSelectedDescription}"
+            IconImageSource="restore_icon.svg"
+            Text="{x:Static resx:AppResources.TrashListPageRestoreSelectedButtonText}"
+            Command="{Binding RestoreSelectedCommand}"
+            Order="Secondary" />
+
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageDeleteSelectedDescription}"
+            IconImageSource="delete_icon.svg"
+            Text="{x:Static resx:AppResources.TrashListPageDeleteSelectedButtonText}"
+            Command="{Binding DeleteSelectedCommand}"
+            Order="Secondary" />
+
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageDoneSelectionDescription}"
+            IconImageSource="check_icon.svg"
+            Text="{x:Static resx:AppResources.TrashListPageDoneButtonText}"
+            Command="{Binding ExitSelectionModeCommand}"
+            Order="Secondary" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
+        <!-- Top Controls: Search Bar + Sort Picker -->
+        <FlexLayout
+            Grid.Row="0"
+            Direction="Row"
+            Wrap="Wrap"
+            JustifyContent="Start"
+            AlignItems="Center"
+            Margin="8">
+
+            <SearchBar
+                FlexLayout.Order="1"
+                SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageSearchPlaceholder}"
+                Placeholder="{x:Static resx:AppResources.TrashListPageSearchPlaceholder}"
+                Text="{Binding SearchQuery, Mode=TwoWay}">
+                <SearchBar.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="TextChanged"
+                        Command="{Binding SearchCommand}" />
+                </SearchBar.Behaviors>
+            </SearchBar>
+
+            <Picker
+                x:Name="SortPicker"
+                FlexLayout.Order="2"
+                Margin="8, 0, 0, 0"
+                SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
+                Title="{x:Static resx:AppResources.BookListPageSortByTitle}"
+                ItemsSource="{Binding SortOptions}"
+                ItemDisplayBinding="{Binding DisplayName}"
+                SelectedIndex="{Binding SelectedSortOptionIndex, Mode=TwoWay}">
+                <Picker.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="SelectedIndexChanged"
+                        Command="{Binding SortCommand}"
+                        CommandParameter="{Binding SelectedItem, Source={x:Reference SortPicker}}"/>
+                </Picker.Behaviors>
+            </Picker>
+
+            <ImageButton
+                x:Name="SortDirectionToggle"
+                FlexLayout.Order="3"
+                WidthRequest="24"
+                HeightRequest="24"
+                Margin="4, 0, 0, 0"
+                SemanticProperties.Description="{Binding SortDirectionDescription}"
+                Source="{Binding SortIconSource}"
+                Command="{Binding ToggleSortDirectionCommand}">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                </ImageButton.Behaviors>
+            </ImageButton>
+        </FlexLayout>
+
+        <!-- Trash List -->
+        <CollectionView
+            Grid.Row="1"
+            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookListDescription}"
+            ItemsSource="{Binding TrashBooks}">
+
+            <CollectionView.EmptyView>
+                <Label
+                    HorizontalOptions="Center"
+                    SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}"
+                    Text="{Binding EmptyStateMessage}" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="entities:BookEntity">
+                    <SwipeView>
+                        <!-- Left swipe (right-to-left) = Restore -->
+                        <SwipeView.LeftItems>
+                            <SwipeItem
+                                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                                IconImageSource="restore_icon.svg"
+                                Text="{x:Static resx:AppResources.TrashListPageSwipeToRestoreCommand}"
+                                Command="{Binding RestoreBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                                CommandParameter="{Binding .}" />
+                        </SwipeView.LeftItems>
+
+                        <!-- Right swipe (left-to-right) = Delete -->
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                                BackgroundColor="Red"
+                                IconImageSource="delete_icon.svg"
+                                Text="{x:Static resx:AppResources.TrashListPageSwipeToDeleteCommand}"
+                                Command="{Binding HardDeleteBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                                CommandParameter="{Binding .}" />
+                        </SwipeView.RightItems>
+
+                        <Grid Padding="12">
+                            <Border Style="{StaticResource CardBorder}">
+                                <Grid RowDefinitions="Auto, Auto, Auto">
+                                    <Label
+                                        Grid.Row="0"
+                                        FontAttributes="Bold"
+                                        Text="{Binding Title}" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Text="{Binding Author}" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        Opacity="0.6"
+                                        Text="{Binding Publisher}" />
+                                </Grid>
+                            </Border>
+
+                            <!-- Selection indicator -->
+                            <BoxView
+                                WidthRequest="24"
+                                HeightRequest="24"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                CornerRadius="12"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                                IsVisible="{Binding Id, Converter={toolkit:IsNotEqualConverter}, ConverterParameter={x:Null}}">
+                            </BoxView>
+
+                            <Grid.GestureRecognizers>
+                                <!-- Tap to navigate to detail -->
+                                <TapGestureRecognizer
+                                    Command="{Binding NavigateToTrashDetailCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                                    CommandParameter="{Binding Id}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}" />
+    </Grid>
+</pages:ShelflyContentPageBase>

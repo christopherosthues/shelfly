@@ -351,4 +351,76 @@
     <data name="BookmarkEditPageNewBookmarkTitle" xml:space="preserve">
         <value>New Bookmark</value>
     </data>
+    <data name="AppShellTrashTitle" xml:space="preserve">
+        <value>Trash</value>
+    </data>
+    <data name="TrashListPageTitle" xml:space="preserve">
+        <value>Trash</value>
+    </data>
+    <data name="TrashListPageEmptyStateMessage" xml:space="preserve">
+        <value>No items in trash.</value>
+    </data>
+    <data name="TrashListPageSearchEmptyMessage" xml:space="preserve">
+        <value>No items matched your search.</value>
+    </data>
+    <data name="TrashListPageSearchPlaceholder" xml:space="preserve">
+        <value>Search by title, author, publisher, or ISBN</value>
+    </data>
+    <data name="TrashListPageRestoreAllButtonText" xml:space="preserve">
+        <value>Restore All</value>
+    </data>
+    <data name="TrashListPageDeleteAllButtonText" xml:space="preserve">
+        <value>Delete All</value>
+    </data>
+    <data name="TrashListPageRestoreSelectedButtonText" xml:space="preserve">
+        <value>Restore Selected</value>
+    </data>
+    <data name="TrashListPageDeleteSelectedButtonText" xml:space="preserve">
+        <value>Delete Selected</value>
+    </data>
+    <data name="TrashListPageDoneButtonText" xml:space="preserve">
+        <value>Done</value>
+    </data>
+    <data name="TrashListPageSwipeToRestoreCommand" xml:space="preserve">
+        <value>Restore</value>
+    </data>
+    <data name="TrashListPageSwipeToDeleteCommand" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="TrashListPageBookEntryDescription" xml:space="preserve">
+        <value>Trash entry. Tap to view details. Swipe left to restore, swipe right to delete.</value>
+    </data>
+    <data name="TrashListPageRestoreAllDescription" xml:space="preserve">
+        <value>Restore all items from trash</value>
+    </data>
+    <data name="TrashListPageDeleteAllDescription" xml:space="preserve">
+        <value>Delete all items permanently</value>
+    </data>
+    <data name="TrashListPageRestoreSelectedDescription" xml:space="preserve">
+        <value>Restore selected items to library</value>
+    </data>
+    <data name="TrashListPageDeleteSelectedDescription" xml:space="preserve">
+        <value>Delete selected items permanently</value>
+    </data>
+    <data name="TrashListPageDoneSelectionDescription" xml:space="preserve">
+        <value>Exit selection mode</value>
+    </data>
+    <data name="TrashBookDetailPageTitle" xml:space="preserve">
+        <value>Book Details</value>
+    </data>
+    <data name="TrashBookmarkDetailPageTitle" xml:space="preserve">
+        <value>Note</value>
+    </data>
+    <data name="TrashListPageRestoreAllDialogTitle" xml:space="preserve">
+        <value>Restore All Items?</value>
+    </data>
+    <data name="TrashListPageRestoreAllDialogMessage" xml:space="preserve">
+        <value>This will restore all items from trash back to your library.</value>
+    </data>
+    <data name="TrashListPageDeleteAllDialogTitle" xml:space="preserve">
+        <value>Delete All Items?</value>
+    </data>
+    <data name="TrashListPageDeleteAllDialogMessage" xml:space="preserve">
+        <value>This will permanently delete all items from trash.</value>
+    </data>
 </root>

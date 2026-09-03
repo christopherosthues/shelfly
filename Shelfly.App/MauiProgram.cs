@@ -13,6 +13,9 @@ using Shelfly.App.Features.BookmarkEditor.ViewModels;
 using Shelfly.App.Features.Library.Pages;
 using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Features.Library.ViewModels;
+using Shelfly.App.Features.Trash.Pages;
+using Shelfly.App.Features.Trash.Services;
+using Shelfly.App.Features.Trash.ViewModels;
 using Shelfly.App.Migrations;
 using Shelfly.App.Services;
 
@@ -55,11 +58,15 @@ public static class MauiProgram
         builder.Services.AddScoped<AuditTimestampInterceptor>();
         builder.Services.AddScoped<LibraryService>();
         builder.Services.AddScoped<LibraryExportService>();
+        builder.Services.AddScoped<TrashService>();
 
         builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>(Routes.BookListPage);
         builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>(Routes.BookEditPage);
         builder.Services.AddScopedWithShellRoute<BookDetailPage, BookDetailViewModel>(Routes.BookDetailPage);
         builder.Services.AddScopedWithShellRoute<BookmarkEditPage, BookmarkEditViewModel>(Routes.BookmarkEditPage);
+        builder.Services.AddScopedWithShellRoute<TrashListPage, TrashListViewModel>(Routes.TrashListPage);
+        builder.Services.AddScopedWithShellRoute<TrashBookDetailPage, TrashBookDetailViewModel>(Routes.TrashBookDetailPage);
+        builder.Services.AddScopedWithShellRoute<TrashBookmarkDetailPage, TrashBookmarkDetailViewModel>(Routes.TrashBookmarkDetailPage);
 
         return builder.Build();
     }

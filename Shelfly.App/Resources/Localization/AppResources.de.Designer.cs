@@ -69,6 +69,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mülleimer.
+        /// </summary>
+        internal static string AppShellTrashTitle {
+            get {
+                return ResourceManager.GetString("AppShellTrashTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Neues Lesezeichen zu diesem Buch hinzufügen.
         /// </summary>
         internal static string BookDetailPageAddNewBookmarkDescription {
@@ -1055,6 +1064,213 @@ namespace Shelfly.App.Resources.Localization {
         internal static string SortDirectionDescending {
             get {
                 return ResourceManager.GetString("SortDirectionDescending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buchdetails.
+        /// </summary>
+        internal static string TrashBookDetailPageTitle {
+            get {
+                return ResourceManager.GetString("TrashBookDetailPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notiz.
+        /// </summary>
+        internal static string TrashBookmarkDetailPageTitle {
+            get {
+                return ResourceManager.GetString("TrashBookmarkDetailPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mülleimereintrag. Tippen zum Anzeigen der Details. Nach links wischen zum Wiederherstellen, nach rechts wischen zum Löschen..
+        /// </summary>
+        internal static string TrashListPageBookEntryDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageBookEntryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle löschen.
+        /// </summary>
+        internal static string TrashListPageDeleteAllButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageDeleteAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Elemente endgültig löschen.
+        /// </summary>
+        internal static string TrashListPageDeleteAllDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageDeleteAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dadurch werden alle Elemente endgültig aus dem Mülleimer gelöscht..
+        /// </summary>
+        internal static string TrashListPageDeleteAllDialogMessage {
+            get {
+                return ResourceManager.GetString("TrashListPageDeleteAllDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Elemente löschen?.
+        /// </summary>
+        internal static string TrashListPageDeleteAllDialogTitle {
+            get {
+                return ResourceManager.GetString("TrashListPageDeleteAllDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte löschen.
+        /// </summary>
+        internal static string TrashListPageDeleteSelectedButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageDeleteSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte Elemente endgültig löschen.
+        /// </summary>
+        internal static string TrashListPageDeleteSelectedDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageDeleteSelectedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fertig.
+        /// </summary>
+        internal static string TrashListPageDoneButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageDoneButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auswahlmodus beenden.
+        /// </summary>
+        internal static string TrashListPageDoneSelectionDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageDoneSelectionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keine Elemente im Mülleimer..
+        /// </summary>
+        internal static string TrashListPageEmptyStateMessage {
+            get {
+                return ResourceManager.GetString("TrashListPageEmptyStateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle wiederherstellen.
+        /// </summary>
+        internal static string TrashListPageRestoreAllButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageRestoreAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Elemente aus dem Mülleimer wiederherstellen.
+        /// </summary>
+        internal static string TrashListPageRestoreAllDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageRestoreAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dadurch werden alle Elemente aus dem Mülleimer in deine Bibliothek zurückgebracht..
+        /// </summary>
+        internal static string TrashListPageRestoreAllDialogMessage {
+            get {
+                return ResourceManager.GetString("TrashListPageRestoreAllDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Elemente wiederherstellen?.
+        /// </summary>
+        internal static string TrashListPageRestoreAllDialogTitle {
+            get {
+                return ResourceManager.GetString("TrashListPageRestoreAllDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte wiederherstellen.
+        /// </summary>
+        internal static string TrashListPageRestoreSelectedButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageRestoreSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte Elemente in die Bibliothek wiederherstellen.
+        /// </summary>
+        internal static string TrashListPageRestoreSelectedDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageRestoreSelectedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keine Elemente haben deine Suche erfüllt..
+        /// </summary>
+        internal static string TrashListPageSearchEmptyMessage {
+            get {
+                return ResourceManager.GetString("TrashListPageSearchEmptyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nach Titel, Autor, Verlag oder ISBN suchen.
+        /// </summary>
+        internal static string TrashListPageSearchPlaceholder {
+            get {
+                return ResourceManager.GetString("TrashListPageSearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Löschen.
+        /// </summary>
+        internal static string TrashListPageSwipeToDeleteCommand {
+            get {
+                return ResourceManager.GetString("TrashListPageSwipeToDeleteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wiederherstellen.
+        /// </summary>
+        internal static string TrashListPageSwipeToRestoreCommand {
+            get {
+                return ResourceManager.GetString("TrashListPageSwipeToRestoreCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mülleimer.
+        /// </summary>
+        internal static string TrashListPageTitle {
+            get {
+                return ResourceManager.GetString("TrashListPageTitle", resourceCulture);
             }
         }
     }
