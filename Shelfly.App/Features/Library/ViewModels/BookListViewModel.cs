@@ -101,27 +101,19 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
                     string fullPath = fileResult.FullPath;
                     await File.WriteAllTextAsync(fullPath, exportResult.Value);
 
-                    Page? page = Application.Current?.Windows[0].Page;
-                    if (page is not null)
-                    {
-                        await page.DisplayAlertAsync(
-                            AppResources.BookListPageExportSuccessMessage,
-                            $"{AppResources.BookListPageExportFileSavedPrefix} {fullPath}",
-                            AppResources.CommonOkButton);
-                    }
+                    await Shell.Current.DisplayAlertAsync(
+                        AppResources.BookListPageExportSuccessMessage,
+                        $"{AppResources.BookListPageExportFileSavedPrefix} {fullPath}",
+                        AppResources.CommonOkButton);
                 }
             }
             else
             {
                 LogManager.GetCurrentClassLogger().Warn("Export failed: {Error}", exportResult.Error);
-                Page? page = Application.Current?.Windows[0].Page;
-                if (page is not null)
-                {
-                    await page.DisplayAlertAsync(
-                        AppResources.BookListPageExportErrorMessage,
-                        exportResult.Error ?? AppResources.BookListPageUnknownErrorMessage,
-                        AppResources.CommonOkButton);
-                }
+                await Shell.Current.DisplayAlertAsync(
+                    AppResources.BookListPageExportErrorMessage,
+                    exportResult.Error ?? AppResources.BookListPageUnknownErrorMessage,
+                    AppResources.CommonOkButton);
             }
         });
     }
