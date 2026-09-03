@@ -9,6 +9,7 @@ public class TrashService(LocalDbContext dbContext)
     public async Task<List<BookEntity>> GetAllTrashBooksAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.Books
+            .IgnoreQueryFilters()
             .Where(book => book.DeletedAt != null)
             .ToListAsync(cancellationToken);
     }
@@ -23,6 +24,7 @@ public class TrashService(LocalDbContext dbContext)
         string lowerQuery = query.ToLowerInvariant();
 
         return await dbContext.Books
+            .IgnoreQueryFilters()
             .Where(book =>
                 book.DeletedAt != null &&
                 (EF.Functions.Like(book.Title, $"%{lowerQuery}%") ||
@@ -35,6 +37,7 @@ public class TrashService(LocalDbContext dbContext)
     public async Task<BookEntity?> RestoreBookAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         BookEntity? book = await dbContext.Books
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt != null, cancellationToken);
 
         if (book is not null)
@@ -49,6 +52,7 @@ public class TrashService(LocalDbContext dbContext)
     public async Task<BookEntity?> HardDeleteBookAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         BookEntity? book = await dbContext.Books
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(b => b.Id == bookId && b.DeletedAt != null, cancellationToken);
 
         if (book is not null)
@@ -86,7 +90,7 @@ public class TrashService(LocalDbContext dbContext)
 
         // Collect all bookmark IDs associated with trash books
         HashSet<Guid> bookmarkIds = new();
-        
+
         foreach (BookEntity book in trashBooks)
         {
             List<BookmarkEntity> bookmarks = await dbContext.Bookmarks
@@ -106,7 +110,7 @@ public class TrashService(LocalDbContext dbContext)
 
         dbContext.Bookmarks.RemoveRange(bookmarksToRemove);
         dbContext.Books.RemoveRange(trashBooks);
-        
+
         int count = await dbContext.SaveChangesAsync(cancellationToken);
 
         return trashBooks.Count;
