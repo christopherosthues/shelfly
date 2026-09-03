@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
+using Shelfly.App.Enums;
 using Shelfly.App.Features.Library.Services;
 
 namespace Shelfly.App.Features.Trash.Services;

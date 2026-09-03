@@ -1,4 +1,4 @@
-namespace Shelfly.App.Features.Library.Services;
+namespace Shelfly.App.Enums;
 
 public enum SortDirection
 {

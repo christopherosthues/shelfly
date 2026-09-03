@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Shelfly.App.Enums;
 using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Resources.Localization;
 

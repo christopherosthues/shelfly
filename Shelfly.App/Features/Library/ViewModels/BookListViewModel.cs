@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NLog;
 using Shelfly.App.Data.Entities;
+using Shelfly.App.Enums;
 using Shelfly.App.Features.BookEditor.ViewModels;
 using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Resources.Localization;
