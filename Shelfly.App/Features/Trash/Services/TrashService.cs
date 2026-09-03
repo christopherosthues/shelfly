@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
+using Shelfly.App.Features.Library.Services;
 
 namespace Shelfly.App.Features.Trash.Services;
 
@@ -12,6 +13,25 @@ public class TrashService(LocalDbContext dbContext)
             .IgnoreQueryFilters()
             .Where(book => book.DeletedAt != null)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<BookEntity>> GetSortedTrashBooksAsync(SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken = default)
+    {
+        var query = dbContext.Books
+            .IgnoreQueryFilters()
+            .Where(book => book.DeletedAt != null)
+            .AsQueryable();
+
+        query = criterion switch
+        {
+            SortCriterion.Title => direction == SortDirection.Ascending ? query.OrderBy(b => b.Title) : query.OrderByDescending(b => b.Title),
+            SortCriterion.Author => direction == SortDirection.Ascending ? query.OrderBy(b => b.Author) : query.OrderByDescending(b => b.Author),
+            SortCriterion.Publisher => direction == SortDirection.Ascending ? query.OrderBy(b => b.Publisher) : query.OrderByDescending(b => b.Publisher),
+            SortCriterion.PublishDate => direction == SortDirection.Ascending ? query.OrderBy(b => b.PublishDate ?? DateTime.MinValue) : query.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
+            _ => query
+        };
+
+        return await query.ToListAsync(cancellationToken);
     }
 
     public async Task<List<BookEntity>> SearchTrashBooksAsync(string query, CancellationToken cancellationToken = default)
@@ -32,6 +52,39 @@ public class TrashService(LocalDbContext dbContext)
                  EF.Functions.Like(book.Publisher, $"%{lowerQuery}%") ||
                  EF.Functions.Like(book.ISBN, $"%{lowerQuery}%")))
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<BookEntity>> SearchSortedTrashBooksAsync(string query, SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken = default)
+    {
+        var baseQuery = dbContext.Books
+            .IgnoreQueryFilters()
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            string lowerQuery = query.ToLowerInvariant();
+            baseQuery = baseQuery.Where(book =>
+                book.DeletedAt != null &&
+                (EF.Functions.Like(book.Title, $"%{lowerQuery}%") ||
+                 EF.Functions.Like(book.Author, $"%{lowerQuery}%") ||
+                 EF.Functions.Like(book.Publisher, $"%{lowerQuery}%") ||
+                 EF.Functions.Like(book.ISBN, $"%{lowerQuery}%")));
+        }
+        else
+        {
+            baseQuery = baseQuery.Where(book => book.DeletedAt != null);
+        }
+
+        var sortedQuery = criterion switch
+        {
+            SortCriterion.Title => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.Title) : baseQuery.OrderByDescending(b => b.Title),
+            SortCriterion.Author => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.Author) : baseQuery.OrderByDescending(b => b.Author),
+            SortCriterion.Publisher => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.Publisher) : baseQuery.OrderByDescending(b => b.Publisher),
+            SortCriterion.PublishDate => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.PublishDate ?? DateTime.MinValue) : baseQuery.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
+            _ => baseQuery
+        };
+
+        return await sortedQuery.ToListAsync(cancellationToken);
     }
 
     public async Task<BookEntity?> RestoreBookAsync(Guid bookId, CancellationToken cancellationToken = default)

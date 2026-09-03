@@ -12,42 +12,7 @@
     Title="{x:Static resx:AppResources.TrashListPageTitle}">
 
     <ContentPage.ToolbarItems>
-        <!-- Bulk Operations (visible when not in selection mode) -->
-        <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageRestoreAllDescription}"
-            IconImageSource="restore_icon.svg"
-            Text="{x:Static resx:AppResources.TrashListPageRestoreAllButtonText}"
-            Command="{Binding RestoreAllCommand}"
-            Order="Secondary" />
-
-        <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageDeleteAllDescription}"
-            IconImageSource="delete_icon.svg"
-            Text="{x:Static resx:AppResources.TrashListPageDeleteAllButtonText}"
-            Command="{Binding DeleteAllCommand}"
-            Order="Secondary" />
-
-        <!-- Selection Mode Toolbar -->
-        <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageRestoreSelectedDescription}"
-            IconImageSource="restore_icon.svg"
-            Text="{x:Static resx:AppResources.TrashListPageRestoreSelectedButtonText}"
-            Command="{Binding RestoreSelectedCommand}"
-            Order="Secondary" />
-
-        <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageDeleteSelectedDescription}"
-            IconImageSource="delete_icon.svg"
-            Text="{x:Static resx:AppResources.TrashListPageDeleteSelectedButtonText}"
-            Command="{Binding DeleteSelectedCommand}"
-            Order="Secondary" />
-
-        <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageDoneSelectionDescription}"
-            IconImageSource="check_icon.svg"
-            Text="{x:Static resx:AppResources.TrashListPageDoneButtonText}"
-            Command="{Binding ExitSelectionModeCommand}"
-            Order="Secondary" />
+        <!-- Dynamically managed by code-behind via ToolbarVisibilityChanged event -->
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">

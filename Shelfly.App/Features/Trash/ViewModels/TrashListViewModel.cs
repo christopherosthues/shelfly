@@ -61,40 +61,40 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
         ? "sort_asc.svg" 
         : "sort_desc.svg";
 
+    public event EventHandler? ToolbarVisibilityChanged;
+
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        List<BookEntity> books = await trashService.GetAllTrashBooksAsync(cancellationToken);
+        List<BookEntity> books = await trashService.GetSortedTrashBooksAsync(
+            SortOptions[SelectedSortOptionIndex].Criterion,
+            CurrentSortDirection,
+            cancellationToken);
+        
         TrashBooks.Clear();
 
-        foreach (BookEntity book in SortAndFilterBooks(books))
+        foreach (BookEntity book in books)
         {
             TrashBooks.Add(book);
         }
+
+        OnToolbarVisibilityChanged();
     }
 
     private async Task LoadSearchResultsAsync()
     {
-        List<BookEntity> books = await trashService.SearchTrashBooksAsync(SearchQuery);
+        List<BookEntity> books = await trashService.SearchSortedTrashBooksAsync(
+            SearchQuery,
+            SortOptions[SelectedSortOptionIndex].Criterion,
+            CurrentSortDirection);
+        
         TrashBooks.Clear();
 
-        foreach (BookEntity book in SortAndFilterBooks(books))
+        foreach (BookEntity book in books)
         {
             TrashBooks.Add(book);
         }
-    }
 
-    private IEnumerable<BookEntity> SortAndFilterBooks(List<BookEntity> books)
-    {
-        return SortOptions[SelectedSortOptionIndex].Criterion switch
-        {
-            SortCriterion.Title => CurrentSortDirection == SortDirection.Ascending ? books.OrderBy(b => b.Title) : books.OrderByDescending(b => b.Title),
-            SortCriterion.Author => CurrentSortDirection == SortDirection.Ascending ? books.OrderBy(b => b.Author) : books.OrderByDescending(b => b.Author),
-            SortCriterion.Publisher => CurrentSortDirection == SortDirection.Ascending ? books.OrderBy(b => b.Publisher) : books.OrderByDescending(b => b.Publisher),
-            SortCriterion.PublishDate => CurrentSortDirection == SortDirection.Ascending
-                ? books.OrderBy(b => b.PublishDate ?? DateTime.MinValue)
-                : books.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
-            _ => books
-        };
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -111,27 +111,15 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
             SelectedSortOptionIndex = SortOptions.IndexOf(selectedOption);
         }
 
-        List<BookEntity> books = trashService.GetAllTrashBooksAsync().Result;
-        TrashBooks.Clear();
-
-        foreach (BookEntity book in SortAndFilterBooks(books))
-        {
-            TrashBooks.Add(book);
-        }
+        await LoadSearchResultsAsync();
     }
 
     [RelayCommand]
-    private void ToggleSortDirection()
+    private async Task ToggleSortDirectionAsync()
     {
         CurrentSortDirection = CurrentSortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending;
         
-        List<BookEntity> books = trashService.GetAllTrashBooksAsync().Result;
-        TrashBooks.Clear();
-
-        foreach (BookEntity book in SortAndFilterBooks(books))
-        {
-            TrashBooks.Add(book);
-        }
+        await LoadSearchResultsAsync();
     }
 
     [RelayCommand]
@@ -139,6 +127,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         await trashService.RestoreBookAsync(book.Id);
         TrashBooks.Remove(book);
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -146,6 +135,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         await trashService.HardDeleteBookAsync(book.Id);
         TrashBooks.Remove(book);
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -159,6 +149,8 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
         {
             SelectedItemIds.Add(book.Id);
         }
+
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -176,6 +168,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
 
         SelectedItemIds.Clear();
         IsSelectionMode = false;
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -193,6 +186,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
 
         SelectedItemIds.Clear();
         IsSelectionMode = false;
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -200,6 +194,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         int count = await trashService.RestoreAllAsync();
         TrashBooks.Clear();
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -207,6 +202,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         int count = await trashService.DeleteAllAsync();
         TrashBooks.Clear();
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -214,6 +210,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         IsSelectionMode = true;
         SelectedItemIds.Add(book.Id);
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -221,6 +218,7 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         IsSelectionMode = false;
         SelectedItemIds.Clear();
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -238,5 +236,11 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     {
         IsSelectionMode = false;
         SelectedItemIds.Clear();
+        OnToolbarVisibilityChanged();
+    }
+
+    private void OnToolbarVisibilityChanged()
+    {
+        ToolbarVisibilityChanged?.Invoke(this, EventArgs.Empty);
     }
 }
