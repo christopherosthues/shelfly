@@ -1,6 +1,6 @@
 using Shelfly.App.Features.Library.Services;
 
-namespace Shelfly.App.Features.Library.ViewModels;
+namespace Shelfly.App.ViewModels;
 
 public class SortOptionDisplay(SortCriterion criterion, string displayName)
 {

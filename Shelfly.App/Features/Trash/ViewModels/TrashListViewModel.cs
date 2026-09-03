@@ -3,44 +3,23 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.Library.Services;
-using Shelfly.App.Features.Library.ViewModels;
 using Shelfly.App.Features.Trash.Services;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
 
 namespace Shelfly.App.Features.Trash.ViewModels;
 
-public partial class TrashListViewModel(TrashService trashService) : ShelflyViewModelBase
+public partial class TrashListViewModel(TrashService trashService) : SortableListViewModelBase
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EmptyStateMessage))]
     public partial ObservableCollection<BookEntity> TrashBooks { get; set; } = [];
 
     [ObservableProperty]
-    public partial string SearchQuery { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial int SelectedSortOptionIndex { get; set; } = 0;
-
-    [ObservableProperty]
-    public partial SortDirection CurrentSortDirection { get; set; } = SortDirection.Ascending;
-
-    [ObservableProperty]
     public partial bool IsSelectionMode { get; set; }
 
     [ObservableProperty]
     public partial ObservableCollection<Guid> SelectedItemIds { get; set; } = [];
-
-    [ObservableProperty]
-    public partial bool IsLoading { get; set; } = false;
-
-    public List<SortOptionDisplay> SortOptions { get; } =
-    [
-        new SortOptionDisplay(SortCriterion.Title, AppResources.BookListPageSortByTitle),
-        new SortOptionDisplay(SortCriterion.Author, AppResources.BookListPageSortByAuthor),
-        new SortOptionDisplay(SortCriterion.Publisher, AppResources.BookListPageSortByPublisher),
-        new SortOptionDisplay(SortCriterion.PublishDate, AppResources.BookListPageSortByPublishDate)
-    ];
 
     public string EmptyStateMessage => TrashBooks.Count == 0
         ? (string.IsNullOrWhiteSpace(SearchQuery)
@@ -53,83 +32,26 @@ public partial class TrashListViewModel(TrashService trashService) : ShelflyView
     public bool IsRestoreSelectedVisible => IsSelectionMode && SelectedItemIds.Any();
     public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItemIds.Any();
 
-    public string SortDirectionDescription => CurrentSortDirection == SortDirection.Ascending
-        ? AppResources.SortDirectionAscending
-        : AppResources.SortDirectionDescending;
-
-    public string SortIconSource => CurrentSortDirection == SortDirection.Ascending
-        ? "sort_asc.svg"
-        : "sort_desc.svg";
-
     public event EventHandler? ToolbarVisibilityChanged;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        IsLoading = true;
-        try
-        {
-            List<BookEntity> books = await trashService.SearchSortedTrashBooksAsync(
-                string.Empty,
-                SortOptions[SelectedSortOptionIndex].Criterion,
-                CurrentSortDirection,
-                cancellationToken);
+        await LoadSortedItemsAsync(string.Empty, SortCriterion.Title,  SortDirection.Ascending, cancellationToken);
+    }
 
+    protected override async Task LoadSortedItemsAsync(string query, SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken)
+    {
+        await ExecuteWithLoadingAsync(async () =>
+        {
+            List<BookEntity> books = await trashService.SearchSortedTrashBooksAsync(query, criterion, direction, cancellationToken);
             TrashBooks = new ObservableCollection<BookEntity>(books);
-
             OnToolbarVisibilityChanged();
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        });
     }
 
-    partial void OnSearchQueryChanged(string value)
+    protected override void OnSearchQueryChangedCore(string value)
     {
-        SearchCommand.Execute(null);
         OnPropertyChanged(nameof(EmptyStateMessage));
-    }
-
-    private async Task LoadSearchResultsAsync()
-    {
-        List<BookEntity> books = await trashService.SearchSortedTrashBooksAsync(
-            SearchQuery,
-            SortOptions[SelectedSortOptionIndex].Criterion,
-            CurrentSortDirection);
-
-        TrashBooks.Clear();
-
-        foreach (BookEntity book in books)
-        {
-            TrashBooks.Add(book);
-        }
-
-        OnToolbarVisibilityChanged();
-    }
-
-    [RelayCommand]
-    private async Task SearchAsync()
-    {
-        await LoadSearchResultsAsync();
-    }
-
-    [RelayCommand]
-    private async Task SortAsync(SortOptionDisplay? selectedOption)
-    {
-        if (selectedOption is not null)
-        {
-            SelectedSortOptionIndex = SortOptions.IndexOf(selectedOption);
-        }
-
-        await LoadSearchResultsAsync();
-    }
-
-    [RelayCommand]
-    private async Task ToggleSortDirectionAsync()
-    {
-        CurrentSortDirection = CurrentSortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending;
-
-        await LoadSearchResultsAsync();
     }
 
     [RelayCommand]

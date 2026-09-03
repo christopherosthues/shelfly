@@ -12,25 +12,11 @@ using Shelfly.Common;
 
 namespace Shelfly.App.Features.Library.ViewModels;
 
-public partial class BookListViewModel(LibraryService libraryService, LibraryExportService exportService) : ShelflyViewModelBase
+public partial class BookListViewModel(LibraryService libraryService, LibraryExportService exportService) : SortableListViewModelBase
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EmptyStateMessage))]
     public partial ObservableCollection<BookEntity> Books { get; set; } = [];
-
-    [ObservableProperty]
-    public partial string SearchQuery { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial SortCriterion SortCriterion { get; set; } = SortCriterion.Title;
-
-    [ObservableProperty]
-    public partial SortDirection SortDirection { get; set; } = SortDirection.Ascending;
-
-    [ObservableProperty] public partial int SelectedSortOptionIndex { get; set; } = 0;
-
-    [ObservableProperty]
-    public partial bool IsLoading { get; set; } = false;
 
     public string EmptyStateMessage => Books.Count == 0
         ? (string.IsNullOrWhiteSpace(SearchQuery)
@@ -38,78 +24,23 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
             : AppResources.BookListPageSearchEmptyMessage)
         : string.Empty;
 
-    public List<SortOptionDisplay> SortOptions { get; } =
-    [
-        new SortOptionDisplay(SortCriterion.Title, AppResources.BookListPageSortByTitle),
-        new SortOptionDisplay(SortCriterion.Author, AppResources.BookListPageSortByAuthor),
-        new SortOptionDisplay(SortCriterion.Publisher, AppResources.BookListPageSortByPublisher),
-        new SortOptionDisplay(SortCriterion.PublishDate, AppResources.BookListPageSortByPublishDate)
-    ];
-
-    public string SortIconSource => SortDirection == SortDirection.Ascending ? "sort_asc.svg" : "sort_desc.svg";
-
-    public string SortDirectionDescription => SortDirection == SortDirection.Ascending
-        ? AppResources.SortDirectionAscending
-        : AppResources.SortDirectionDescending;
-
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        IsLoading = true;
-        try
+        await LoadSortedItemsAsync(string.Empty, SortCriterion.Title, SortDirection.Ascending, cancellationToken);
+    }
+
+    protected override async Task LoadSortedItemsAsync(string query, SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken)
+    {
+        await ExecuteWithLoadingAsync(async () =>
         {
-            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(string.Empty, SortCriterion.Title, SortDirection.Ascending, cancellationToken);
+            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(query, criterion, direction, cancellationToken);
             Books = new ObservableCollection<BookEntity>(books);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        });
     }
 
-    partial void OnSortCriterionChanged(SortCriterion value)
+    protected override void OnSearchQueryChangedCore(string value)
     {
-        SelectedSortOptionIndex = SortOptions.FindIndex(o => o.Criterion == value);
-    }
-
-    partial void OnSearchQueryChanged(string value)
-    {
-        SearchCommand.Execute(null);
         OnPropertyChanged(nameof(EmptyStateMessage));
-    }
-
-    [RelayCommand]
-    private async Task SearchAsync(CancellationToken cancellationToken)
-    {
-        IsLoading = true;
-        try
-        {
-            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(SearchQuery, SortCriterion, SortDirection, cancellationToken);
-            Books = new ObservableCollection<BookEntity>(books);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    [RelayCommand]
-    private async Task SortAsync(SortOptionDisplay? option)
-    {
-        if (option is not null)
-        {
-            SortCriterion = option.Criterion;
-            SelectedSortOptionIndex = SortOptions.FindIndex(o => o.Criterion == option.Criterion);
-        }
-        await RefreshBooksAsync();
-    }
-
-    [RelayCommand]
-    private async Task ToggleSortDirectionAsync()
-    {
-        SortDirection = SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending;
-        OnPropertyChanged(nameof(SortIconSource));
-        OnPropertyChanged(nameof(SortDirectionDescription));
-        await RefreshBooksAsync();
     }
 
     [RelayCommand]
@@ -143,8 +74,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     [RelayCommand]
     private async Task ExportLibraryAsync()
     {
-        IsLoading = true;
-        try
+        await ExecuteWithLoadingAsync(async () =>
         {
             Result<string> exportResult = await exportService.ExportLibraryToJsonAsync();
 
@@ -164,7 +94,6 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
                     PickerTitle = AppResources.BookListPageExportLibraryButtonText,
                     FileTypes = customFileType
                 });
-                // DefaultFileName = $"shelfly_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.json",
 
                 if (fileResult is not null)
                 {
@@ -193,24 +122,6 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
                         AppResources.CommonOkButton);
                 }
             }
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    private async Task RefreshBooksAsync()
-    {
-        IsLoading = true;
-        try
-        {
-            List<BookEntity> books = await libraryService.SearchSortedBooksAsync(SearchQuery, SortCriterion, SortDirection);
-            Books = new ObservableCollection<BookEntity>(books);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        });
     }
 }
