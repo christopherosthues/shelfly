@@ -28,7 +28,9 @@ public abstract partial class SortableListViewModelBase : ShelflyViewModelBase
         new SortOptionDisplay(SortCriterion.Title, AppResources.BookListPageSortByTitle),
         new SortOptionDisplay(SortCriterion.Author, AppResources.BookListPageSortByAuthor),
         new SortOptionDisplay(SortCriterion.Publisher, AppResources.BookListPageSortByPublisher),
-        new SortOptionDisplay(SortCriterion.PublishDate, AppResources.BookListPageSortByPublishDate)
+        new SortOptionDisplay(SortCriterion.PublishDate, AppResources.BookListPageSortByPublishDate),
+        new SortOptionDisplay(SortCriterion.CreatedAt, AppResources.BookListPageSortByCreatedAt),
+        new SortOptionDisplay(SortCriterion.LastModifiedAt, AppResources.BookListPageSortByLastModifiedAt)
     ];
 
     public string SortIconSource => SortDirection == SortDirection.Ascending ? "sort_asc.svg" : "sort_desc.svg";

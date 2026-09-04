@@ -69,6 +69,16 @@
     <data name="BookListPageSortByPublishDate" xml:space="preserve">
         <value>Publish Date</value>
     </data>
+    <data name="BookListPageBookmarkCountFormat" xml:space="preserve">
+        <value>{0} bookmarks</value>
+    </data>
+
+    <data name="BookListPageSortByCreatedAt" xml:space="preserve">
+        <value>Created Date</value>
+    </data>
+    <data name="BookListPageSortByLastModifiedAt" xml:space="preserve">
+        <value>Last Modified</value>
+    </data>
     <data name="BookListPageTitle" xml:space="preserve">
         <value>My Library</value>
     </data>
@@ -350,6 +360,27 @@
     </data>
     <data name="CommonOkButton" xml:space="preserve">
         <value>OK</value>
+    </data>
+    <data name="CommonDateToday" xml:space="preserve">
+        <value>Today</value>
+    </data>
+    <data name="CommonDateYesterday" xml:space="preserve">
+        <value>Yesterday</value>
+    </data>
+    <data name="CommonDateDaysAgo" xml:space="preserve">
+        <value>{0} days ago</value>
+    </data>
+    <data name="CommonDateWeeksAgo" xml:space="preserve">
+        <value>{0} weeks ago</value>
+    </data>
+    <data name="CommonDateMonthsAgo" xml:space="preserve">
+        <value>{0} months ago</value>
+    </data>
+    <data name="CommonDateYearsAgo" xml:space="preserve">
+        <value>{0} years ago</value>
+    </data>
+    <data name="CommonDateTimeFormatToday" xml:space="preserve">
+        <value>h:mm tt</value>
     </data>
     <data name="BookEditPageBookNotFoundMessage" xml:space="preserve">
         <value>Book not found</value>

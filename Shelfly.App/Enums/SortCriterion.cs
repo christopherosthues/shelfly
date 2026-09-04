@@ -5,5 +5,7 @@ public enum SortCriterion
     Title,
     Author,
     Publisher,
-    PublishDate
+    PublishDate,
+    CreatedAt,
+    LastModifiedAt
 }

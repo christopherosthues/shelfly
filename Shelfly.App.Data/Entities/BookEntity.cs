@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Shelfly.App.Data.Entities;
@@ -33,4 +34,9 @@ public class BookEntity
     public DateTime CreatedAt { get; set; }
 
     public DateTime? LastModifiedAt { get; set; }
+
+    public ICollection<BookmarkEntity> Bookmarks { get; set; } = [];
+
+    [NotMapped]
+    public int BookmarkCount { get; set; }
 }

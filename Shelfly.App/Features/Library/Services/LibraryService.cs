@@ -10,8 +10,21 @@ public class LibraryService(LocalDbContext dbContext)
 {
     public async Task<List<BookEntity>> GetAllBooksAsync(CancellationToken cancellationToken = default)
     {
-        return await dbContext.Books
-            .ToListAsync(cancellationToken);
+        return
+        [
+            .. (await dbContext.Books
+                .Select(e => new
+                {
+                    Book = e,
+                    BookmarkCount = e.Bookmarks.Count
+                })
+                .ToListAsync(cancellationToken))
+            .Select(book =>
+            {
+                book.Book.BookmarkCount = book.BookmarkCount;
+                return book.Book;
+            })
+        ];
     }
 
     public async Task<List<BookEntity>> SearchSortedBooksAsync(string query, SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken = default)
@@ -37,10 +50,26 @@ public class LibraryService(LocalDbContext dbContext)
             SortCriterion.PublishDate => direction == SortDirection.Ascending
                 ? baseQuery.OrderBy(b => b.PublishDate ?? DateTime.MinValue)
                 : baseQuery.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
+            SortCriterion.CreatedAt => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.CreatedAt) : baseQuery.OrderByDescending(b => b.CreatedAt),
+            SortCriterion.LastModifiedAt => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.LastModifiedAt ?? DateTime.MinValue)
+                : baseQuery.OrderByDescending(b => b.LastModifiedAt ?? DateTime.MaxValue),
             _ => baseQuery
         };
 
-        return await sortedQuery.ToListAsync(cancellationToken);
+        return
+        [
+            .. (await sortedQuery.Select(e => new
+            {
+                Book = e,
+                BookmarkCount = e.Bookmarks.Count
+            }).ToListAsync(cancellationToken))
+            .Select(book =>
+            {
+                book.Book.BookmarkCount = book.BookmarkCount;
+                return book.Book;
+            })
+        ];
     }
 
     public async Task<BookEntity?> SoftDeleteBookAsync(Guid bookId, CancellationToken cancellationToken = default)

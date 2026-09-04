@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:localization="clr-namespace:Shelfly.App.Resources.Localization;assembly=Shelfly.App"
+    xmlns:converters="clr-namespace:Shelfly.App.Converters"
     x:DataType="entities:BookEntity"
     Margin="16, 0"
     MinimumHeightRequest="48">
@@ -23,12 +25,12 @@
 
         <Grid
             ColumnDefinitions="44, *"
-            RowDefinitions="Auto, Auto, Auto">
+            RowDefinitions="Auto, Auto, Auto, Auto">
 
             <Grid
                   x:Name="Selection"
                   Grid.Column="0"
-                  Grid.RowSpan="3"
+                  Grid.RowSpan="4"
                   ColumnDefinitions="Auto"
                   RowDefinitions="*"
                   RotationY="90"
@@ -63,6 +65,53 @@
                 FontAttributes="Bold"
                 Text="{Binding Title}" />
 
+            <!-- Bookmark count - top right -->
+            <Grid
+                Grid.Column="1"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                ColumnDefinitions="Auto,Auto"
+                HorizontalOptions="End"
+                VerticalOptions="Center">
+
+                <Image
+                    WidthRequest="32"
+                    HeightRequest="32"
+                    MaximumWidthRequest="32"
+                    MaximumHeightRequest="32"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    Aspect="AspectFit"
+                    Source="bookmark_icon.svg">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior
+                            TintColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                    </Image.Behaviors>
+                </Image>
+
+                <Border
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    WidthRequest="20"
+                    HeightRequest="20"
+                    Padding="2"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                    StrokeThickness="0">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+
+                    <Label
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        TextColor="{StaticResource White}"
+                        Style="{StaticResource BodySmall}"
+                        Text="{Binding BookmarkCount}" />
+                </Border>
+            </Grid>
+
             <!-- Author -->
             <Label
                 Grid.Column="1"
@@ -75,6 +124,16 @@
                 Grid.Row="2"
                 Opacity="0.6"
                 Text="{Binding Publisher}" />
+
+            <!-- Last modified date - bottom right -->
+            <Label
+                Grid.Column="1"
+                Grid.Row="3"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                Opacity="0.5"
+                Style="{StaticResource BodySmall}"
+                Text="{Binding Converter={converters:BookDateConverter}}" />
         </Grid>
     </Border>
 </ContentView>

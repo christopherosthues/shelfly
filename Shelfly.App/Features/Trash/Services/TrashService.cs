@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Enums;
-using Shelfly.App.Features.Library.Services;
 
 namespace Shelfly.App.Features.Trash.Services;
 
@@ -10,54 +9,29 @@ public class TrashService(LocalDbContext dbContext)
 {
     public async Task<List<BookEntity>> GetAllTrashBooksAsync(CancellationToken cancellationToken = default)
     {
-        return await dbContext.Books
-            .IgnoreQueryFilters()
-            .Where(book => book.DeletedAt != null)
-            .ToListAsync(cancellationToken);
+        return
+        [
+            .. (await dbContext.Books
+                .IgnoreQueryFilters()
+                .Where(book => book.DeletedAt != null)
+                .Select(book => new
+                {
+                    Book = book,
+                    BookmarkCount = book.Bookmarks.Count
+                })
+                .ToListAsync(cancellationToken))
+            .Select(book =>
+            {
+                book.Book.BookmarkCount = book.BookmarkCount;
+                return book.Book;
+            })
+        ];
     }
 
-    public async Task<List<BookEntity>> GetSortedTrashBooksAsync(SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken = default)
+    public async Task<List<BookEntity>> SearchSortedTrashBooksAsync(string query, SortCriterion criterion,
+        SortDirection direction, CancellationToken cancellationToken = default)
     {
-        var query = dbContext.Books
-            .IgnoreQueryFilters()
-            .Where(book => book.DeletedAt != null)
-            .AsQueryable();
-
-        query = criterion switch
-        {
-            SortCriterion.Title => direction == SortDirection.Ascending ? query.OrderBy(b => b.Title) : query.OrderByDescending(b => b.Title),
-            SortCriterion.Author => direction == SortDirection.Ascending ? query.OrderBy(b => b.Author) : query.OrderByDescending(b => b.Author),
-            SortCriterion.Publisher => direction == SortDirection.Ascending ? query.OrderBy(b => b.Publisher) : query.OrderByDescending(b => b.Publisher),
-            SortCriterion.PublishDate => direction == SortDirection.Ascending ? query.OrderBy(b => b.PublishDate ?? DateTime.MinValue) : query.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
-            _ => query
-        };
-
-        return await query.ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<BookEntity>> SearchTrashBooksAsync(string query, CancellationToken cancellationToken = default)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-        {
-            return await GetAllTrashBooksAsync(cancellationToken);
-        }
-
-        string lowerQuery = query.ToLowerInvariant();
-
-        return await dbContext.Books
-            .IgnoreQueryFilters()
-            .Where(book =>
-                book.DeletedAt != null &&
-                (EF.Functions.Like(book.Title, $"%{lowerQuery}%") ||
-                 EF.Functions.Like(book.Author, $"%{lowerQuery}%") ||
-                 EF.Functions.Like(book.Publisher, $"%{lowerQuery}%") ||
-                 EF.Functions.Like(book.ISBN, $"%{lowerQuery}%")))
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<BookEntity>> SearchSortedTrashBooksAsync(string query, SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken = default)
-    {
-        var baseQuery = dbContext.Books
+        IQueryable<BookEntity> baseQuery = dbContext.Books
             .IgnoreQueryFilters()
             .AsQueryable();
 
@@ -76,16 +50,42 @@ public class TrashService(LocalDbContext dbContext)
             baseQuery = baseQuery.Where(book => book.DeletedAt != null);
         }
 
-        var sortedQuery = criterion switch
+        IQueryable<BookEntity> sortedQuery = criterion switch
         {
-            SortCriterion.Title => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.Title) : baseQuery.OrderByDescending(b => b.Title),
-            SortCriterion.Author => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.Author) : baseQuery.OrderByDescending(b => b.Author),
-            SortCriterion.Publisher => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.Publisher) : baseQuery.OrderByDescending(b => b.Publisher),
-            SortCriterion.PublishDate => direction == SortDirection.Ascending ? baseQuery.OrderBy(b => b.PublishDate ?? DateTime.MinValue) : baseQuery.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
+            SortCriterion.Title => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.Title)
+                : baseQuery.OrderByDescending(b => b.Title),
+            SortCriterion.Author => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.Author)
+                : baseQuery.OrderByDescending(b => b.Author),
+            SortCriterion.Publisher => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.Publisher)
+                : baseQuery.OrderByDescending(b => b.Publisher),
+            SortCriterion.PublishDate => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.PublishDate ?? DateTime.MinValue)
+                : baseQuery.OrderByDescending(b => b.PublishDate ?? DateTime.MaxValue),
+            SortCriterion.CreatedAt => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.CreatedAt)
+                : baseQuery.OrderByDescending(b => b.CreatedAt),
+            SortCriterion.LastModifiedAt => direction == SortDirection.Ascending
+                ? baseQuery.OrderBy(b => b.LastModifiedAt ?? DateTime.MinValue)
+                : baseQuery.OrderByDescending(b => b.LastModifiedAt ?? DateTime.MaxValue),
             _ => baseQuery
         };
 
-        return await sortedQuery.ToListAsync(cancellationToken);
+        return
+        [
+            .. (await sortedQuery.Select(book => new
+            {
+                Book = book,
+                BookmarkCount = book.Bookmarks.Count
+            }).ToListAsync(cancellationToken))
+            .Select(book =>
+            {
+                book.Book.BookmarkCount = book.BookmarkCount;
+                return book.Book;
+            })
+        ];
     }
 
     public async Task<BookEntity?> RestoreBookAsync(Guid bookId, CancellationToken cancellationToken = default)
@@ -170,20 +170,13 @@ public class TrashService(LocalDbContext dbContext)
         return trashBooks.Count;
     }
 
-    public async Task<List<BookmarkEntity>> GetBookmarksByBookIdAsync(Guid bookId, CancellationToken cancellationToken = default)
+    public async Task<List<BookmarkEntity>> GetBookmarksByBookIdAsync(Guid bookId,
+        CancellationToken cancellationToken = default)
     {
         List<BookmarkEntity> bookmarks = await dbContext.Bookmarks
             .Where(b => b.BookId == bookId)
             .ToListAsync(cancellationToken);
 
         return [.. bookmarks.OrderBy(b => b.StartPage).ThenBy(b => b.EndPage ?? int.MaxValue)];
-    }
-
-    public async Task<BookmarkEntity?> GetBookmarkByIdAsync(Guid bookmarkId, CancellationToken cancellationToken = default)
-    {
-        BookmarkEntity? bookmark = await dbContext.Bookmarks
-            .FirstOrDefaultAsync(b => b.Id == bookmarkId, cancellationToken);
-
-        return bookmark;
     }
 }

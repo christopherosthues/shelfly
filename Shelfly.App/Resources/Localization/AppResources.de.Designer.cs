@@ -582,6 +582,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Lesezeichen.
+        /// </summary>
+        internal static string BookListPageBookmarkCountFormat {
+            get {
+                return ResourceManager.GetString("BookListPageBookmarkCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Noch keine Bücher. Tippe auf +, um dein erstes Buch hinzuzufügen..
         /// </summary>
         internal static string BookListPageEmptyStateMessage {
@@ -636,6 +645,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Langes Drücken zum Auswählen.
+        /// </summary>
+        internal static string BookListPageLongPressToSelectDescription {
+            get {
+                return ResourceManager.GetString("BookListPageLongPressToSelectDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keine Bücher gefunden.
         /// </summary>
         internal static string BookListPageNoBooksFoundDescription {
@@ -663,6 +681,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ausgewählt.
+        /// </summary>
+        internal static string BookListPageSelectedStateDescription {
+            get {
+                return ResourceManager.GetString("BookListPageSelectedStateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bücher sortieren nach.
         /// </summary>
         internal static string BookListPageSortBooksByDescription {
@@ -677,6 +704,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookListPageSortByAuthor {
             get {
                 return ResourceManager.GetString("BookListPageSortByAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erstellungsdatum.
+        /// </summary>
+        internal static string BookListPageSortByCreatedAt {
+            get {
+                return ResourceManager.GetString("BookListPageSortByCreatedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zuletzt geändert.
+        /// </summary>
+        internal static string BookListPageSortByLastModifiedAt {
+            get {
+                return ResourceManager.GetString("BookListPageSortByLastModifiedAt", resourceCulture);
             }
         }
         
@@ -740,6 +785,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookListPageUnknownErrorMessage {
             get {
                 return ResourceManager.GetString("BookListPageUnknownErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nicht ausgewählt.
+        /// </summary>
+        internal static string BookListPageUnselectedStateDescription {
+            get {
+                return ResourceManager.GetString("BookListPageUnselectedStateDescription", resourceCulture);
             }
         }
         
@@ -911,6 +965,69 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookmarkEditPageStartPageLabel {
             get {
                 return ResourceManager.GetString("BookmarkEditPageStartPageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vor {0} Tagen.
+        /// </summary>
+        internal static string CommonDateDaysAgo {
+            get {
+                return ResourceManager.GetString("CommonDateDaysAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vor {0} Monaten.
+        /// </summary>
+        internal static string CommonDateMonthsAgo {
+            get {
+                return ResourceManager.GetString("CommonDateMonthsAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HH:mm.
+        /// </summary>
+        internal static string CommonDateTimeFormatToday {
+            get {
+                return ResourceManager.GetString("CommonDateTimeFormatToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heute.
+        /// </summary>
+        internal static string CommonDateToday {
+            get {
+                return ResourceManager.GetString("CommonDateToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vor {0} Wochen.
+        /// </summary>
+        internal static string CommonDateWeeksAgo {
+            get {
+                return ResourceManager.GetString("CommonDateWeeksAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vor {0} Jahren.
+        /// </summary>
+        internal static string CommonDateYearsAgo {
+            get {
+                return ResourceManager.GetString("CommonDateYearsAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gestern.
+        /// </summary>
+        internal static string CommonDateYesterday {
+            get {
+                return ResourceManager.GetString("CommonDateYesterday", resourceCulture);
             }
         }
         
