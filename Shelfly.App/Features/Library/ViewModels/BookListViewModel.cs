@@ -16,6 +16,12 @@ namespace Shelfly.App.Features.Library.ViewModels;
 public partial class BookListViewModel(LibraryService libraryService, LibraryExportService exportService) : SortableListViewModelBase
 {
     [ObservableProperty]
+    public partial bool IsSelectionMode { get; set; }
+
+    [ObservableProperty]
+    public partial ObservableCollection<Guid> SelectedItemIds { get; set; } = [];
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EmptyStateMessage))]
     public partial ObservableCollection<BookEntity> Books { get; set; } = [];
 
@@ -70,6 +76,39 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     private static async Task NavigateToEditBookAsync(Guid bookId)
     {
         await Shell.Current.GoToAsync(Routes.BookEditPage, new Dictionary<string, object> { [nameof(BookEditViewModel.BookId)] = bookId });
+    }
+
+    [RelayCommand]
+    private void ToggleSelection(BookEntity book)
+    {
+        if (SelectedItemIds.Contains(book.Id))
+        {
+            SelectedItemIds.Remove(book.Id);
+        }
+        else
+        {
+            SelectedItemIds.Add(book.Id);
+        }
+    }
+
+    [RelayCommand]
+    private void EnterSelectionMode(BookEntity book)
+    {
+        IsSelectionMode = true;
+        SelectedItemIds.Add(book.Id);
+    }
+
+    [RelayCommand]
+    private void ExitSelectionMode()
+    {
+        IsSelectionMode = false;
+        SelectedItemIds.Clear();
+    }
+
+    public override void OnNavigatingFrom()
+    {
+        IsSelectionMode = false;
+        SelectedItemIds.Clear();
     }
 
     [RelayCommand]

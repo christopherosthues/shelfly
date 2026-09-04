@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="entities:BookEntity"
     Margin="16, 0"
     MinimumHeightRequest="48">
@@ -21,18 +22,56 @@
         </Border.Shadow>
 
         <Grid
+            ColumnDefinitions="44, *"
             RowDefinitions="Auto, Auto, Auto">
 
+            <Grid
+                  x:Name="Selection"
+                  Grid.Column="0"
+                  Grid.RowSpan="3"
+                  ColumnDefinitions="Auto"
+                  RowDefinitions="*"
+                  IsVisible="False"
+                  Margin="0,0,16,0">
+                <BoxView
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="28"
+                    HeightRequest="28"
+                    CornerRadius="32"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                    />
+
+                <Image
+                    WidthRequest="24"
+                    HeightRequest="24"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Aspect="AspectFit"
+                    Source="check_icon.svg">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior
+                            TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                    </Image.Behaviors>
+                </Image>
+            </Grid>
+
+            <!-- Title -->
             <Label
+                Grid.Column="1"
                 Grid.Row="0"
                 FontAttributes="Bold"
                 Text="{Binding Title}" />
 
+            <!-- Author -->
             <Label
+                Grid.Column="1"
                 Grid.Row="1"
                 Text="{Binding Author}" />
 
+            <!-- Publisher -->
             <Label
+                Grid.Column="1"
                 Grid.Row="2"
                 Opacity="0.6"
                 Text="{Binding Publisher}" />

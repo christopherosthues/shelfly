@@ -9,6 +9,7 @@
     xmlns:controls="clr-namespace:Shelfly.App.Controls"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:converters="clr-namespace:Shelfly.App.Converters"
     x:DataType="local:BookListViewModel"
     Title="{x:Static resx:AppResources.BookListPageTitle}">
 
@@ -109,14 +110,12 @@
                         </SwipeView.RightItems>
 
                         <controls:BookCardView
-                            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}">
+                            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}"
+                            IsSelected="{Binding Id, Converter={converters:ContainsConverter}, ConverterParameter={Binding SelectedItemIds, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}}"
+                            LongPressCommand="{Binding EnterSelectionModeCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                            TapCommand="{Binding NavigateToDetailBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
+                            TapCommandParameter="{Binding Id}" />
 
-                            <controls:BookCardView.GestureRecognizers>
-                                <TapGestureRecognizer
-                                    Command="{Binding NavigateToDetailBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
-                                    CommandParameter="{Binding Id}" />
-                            </controls:BookCardView.GestureRecognizers>
-                        </controls:BookCardView>
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

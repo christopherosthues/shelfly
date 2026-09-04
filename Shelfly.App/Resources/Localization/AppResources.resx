@@ -270,6 +270,18 @@
     <data name="BookListPageExportErrorMessage" xml:space="preserve">
         <value>Export failed</value>
     </data>
+    <data name="BookListPageLongPressToSelectDescription" xml:space="preserve">
+        <value>Long press to select</value>
+    </data>
+
+    <data name="BookListPageSelectedStateDescription" xml:space="preserve">
+        <value>Selected</value>
+    </data>
+
+    <data name="BookListPageUnselectedStateDescription" xml:space="preserve">
+        <value>Unselected</value>
+    </data>
+
     <data name="BookListPageBookEntryDescription" xml:space="preserve">
         <value>Book entry. Tap to edit book. Swipe left to delete.</value>
     </data>
