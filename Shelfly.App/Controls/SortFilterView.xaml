@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FlexLayout
+    x:Class="Shelfly.App.Controls.SortFilterView"
+    x:Name="Self"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Direction="Row"
+    Wrap="Wrap"
+    JustifyContent="Start"
+    AlignItems="Center"
+    Margin="8">
+
+    <!-- Search Bar -->
+    <SearchBar
+        FlexLayout.Order="1"
+        SemanticProperties.Description="{Binding Path=SearchDescription, Source={x:Reference Self}}"
+        Placeholder="{Binding Path=SearchPlaceholder, Source={x:Reference Self}}"
+        Text="{Binding Path=SearchText, Source={x:Reference Self}, Mode=TwoWay}">
+        <SearchBar.Behaviors>
+            <toolkit:EventToCommandBehavior
+                EventName="TextChanged"
+                Command="{Binding Path=SearchCommand, Source={x:Reference Self}}" />
+        </SearchBar.Behaviors>
+    </SearchBar>
+
+    <!-- Sort Direction Toggle -->
+    <ImageButton
+        x:Name="SortDirectionToggle"
+        FlexLayout.Order="2"
+        WidthRequest="24"
+        HeightRequest="24"
+        MaximumWidthRequest="24"
+        MaximumHeightRequest="24"
+        Margin="8, 0, 4, 0"
+        SemanticProperties.Description="{Binding Path=SortDirectionDescription, Source={x:Reference Self}}"
+        Source="{Binding Path=SortIconSource, Source={x:Reference Self}}"
+        Command="{Binding Path=ToggleCommand, Source={x:Reference Self}}">
+        <ImageButton.Behaviors>
+            <toolkit:IconTintColorBehavior
+                TintColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        </ImageButton.Behaviors>
+    </ImageButton>
+
+    <!-- Sort Criterion Picker -->
+    <Picker
+        x:Name="SortPicker"
+        FlexLayout.Order="3"
+        SemanticProperties.Description="{Binding Path=SortDescription, Source={x:Reference Self}}"
+        Title="{Binding Path=Title, Source={x:Reference Self}}"
+        ItemsSource="{Binding Path=ItemsSource, Source={x:Reference Self}}"
+        ItemDisplayBinding="{Binding DisplayName}"
+        SelectedIndex="{Binding Path=SelectedIndex, Source={x:Reference Self}, Mode=TwoWay}">
+        <Picker.Behaviors>
+            <toolkit:EventToCommandBehavior
+                EventName="SelectedIndexChanged"
+                Command="{Binding Path=SortCommand, Source={x:Reference Self}}"
+                CommandParameter="{Binding SelectedItem, Source={x:Reference SortPicker}}" />
+        </Picker.Behaviors>
+    </Picker>
+
+</FlexLayout>

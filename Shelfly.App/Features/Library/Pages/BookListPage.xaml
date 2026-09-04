@@ -22,58 +22,21 @@
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
-        <!-- Top Controls: Search Bar + Sort Picker -->
-        <FlexLayout
+        <!-- Top Controls: Search + Sort -->
+        <controls:SortFilterView
             Grid.Row="0"
-            Direction="Row"
-            Wrap="Wrap"
-            JustifyContent="Start"
-            AlignItems="Center"
-            Margin="8">
-
-            <SearchBar
-                FlexLayout.Order="1"
-                SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
-                Placeholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
-                Text="{Binding SearchQuery, Mode=TwoWay}">
-                <SearchBar.Behaviors>
-                    <toolkit:EventToCommandBehavior
-                        EventName="TextChanged"
-                        Command="{Binding SearchCommand}" />
-                </SearchBar.Behaviors>
-            </SearchBar>
-
-            <Picker
-                x:Name="SortPicker"
-                FlexLayout.Order="2"
-                Margin="8, 0, 0, 0"
-                SemanticProperties.Description="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
-                Title="{x:Static resx:AppResources.BookListPageSortByTitle}"
-                ItemsSource="{Binding SortOptions}"
-                ItemDisplayBinding="{Binding DisplayName}"
-                SelectedIndex="{Binding SelectedSortOptionIndex, Mode=TwoWay}">
-                <Picker.Behaviors>
-                    <toolkit:EventToCommandBehavior
-                        EventName="SelectedIndexChanged"
-                        Command="{Binding SortCommand}"
-                        CommandParameter="{Binding SelectedItem, Source={x:Reference SortPicker}}"/>
-                </Picker.Behaviors>
-            </Picker>
-
-            <ImageButton
-                x:Name="SortDirectionToggle"
-                FlexLayout.Order="3"
-                WidthRequest="24"
-                HeightRequest="24"
-                Margin="4, 0, 0, 0"
-                SemanticProperties.Description="{Binding SortDirectionDescription}"
-                Source="{Binding SortIconSource}"
-                Command="{Binding ToggleSortDirectionCommand}">
-                <ImageButton.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
-                </ImageButton.Behaviors>
-            </ImageButton>
-        </FlexLayout>
+            SearchText="{Binding SearchQuery, Mode=TwoWay}"
+            SearchPlaceholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
+            SearchDescription="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
+            SearchCommand="{Binding SearchCommand}"
+            ItemsSource="{Binding SortOptions}"
+            SelectedIndex="{Binding SelectedSortOptionIndex, Mode=TwoWay}"
+            SortIconSource="{Binding SortIconSource}"
+            SortDirectionDescription="{Binding SortDirectionDescription}"
+            SortDescription="{x:Static resx:AppResources.BookListPageSortBooksByDescription}"
+            Title="{x:Static resx:AppResources.BookListPageSortByTitle}"
+            ToggleCommand="{Binding ToggleSortDirectionCommand}"
+            SortCommand="{Binding SortCommand}" />
 
         <!-- Book List -->
         <CollectionView
