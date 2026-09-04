@@ -144,8 +144,8 @@
                                         MaximumWidthRequest="32"
                                         Margin="8,0,0,0"
                                         IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
-                                        Command="{Binding NavigateToBookmarkDetailCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:TrashBookDetailViewModel}}, x:DataType={x:Type viewModels:TrashBookDetailViewModel}}"
-                                        CommandParameter="{Binding}" />
+                                        Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:TrashBookDetailViewModel}}, x:DataType={x:Type viewModels:TrashBookDetailViewModel}}"
+                                        CommandParameter="{Binding Note}" />
                                 </HorizontalStackLayout>
                             </Grid>
                         </DataTemplate>

@@ -11,6 +11,7 @@
     x:DataType="viewModels:TrashBookmarkDetailViewModel"
     Title="{x:Static local:AppResources.TrashBookmarkDetailPageTitle}">
 
+    <!-- TODO remove this, use shell alert instead -->
     <Grid RowDefinitions="*" ColumnDefinitions="*">
         <!-- Note Content -->
         <ScrollView Grid.Row="0">
