@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:localization="clr-namespace:Shelfly.App.Resources.Localization;assembly=Shelfly.App"
     xmlns:converters="clr-namespace:Shelfly.App.Converters"
     x:DataType="entities:BookEntity"
     Margin="16, 0"
@@ -66,22 +65,21 @@
                 Text="{Binding Title}" />
 
             <!-- Bookmark count - top right -->
-            <Grid
+            <AbsoluteLayout
                 Grid.Column="1"
                 Grid.Row="0"
                 Grid.RowSpan="2"
-                ColumnDefinitions="Auto,Auto"
                 HorizontalOptions="End"
-                VerticalOptions="Center">
+                VerticalOptions="Center"
+                Margin="0,4,4,0">
 
                 <Image
-                    WidthRequest="32"
-                    HeightRequest="32"
-                    MaximumWidthRequest="32"
-                    MaximumHeightRequest="32"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start"
+                    AbsoluteLayout.LayoutBounds="0, 0, 36, 36"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    WidthRequest="36"
+                    HeightRequest="36"
                     Aspect="AspectFit"
+                    Margin="0,8,8,0"
                     Source="bookmark_icon.svg">
                     <Image.Behaviors>
                         <toolkit:IconTintColorBehavior
@@ -90,11 +88,10 @@
                 </Image>
 
                 <Border
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    VerticalOptions="Start"
-                    WidthRequest="20"
-                    HeightRequest="20"
+                    AbsoluteLayout.LayoutBounds="1.15, -0.2, 24, 24"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    WidthRequest="24"
+                    HeightRequest="24"
                     Padding="2"
                     BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                     StrokeThickness="0">
@@ -110,7 +107,7 @@
                         Style="{StaticResource BodySmall}"
                         Text="{Binding BookmarkCount}" />
                 </Border>
-            </Grid>
+            </AbsoluteLayout>
 
             <!-- Author -->
             <Label
