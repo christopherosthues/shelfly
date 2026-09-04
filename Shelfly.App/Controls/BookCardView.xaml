@@ -31,7 +31,7 @@
                   Grid.RowSpan="3"
                   ColumnDefinitions="Auto"
                   RowDefinitions="*"
-                  IsVisible="False"
+                  RotationY="90"
                   Margin="0,0,16,0">
                 <BoxView
                     HorizontalOptions="Center"

@@ -50,9 +50,7 @@ public partial class BookCardView : ContentView
 
             if (indicator is not null)
             {
-                indicator.IsVisible = isSelected;
-
-                double targetRotation = isSelected ? 90 : 0;
+                double targetRotation = isSelected ? 0 : 90;
                 _ = indicator.RotateYToAsync(targetRotation, 300, Easing.SinInOut);
             }
         }

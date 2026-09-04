@@ -98,13 +98,6 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         SelectedItemIds.Add(book.Id);
     }
 
-    [RelayCommand]
-    private void ExitSelectionMode()
-    {
-        IsSelectionMode = false;
-        SelectedItemIds.Clear();
-    }
-
     public override void OnNavigatingFrom()
     {
         IsSelectionMode = false;

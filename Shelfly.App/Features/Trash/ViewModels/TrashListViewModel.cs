@@ -72,21 +72,6 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     }
 
     [RelayCommand]
-    private void ToggleSelection(BookEntity book)
-    {
-        if (SelectedItemIds.Contains(book.Id))
-        {
-            SelectedItemIds.Remove(book.Id);
-        }
-        else
-        {
-            SelectedItemIds.Add(book.Id);
-        }
-
-        OnToolbarVisibilityChanged();
-    }
-
-    [RelayCommand]
     private async Task RestoreSelectedAsync()
     {
         foreach (Guid id in SelectedItemIds.ToList())

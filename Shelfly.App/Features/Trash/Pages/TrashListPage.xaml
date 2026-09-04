@@ -8,6 +8,8 @@
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:controls="clr-namespace:Shelfly.App.Controls"
+    xmlns:converters="clr-namespace:Shelfly.App.Converters"
     x:DataType="local:TrashListViewModel"
     Title="{x:Static resx:AppResources.TrashListPageTitle}">
 
@@ -105,43 +107,12 @@
                                 CommandParameter="{Binding .}" />
                         </SwipeView.RightItems>
 
-                        <Grid Padding="12">
-                            <Border Style="{StaticResource CardBorder}">
-                                <Grid RowDefinitions="Auto, Auto, Auto">
-                                    <Label
-                                        Grid.Row="0"
-                                        FontAttributes="Bold"
-                                        Text="{Binding Title}" />
-
-                                    <Label
-                                        Grid.Row="1"
-                                        Text="{Binding Author}" />
-
-                                    <Label
-                                        Grid.Row="2"
-                                        Opacity="0.6"
-                                        Text="{Binding Publisher}" />
-                                </Grid>
-                            </Border>
-
-                            <!-- Selection indicator -->
-                            <BoxView
-                                WidthRequest="24"
-                                HeightRequest="24"
-                                HorizontalOptions="Start"
-                                VerticalOptions="Center"
-                                CornerRadius="12"
-                                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
-                                IsVisible="{Binding Id, Converter={toolkit:IsNotEqualConverter}, ConverterParameter={x:Null}}">
-                            </BoxView>
-
-                            <Grid.GestureRecognizers>
-                                <!-- Tap to navigate to detail -->
-                                <TapGestureRecognizer
-                                    Command="{Binding NavigateToTrashDetailCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
-                                    CommandParameter="{Binding Id}" />
-                            </Grid.GestureRecognizers>
-                        </Grid>
+                        <controls:BookCardView
+                            SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageBookEntryDescription}"
+                            IsSelected="{Binding Id, Converter={converters:ContainsConverter}, ConverterParameter={Binding SelectedItemIds, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}}"
+                            LongPressCommand="{Binding EnterSelectionModeCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                            TapCommand="{Binding NavigateToTrashDetailCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                            TapCommandParameter="{Binding Id}" />
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
