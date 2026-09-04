@@ -7,6 +7,7 @@
     xmlns:viewModels="clr-namespace:Shelfly.App.Features.BookEditor.ViewModels"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:controls="clr-namespace:Shelfly.App.Controls"
     x:DataType="viewModels:BookEditViewModel"
     Title="{Binding PageTitle}">
     <Grid RowDefinitions="*" ColumnDefinitions="*">
@@ -108,40 +109,12 @@
             IsVisible="{Binding IsLoading}" />
 
         <!-- Floating Action Button (FAB) -->
-        <Grid
-            x:Name="FabContainer"
+        <controls:FloatingActionButton
             Grid.Row="0"
-            HorizontalOptions="End"
-            VerticalOptions="End"
-            Margin="16">
-
-            <BoxView
-                WidthRequest="64"
-                HeightRequest="64"
-                CornerRadius="32"
-                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
-
-            <ImageButton
-                WidthRequest="48"
-                HeightRequest="48"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                SemanticProperties.Description="{x:Static local:AppResources.BookEditPageSaveFabDescription}"
-                Source="check_icon.svg"
-                Command="{Binding SaveCommand}"
-                IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}">
-                <ImageButton.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
-                </ImageButton.Behaviors>
-            </ImageButton>
-
-            <ActivityIndicator
-                WidthRequest="24"
-                HeightRequest="24"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                IsRunning="{Binding IsSaving}"
-                IsVisible="{Binding IsSaving}" />
-        </Grid>
+            IconSource="check_icon.svg"
+            Description="{x:Static local:AppResources.BookEditPageSaveFabDescription}"
+            Command="{Binding SaveCommand}"
+            IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}"
+            IsBusy="{Binding IsSaving}" />
     </Grid>
 </pages:ShelflyContentPageBase>

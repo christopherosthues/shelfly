@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Grid
+    x:Class="Shelfly.App.Controls.FloatingActionButton"
+    x:Name="Self"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    HorizontalOptions="End"
+    VerticalOptions="End"
+    Margin="16">
+
+    <BoxView
+        WidthRequest="64"
+        HeightRequest="64"
+        CornerRadius="32"
+        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+
+    <ImageButton
+        x:Name="IconButton"
+        WidthRequest="48"
+        HeightRequest="48"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        SemanticProperties.Description="{Binding Path=Description, Source={x:Reference Self}}"
+        Source="{Binding Path=IconSource, Source={x:Reference Self}}"
+        Command="{Binding Path=Command, Source={x:Reference Self}}"
+        IsEnabled="{Binding Path=IsEnabled, Source={x:Reference Self}}"
+        IsVisible="{Binding Path=IsBusy, Converter={toolkit:InvertedBoolConverter}, Source={x:Reference Self}}">
+        <ImageButton.Behaviors>
+            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+        </ImageButton.Behaviors>
+    </ImageButton>
+
+    <ActivityIndicator
+        WidthRequest="24"
+        HeightRequest="24"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        IsRunning="{Binding Path=IsBusy, Source={x:Reference Self}}"
+        IsVisible="{Binding Path=IsBusy, Source={x:Reference Self}}" />
+
+</Grid>
