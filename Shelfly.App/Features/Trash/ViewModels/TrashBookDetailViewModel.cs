@@ -28,7 +28,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
         {
             List<BookEntity> books = await trashService.GetAllTrashBooksAsync(cancellationToken);
             Book = books.FirstOrDefault(b => b.Id == BookId);
-            
+
             if (Book is not null)
             {
                 Bookmarks = await trashService.GetBookmarksByBookIdAsync(BookId, cancellationToken);
@@ -60,7 +60,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
         }
 
         await trashService.RestoreBookAsync(Book.Id, cancellationToken);
-        
+
         // Navigate back to trash list
         await Shell.Current.GoToAsync($"//{Routes.TrashListPage}");
     }
@@ -74,7 +74,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
         }
 
         BookEntity? book = await trashService.HardDeleteBookAsync(Book.Id, cancellationToken);
-        
+
         if (book is not null)
         {
             // Navigate back to trash list
@@ -91,16 +91,5 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
         }
 
         await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageNoteAlertTitle, note, AppResources.CommonOkButton);
-    }
-
-    [RelayCommand]
-    private async Task NavigateToBookmarkDetailAsync(BookmarkEntity bookmark, CancellationToken cancellationToken = default)
-    {
-        Dictionary<string, object> parameters = new()
-        {
-            [nameof(TrashBookmarkDetailViewModel.BookmarkId)] = bookmark.Id
-        };
-
-        await Shell.Current.GoToAsync(Routes.TrashBookmarkDetailPage, parameters);
     }
 }

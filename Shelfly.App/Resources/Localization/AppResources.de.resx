@@ -408,9 +408,6 @@
     <data name="TrashBookDetailPageTitle" xml:space="preserve">
         <value>Buchdetails</value>
     </data>
-    <data name="TrashBookmarkDetailPageTitle" xml:space="preserve">
-        <value>Notiz</value>
-    </data>
     <data name="TrashListPageRestoreAllDialogTitle" xml:space="preserve">
         <value>Alle Elemente wiederherstellen?</value>
     </data>

@@ -8,5 +8,4 @@ internal static class Routes
     public const string BookmarkEditPage = "BookmarkEditPage";
     public const string TrashListPage = "TrashListPage";
     public const string TrashBookDetailPage = "TrashBookDetailPage";
-    public const string TrashBookmarkDetailPage = "TrashBookmarkDetailPage";
 }

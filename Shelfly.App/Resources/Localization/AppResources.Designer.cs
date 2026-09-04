@@ -1077,15 +1077,6 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note.
-        /// </summary>
-        internal static string TrashBookmarkDetailPageTitle {
-            get {
-                return ResourceManager.GetString("TrashBookmarkDetailPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Trash entry. Tap to view details. Swipe left to restore, swipe right to delete..
         /// </summary>
         internal static string TrashListPageBookEntryDescription {
