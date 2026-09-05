@@ -2,86 +2,61 @@
 
 ## Overview
 
-Shelfly is a reading companion application that helps users manage bookmarks for physical books. Users can track their reading progress, save important passages, and organize their personal library across devices. The core domain revolves around Books (physical book records) and Bookmarks (saved page references with notes).
+Shelfly is a reading companion for managing bookmarks of physical books. Core domain: **Books** (book records) and **Bookmarks** (saved page references with notes).
 
 ## Project Structure
 
-Three-project .NET 10 solution (`Shelfly.slnx`):
+.NET 10 solution (`Shelfly.slnx`).
 
 | Project | Type | Framework | Role |
 |---------|------|-----------|------|
-| `Shelfly.Api` | ASP.NET Core Web API | net10.0 | Backend service — single entry point for all client traffic |
-| `Shelfly.App` | .NET MAUI client | multi-target | Cross-platform mobile/desktop app, talks only to the API |
+| `Shelfly.Api` | ASP.NET Core Web API | net10.0 | Backend; single entry point for all client traffic |
+| `Shelfly.App` | .NET MAUI client | multi-target | Cross-platform app; talks only to the API |
+| `Shelfly.App.Data` | Class library | net10.0 | App local persistence (EF Core + SQLite) |
+| `Shelfly.App.Migrations` | Class library | net10.0 | EF Core migrations for `Shelfly.App.Data` |
 | `Shelfly.Common` | Class library | net10.0 | Shared domain models (Book, Bookmark) |
+| `Shelfly.Configuration` | Class library | net10.0 | Shared config types (placeholder, currently empty) |
+| `Shelfly.AdminConsole` | .NET console app | net10.0 | CLI admin tool for API config (skeleton) |
+| `*.Tests` (Api, App, Common, AdminConsole) | Test projects | net10.0 | TUnit unit + integration tests |
 
-Both Api and App reference Common. No test projects exist yet.
+Project references: Api → Common, Configuration; App → Common, App.Data, App.Migrations; App.Migrations → App.Data; AdminConsole → Configuration.
+
+Project-specific agent notes live next to each project — read the relevant file when working in that project:
+
+| File | Contents |
+|------|----------|
+| `Shelfly.Api/AGENTS.md` | Architecture, Keycloak auth flow, MongoDB config storage, resilience |
+| `Shelfly.App/AGENTS.md` | MAUI conditional targets, XAML source generation, app boundaries |
+| `Shelfly.Common/AGENTS.md` | Domain model notes |
 
 ## Commands
 
 ```bash
-# Build solution
-dotnet build Shelfly.slnx
-
-# Run API locally (requires Keycloak config in appsettings.json)
-dotnet run --project Shelfly.Api
-
-# Docker compose (API only)
-docker compose up
+dotnet build Shelfly.slnx                 # build solution
+dotnet test Shelfly.slnx                  # run all tests
+dotnet run --project Shelfly.Api          # run API (needs Keycloak config in appsettings.json)
+docker compose up                          # API only
 ```
 
 ## Key Quirks
 
-- **Centralized packages**: All NuGet versions pinned in `Directory.Packages.props`. Add new packages there, not in individual `.csproj` files.
-- **MAUI target frameworks are conditional**: App targets vary by host OS (`net10.0-android` always; iOS/MacCatalyst on non-Linux; Windows only on Windows). Use `dotnet build Shelfly.App/Shelfly.App.csproj` to let MSBuild resolve conditionally.
-- **XAML source generation enabled**: `<MauiXamlInflator>SourceGen</MauiXamlInflator>` generates C# from XAML at compile time.
-- **global.json allows prerelease SDKs**: `<allowPrerelease>true</allowPrerelease>` with `rollForward: latestMajor`.
-- **Request validation**: FluentValidation used for request data validation in the API
+- **Centralized packages**: NuGet versions pinned in `Directory.Packages.props`; add packages there, not in `.csproj`.
+- **global.json**: `<allowPrerelease>true</allowPrerelease>` with `rollForward: latestMajor`.
 
 ## Coding Standards
 
-- **Nullable reference types**: `<Nullable>enable</Nullable>` enforced across all projects. Explicit `?` annotations required for nullable parameters and return types.
-- **No `var`**: Prefer explicit type names over `var` to improve readability and maintainability. Use `var` only when the type is immediately obvious from the right-hand side (e.g., collection initializers).
-- **Primary constructors**: Prefer primary constructor syntax for classes and records to reduce boilerplate. Example: `class Book(string title) { }`.
-- **Extension members**: Use C# 12 extension members (`with` expressions, extension properties/methods on existing types) where they improve clarity without hiding implementation details.
-- **Collection expressions**: Prefer `[]` collection expression syntax over `new List<T>()` or `new T[]()` for inline collections. Example: `List<string> tags = ["fiction", "fantasy"];`.
-- **Object creation**: Prefer the concise `new()` syntax (C# 12) over explicit constructor calls when default constructors are used. Example: `Book book = new();` instead of `var book = new Book();`.
-
-## Architecture Notes
-
-- **Data stores**: PostgreSQL for primary data (EF Core + Npgsql), MongoDB for configuration parameters
-- **Auth flow**: Keycloak handles authentication/authorization. The API delegates auth to Keycloak; the MAUI client communicates only with the API and never talks directly to Keycloak
-- **Minimal hosting model**: single `Program.cs` entry point, endpoints defined via `app.MapGet()` etc., not Controllers
-- **API surface**: The API exposes both a REST API and a GraphQL API for client consumption
-- **Entity models** live in `Shelfly.Api/Data/Entities/`, separate from Common domain classes
-
-### Keycloak Authentication Flow
-
-1. **Startup**: API loads Keycloak configuration (issuer URL, audience, JWKS endpoint) from MongoDB at startup
-2. **Caching**: Configuration cached in-memory with 5-minute TTL to reduce MongoDB read frequency
-3. **JWT Validation**: Incoming requests validated against Keycloak issuer using JSON Web Key Set (JWKS) discovery
-4. **Audience Matching**: Custom `JwtAudienceValidator` validates JWT `aud` claim against configured audience — mismatch returns 401 Unauthorized
-5. **Role-Based Access**: Authorization rules stored in MongoDB define role-to-endpoint mappings; API enforces these policies at runtime
-6. **Runtime Refresh**: Admin can update Keycloak configuration and authorization rules without restarting the API service
-
-### Configuration Storage (MongoDB)
-
-- **KeycloakConfig Document** (`_id: "keycloak"`): Stores issuer URL, audience, JWKS endpoint
-- **PostgreSqlConfig Document** (`_id: "postgresql"`): Stores PostgreSQL related configuration
-- **AuthorizationRule Document** (`_id: "auth-rules"`): Contains array of endpoint-to-role mappings
-- **Seeding**: Default configuration seeded on first API startup if MongoDB collection is empty
-
-### Resilience Pipeline
-
-- MongoDB connection wrapped with Polly retry policy (exponential backoff, max 5 attempts)
-- Graceful failure with clear error message after retries exhausted
-- In-memory cache (`IMemoryCache`) reduces read latency for configuration parameters
+- **Nullable reference types** enabled everywhere; explicit `?` for nullable parameters/returns.
+- **No `var`** unless the type is completely anonymous.
+- **Primary constructors** preferred for classes/records to cut boilerplate.
+- **C# 12 extension members** where they improve clarity without hiding implementation.
+- **Collection expressions** (`[]`) over `new List<T>()`/`new T[]()`.
+- **Concise `new()`** over explicit constructor calls for default constructors.
 
 ## Testing Stack
 
-- **Unit testing**: TUnit framework for unit tests across all test projects
-- **Assertions**: Shouldly used for readable, natural-language assertions in test cases
-- **Integration testing**: Testcontainers spins up isolated MongoDB, Keycloak, and PostgreSQL instances for integration tests
+- **Unit**: TUnit. **Assertions**: Shouldly. **Mocking**: NSubstitute.
+- **Integration**: Testcontainers (`Shelfly.Api.Tests`: isolated MongoDB, Keycloak, PostgreSQL; `Shelfly.AdminConsole.Tests`: MongoDB).
 
-## .specify Integration
+## .specify
 
-The `.specify/` directory contains workflow configuration for the specify toolchain (SDD cycle: specify → plan → tasks → implement). Not directly relevant to code changes, but explains the project's development process.
+`.specify/` holds workflow config for the specify toolchain (SDD cycle: specify → plan → tasks → implement); explains the dev process, not code changes.
