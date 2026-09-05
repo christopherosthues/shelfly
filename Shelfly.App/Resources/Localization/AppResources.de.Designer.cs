@@ -60,11 +60,29 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Über.
+        /// </summary>
+        internal static string AppShellAboutText {
+            get {
+                return ResourceManager.GetString("AppShellAboutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bücher.
         /// </summary>
         internal static string AppShellBooksTitle {
             get {
                 return ResourceManager.GetString("AppShellBooksTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelfly © 2026.
+        /// </summary>
+        internal static string AppShellCopyrightText {
+            get {
+                return ResourceManager.GetString("AppShellCopyrightText", resourceCulture);
             }
         }
         

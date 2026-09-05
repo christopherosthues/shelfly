@@ -34,9 +34,17 @@
 
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
-            <Label
+            <HorizontalStackLayout
                 HorizontalOptions="Center"
-                Text="Copyright 2026" />
+                Spacing="4">
+                <Label
+                    HorizontalOptions="Center"
+                    Text="{x:Static resx:AppResources.AppShellAboutText}" />
+                <Label Text="•" />
+                <Label
+                    HorizontalOptions="Center"
+                    Text="{x:Static resx:AppResources.AppShellCopyrightText}" />
+            </HorizontalStackLayout>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>
 

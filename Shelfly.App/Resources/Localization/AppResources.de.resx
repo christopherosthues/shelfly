@@ -463,4 +463,10 @@
     <data name="TrashListPageDeleteAllDialogMessage" xml:space="preserve">
         <value>Dadurch werden alle Elemente endgültig aus dem Mülleimer gelöscht.</value>
     </data>
+    <data name="AppShellAboutText" xml:space="preserve">
+        <value>Über</value>
+    </data>
+    <data name="AppShellCopyrightText" xml:space="preserve">
+        <value>Shelfly © 2026</value>
+    </data>
 </root>
