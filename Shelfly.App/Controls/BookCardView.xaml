@@ -65,49 +65,36 @@
                 Text="{Binding Title}" />
 
             <!-- Bookmark count - top right -->
-            <AbsoluteLayout
+            <Grid
                 Grid.Column="1"
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 HorizontalOptions="End"
-                VerticalOptions="Center"
-                Margin="0,4,4,0">
+                VerticalOptions="Start"
+                ColumnDefinitions="36"
+                RowDefinitions="36">
 
                 <Image
-                    AbsoluteLayout.LayoutBounds="0, 0, 36, 36"
-                    AbsoluteLayout.LayoutFlags="PositionProportional"
                     WidthRequest="36"
                     HeightRequest="36"
+                    MaximumWidthRequest="36"
+                    MaximumHeightRequest="36"
                     Aspect="AspectFit"
-                    Margin="0,8,8,0"
                     Source="bookmark_icon.svg">
                     <Image.Behaviors>
                         <toolkit:IconTintColorBehavior
-                            TintColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                            TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                     </Image.Behaviors>
                 </Image>
 
-                <Border
-                    AbsoluteLayout.LayoutBounds="1.15, -0.2, 24, 24"
-                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                    WidthRequest="24"
-                    HeightRequest="24"
-                    Padding="2"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
-                    StrokeThickness="0">
-
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
-
-                    <Label
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        TextColor="{StaticResource White}"
-                        Style="{StaticResource BodySmall}"
-                        Text="{Binding BookmarkCount}" />
-                </Border>
-            </AbsoluteLayout>
+                <Label
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Padding="0,0,0,4"
+                    Style="{StaticResource BodySmall}"
+                    TextColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}"
+                    Text="{Binding BookmarkCount}" />
+            </Grid>
 
             <!-- Author -->
             <Label
