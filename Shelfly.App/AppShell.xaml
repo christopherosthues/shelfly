@@ -12,8 +12,9 @@
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
             <Image Aspect="AspectFit"
-                   Source="library_icon.svg"
-                   HeightRequest="200" />
+                   Source="app_icon.svg"
+                   HeightRequest="200"
+                   Margin="0,0,0,16"/>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
