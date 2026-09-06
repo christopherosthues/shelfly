@@ -1,3 +1,4 @@
+using Shelfly.App.Controls;
 using Shelfly.App.Features.Trash.ViewModels;
 using Shelfly.App.Pages;
 using Shelfly.App.Resources.Localization;
@@ -10,7 +11,6 @@ public partial class TrashListPage : ShelflyContentPageBase
     private ToolbarItem? _deleteAllItem;
     private ToolbarItem? _restoreSelectedItem;
     private ToolbarItem? _deleteSelectedItem;
-    private ToolbarItem? _doneItem;
 
     private TrashListViewModel ViewModel => (TrashListViewModel) BindingContext;
 
@@ -21,6 +21,7 @@ public partial class TrashListPage : ShelflyContentPageBase
 
         CreateToolbarItems(viewModel);
         viewModel.ToolbarVisibilityChanged += OnToolbarVisibilityChanged;
+        MultiSelectView.SelectionChanged += OnSelectionChanged;
     }
 
     private void CreateToolbarItems(TrashListViewModel viewModel)
@@ -28,16 +29,18 @@ public partial class TrashListPage : ShelflyContentPageBase
         _restoreAllItem = new ToolbarItem
         {
             Text = AppResources.TrashListPageRestoreAllButtonText,
-            IconImageSource = "restore_icon.svg",
-            Command = viewModel.RestoreAllCommand
+            IconImageSource = "restore_all_icon.svg",
+            Command = viewModel.RestoreAllCommand,
+            Order = ToolbarItemOrder.Secondary
         };
         SemanticProperties.SetDescription(_restoreAllItem, AppResources.TrashListPageRestoreAllDescription);
 
         _deleteAllItem = new ToolbarItem
         {
             Text = AppResources.TrashListPageDeleteAllButtonText,
-            IconImageSource = "delete_icon.svg",
-            Command = viewModel.DeleteAllCommand
+            IconImageSource = "delete_all_icon.svg",
+            Command = viewModel.DeleteAllCommand,
+            Order = ToolbarItemOrder.Secondary
         };
         SemanticProperties.SetDescription(_deleteAllItem, AppResources.TrashListPageDeleteAllDescription);
 
@@ -45,7 +48,8 @@ public partial class TrashListPage : ShelflyContentPageBase
         {
             Text = AppResources.TrashListPageRestoreSelectedButtonText,
             IconImageSource = "restore_icon.svg",
-            Command = viewModel.RestoreSelectedCommand
+            Command = viewModel.RestoreSelectedCommand,
+            Order = ToolbarItemOrder.Secondary
         };
         SemanticProperties.SetDescription(_restoreSelectedItem, AppResources.TrashListPageRestoreSelectedDescription);
 
@@ -53,20 +57,18 @@ public partial class TrashListPage : ShelflyContentPageBase
         {
             Text = AppResources.TrashListPageDeleteSelectedButtonText,
             IconImageSource = "delete_icon.svg",
-            Command = viewModel.DeleteSelectedCommand
+            Command = viewModel.DeleteSelectedCommand,
+            Order = ToolbarItemOrder.Secondary
         };
         SemanticProperties.SetDescription(_deleteSelectedItem, AppResources.TrashListPageDeleteSelectedDescription);
-
-        _doneItem = new ToolbarItem
-        {
-            Text = AppResources.TrashListPageDoneButtonText,
-            IconImageSource = "check_icon.svg",
-            Command = viewModel.ExitSelectionModeCommand
-        };
-        SemanticProperties.SetDescription(_doneItem, AppResources.TrashListPageDoneSelectionDescription);
     }
 
     private void OnToolbarVisibilityChanged(object? sender, EventArgs e)
+    {
+        UpdateToolbarItems();
+    }
+
+    private void OnSelectionChanged(object? sender, MultiSelectSelectionChangedEventArgs e)
     {
         UpdateToolbarItems();
     }
@@ -94,11 +96,6 @@ public partial class TrashListPage : ShelflyContentPageBase
         if (viewModel.IsDeleteSelectedVisible && _deleteSelectedItem is not null)
         {
             ToolbarItems.Add(_deleteSelectedItem);
-        }
-
-        if (viewModel.IsSelectionMode && _doneItem is not null)
-        {
-            ToolbarItems.Add(_doneItem);
         }
     }
 

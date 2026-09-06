@@ -78,26 +78,6 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         await Shell.Current.GoToAsync(Routes.BookEditPage, new Dictionary<string, object> { [nameof(BookEditViewModel.BookId)] = bookId });
     }
 
-    [RelayCommand]
-    private void ToggleSelection(BookEntity book)
-    {
-        if (SelectedItems.Contains(book.Id))
-        {
-            SelectedItems.Remove(book.Id);
-        }
-        else
-        {
-            SelectedItems.Add(book.Id);
-        }
-    }
-
-    [RelayCommand]
-    private void EnterSelectionMode(BookEntity book)
-    {
-        IsSelectionMode = true;
-        SelectedItems.Add(book.Id);
-    }
-
     public override void OnNavigatingFrom()
     {
         IsSelectionMode = false;

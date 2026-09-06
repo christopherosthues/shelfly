@@ -34,6 +34,7 @@
 
         <!-- Trash List -->
         <controls:MultiSelectView
+            x:Name="MultiSelectView"
             Grid.Row="1"
             SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageBookEntryDescription}"
             ItemsSource="{Binding TrashBooks}"

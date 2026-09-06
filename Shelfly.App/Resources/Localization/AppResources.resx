@@ -445,9 +445,6 @@
     <data name="TrashListPageDeleteSelectedDescription" xml:space="preserve">
         <value>Delete selected items permanently</value>
     </data>
-    <data name="TrashListPageDoneSelectionDescription" xml:space="preserve">
-        <value>Exit selection mode</value>
-    </data>
     <data name="TrashBookDetailPageTitle" xml:space="preserve">
         <value>Book Details</value>
     </data>

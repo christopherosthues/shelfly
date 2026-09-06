@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Enums;
-using Shelfly.App.Features.Library.Services;
 using Shelfly.App.Features.Trash.Services;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
@@ -16,11 +15,9 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     [NotifyPropertyChangedFor(nameof(EmptyStateMessage))]
     public partial ObservableCollection<BookEntity> TrashBooks { get; set; } = [];
 
-    [ObservableProperty]
-    public partial bool IsSelectionMode { get; set; }
+    [ObservableProperty] public partial bool IsSelectionMode { get; set; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<object> SelectedItems { get; set; } = [];
+    [ObservableProperty] public partial ObservableCollection<object> SelectedItems { get; set; } = [];
 
     public string EmptyStateMessage => TrashBooks.Count == 0
         ? (string.IsNullOrWhiteSpace(SearchQuery)
@@ -28,8 +25,8 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
             : AppResources.TrashListPageSearchEmptyMessage)
         : string.Empty;
 
-    public bool IsRestoreAllVisible => !IsSelectionMode && TrashBooks.Any();
-    public bool IsDeleteAllVisible => !IsSelectionMode && TrashBooks.Any();
+    public bool IsRestoreAllVisible => TrashBooks.Any();
+    public bool IsDeleteAllVisible => TrashBooks.Any();
     public bool IsRestoreSelectedVisible => IsSelectionMode && SelectedItems.Any();
     public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItems.Any();
 
@@ -37,14 +34,16 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
-        await LoadSortedItemsAsync(string.Empty, SortCriterion.Title,  SortDirection.Ascending, cancellationToken);
+        await LoadSortedItemsAsync(string.Empty, SortCriterion.Title, SortDirection.Ascending, cancellationToken);
     }
 
-    protected override async Task LoadSortedItemsAsync(string query, SortCriterion criterion, SortDirection direction, CancellationToken cancellationToken)
+    protected override async Task LoadSortedItemsAsync(string query, SortCriterion criterion, SortDirection direction,
+        CancellationToken cancellationToken)
     {
         await ExecuteWithLoadingAsync(async () =>
         {
-            List<BookEntity> books = await trashService.SearchSortedTrashBooksAsync(query, criterion, direction, cancellationToken);
+            List<BookEntity> books =
+                await trashService.SearchSortedTrashBooksAsync(query, criterion, direction, cancellationToken);
             TrashBooks = new ObservableCollection<BookEntity>(books);
             OnToolbarVisibilityChanged();
         });
@@ -74,14 +73,10 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     [RelayCommand]
     private async Task RestoreSelectedAsync()
     {
-        foreach (Guid id in SelectedItems.ToList())
+        foreach (BookEntity book in SelectedItems.ToList())
         {
-            BookEntity? book = TrashBooks.FirstOrDefault(b => b.Id == id);
-            if (book is not null)
-            {
-                await trashService.RestoreBookAsync(id);
-                TrashBooks.Remove(book);
-            }
+            await trashService.RestoreBookAsync(book.Id);
+            TrashBooks.Remove(book);
         }
 
         SelectedItems.Clear();
@@ -92,14 +87,10 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     [RelayCommand]
     private async Task DeleteSelectedAsync()
     {
-        foreach (Guid id in SelectedItems.ToList())
+        foreach (BookEntity book in SelectedItems.ToList())
         {
-            BookEntity? book = TrashBooks.FirstOrDefault(b => b.Id == id);
-            if (book is not null)
-            {
-                await trashService.HardDeleteBookAsync(id);
-                TrashBooks.Remove(book);
-            }
+            await trashService.HardDeleteBookAsync(book.Id);
+            TrashBooks.Remove(book);
         }
 
         SelectedItems.Clear();

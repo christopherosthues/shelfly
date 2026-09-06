@@ -1293,15 +1293,6 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auswahlmodus beenden.
-        /// </summary>
-        internal static string TrashListPageDoneSelectionDescription {
-            get {
-                return ResourceManager.GetString("TrashListPageDoneSelectionDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Keine Elemente im Mülleimer..
         /// </summary>
         internal static string TrashListPageEmptyStateMessage {

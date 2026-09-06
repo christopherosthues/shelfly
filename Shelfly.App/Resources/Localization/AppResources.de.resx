@@ -445,9 +445,6 @@
     <data name="TrashListPageDeleteSelectedDescription" xml:space="preserve">
         <value>Ausgewählte Elemente endgültig löschen</value>
     </data>
-    <data name="TrashListPageDoneSelectionDescription" xml:space="preserve">
-        <value>Auswahlmodus beenden</value>
-    </data>
     <data name="TrashBookDetailPageTitle" xml:space="preserve">
         <value>Buchdetails</value>
     </data>
