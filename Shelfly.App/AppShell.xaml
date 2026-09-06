@@ -2,11 +2,13 @@
 
 <Shell
     x:Class="Shelfly.App.AppShell"
+    x:DataType="app:AppShellViewModel"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:library="clr-namespace:Shelfly.App.Features.Library"
     xmlns:trash="clr-namespace:Shelfly.App.Features.Trash"
+    xmlns:app="using:Shelfly.App"
     Title="Shelfly">
 
     <Shell.FlyoutHeaderTemplate>
@@ -33,17 +35,16 @@
     </FlyoutItem>
 
     <Shell.FlyoutFooterTemplate>
-        <DataTemplate>
+        <DataTemplate x:DataType="app:AppShellViewModel">
             <HorizontalStackLayout
                 HorizontalOptions="Center"
                 Spacing="4">
                 <Label
-                    x:Name="AboutLabel"
                     HorizontalOptions="Center"
                     Text="{x:Static resx:AppResources.AppShellAboutText}"
                     TextDecorations="Underline">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnAboutTapped" />
+                        <TapGestureRecognizer Command="{Binding NavigateToAboutCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Label Text="•" />

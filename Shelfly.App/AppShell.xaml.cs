@@ -2,14 +2,9 @@
 
 public partial class AppShell : Shell
 {
-    public AppShell()
+    public AppShell(AppShellViewModel viewModel)
     {
+        BindingContext = viewModel;
         InitializeComponent();
-    }
-
-    private async void OnAboutTapped(object? sender, TappedEventArgs e)
-    {
-        await Current.GoToAsync(Routes.AboutPage);
-        FlyoutIsPresented = false;
     }
 }

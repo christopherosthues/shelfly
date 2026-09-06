@@ -60,6 +60,7 @@ public static class MauiProgram
         builder.Services.AddScopedWithShellRoute<BookmarkEditPage, BookmarkEditViewModel>(Routes.BookmarkEditPage);
         builder.Services.AddScopedWithShellRoute<TrashListPage, TrashListViewModel>(Routes.TrashListPage);
         builder.Services.AddScopedWithShellRoute<TrashBookDetailPage, TrashBookDetailViewModel>(Routes.TrashBookDetailPage);
+        builder.Services.AddSingleton<AppShellViewModel>();
         builder.Services.AddScopedWithShellRoute<AboutPage, AboutViewModel>(Routes.AboutPage);
 
         return builder.Build();

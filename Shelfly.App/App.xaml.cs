@@ -6,10 +6,12 @@ namespace Shelfly.App;
 public partial class App : Application
 {
     private readonly LocalDbContext _localDbContext;
+    private readonly AppShellViewModel _appShellViewModel;
 
-    public App(LocalDbContext localDbContext)
+    public App(LocalDbContext localDbContext, AppShellViewModel  appShellViewModel)
     {
         _localDbContext = localDbContext;
+        _appShellViewModel = appShellViewModel;
         InitializeComponent();
     }
 
@@ -30,7 +32,7 @@ public partial class App : Application
         {
             await _localDbContext.EnsureDatabaseCreatedAsync();
 
-            window.Page = new AppShell();
+            window.Page = new AppShell(_appShellViewModel);
         }
         catch (Exception exception)
         {
