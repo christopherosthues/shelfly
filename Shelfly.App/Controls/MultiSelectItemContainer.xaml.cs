@@ -86,7 +86,21 @@ public partial class MultiSelectItemContainer : ContentView
             LongPressCommand = new Command(OnLongPressed)
         };
 
-        view.Behaviors.Add(_touchBehavior);
+        if (view is ContentView contentView)
+        {
+            if (contentView.Content is SwipeView swipeView)
+            {
+                swipeView.Content.Behaviors.Add(_touchBehavior);
+            }
+            else
+            {
+                contentView.Content.Behaviors.Add(_touchBehavior);
+            }
+        }
+        else
+        {
+            view.Behaviors.Add(_touchBehavior);
+        }
     }
 
     private void OnTapped()

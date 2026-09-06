@@ -124,27 +124,11 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     }
 
     [RelayCommand]
-    private void EnterSelectionMode(BookEntity book)
-    {
-        IsSelectionMode = true;
-        SelectedItems.Add(book.Id);
-        OnToolbarVisibilityChanged();
-    }
-
-    [RelayCommand]
-    private void ExitSelectionMode()
-    {
-        IsSelectionMode = false;
-        SelectedItems.Clear();
-        OnToolbarVisibilityChanged();
-    }
-
-    [RelayCommand]
-    private async Task NavigateToTrashDetailAsync(Guid bookId)
+    private async Task NavigateToTrashDetailAsync(BookEntity book)
     {
         Dictionary<string, object> parameters = new()
         {
-            ["BookId"] = bookId
+            ["BookId"] = book.Id
         };
 
         await Shell.Current.GoToAsync(Routes.TrashBookDetailPage, parameters);

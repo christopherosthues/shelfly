@@ -67,7 +67,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     }
 
     [RelayCommand]
-    private static async Task NavigateToDetailBookAsync(Book book)
+    private static async Task NavigateToDetailBookAsync(BookEntity book)
     {
         await Shell.Current.GoToAsync(Routes.BookDetailPage, new Dictionary<string, object> { [nameof(BookDetailViewModel.BookId)] = book.Id });
     }

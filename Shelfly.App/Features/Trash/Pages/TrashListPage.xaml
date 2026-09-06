@@ -8,7 +8,6 @@
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:controls="clr-namespace:Shelfly.App.Controls"
-    xmlns:converters="clr-namespace:Shelfly.App.Converters"
     x:DataType="local:TrashListViewModel"
     Title="{x:Static resx:AppResources.TrashListPageTitle}">
 
