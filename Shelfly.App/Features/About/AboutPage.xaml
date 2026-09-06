@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:ShelflyContentPageBase
+    x:Class="Shelfly.App.Features.About.AboutPage"
+    x:DataType="about:AboutViewModel"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:about="clr-namespace:Shelfly.App.Features.About"
+    Title="{x:Static resx:AppResources.AboutPageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="24"
+            Spacing="16">
+
+            <Label
+                HorizontalOptions="Center"
+                Style="{StaticResource Headline}"
+                Text="{x:Static resx:AppResources.AboutPageAppName}" />
+
+            <BoxView
+                HeightRequest="1"
+                Margin="0, 8"
+                Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
+
+            <VerticalStackLayout Spacing="12">
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        VerticalOptions="Center"
+                        FontAttributes="Bold"
+                        Text="{x:Static resx:AppResources.AboutPageVersionLabel}" />
+                    <Label
+                        VerticalOptions="Center"
+                        Text="{Binding AppVersion}" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        VerticalOptions="Center"
+                        FontAttributes="Bold"
+                        Text="{x:Static resx:AppResources.AboutPageBuildLabel}" />
+                    <Label
+                        VerticalOptions="Center"
+                        Text="{Binding BuildInfo}" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        VerticalOptions="Center"
+                        FontAttributes="Bold"
+                        Text="{x:Static resx:AppResources.AboutPageLicenseLabel}" />
+                    <Label
+                        VerticalOptions="Center"
+                        Text="{x:Static resx:AppResources.AboutPageLicenseText}" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <BoxView
+                HeightRequest="1"
+                Margin="0, 8"
+                Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
+
+            <Label
+                FontAttributes="Bold"
+                Text="{x:Static resx:AppResources.AboutPageFeatureSummaryLabel}" />
+
+            <Label
+                LineBreakMode="WordWrap"
+                Text="{x:Static resx:AppResources.AboutPageFeatureSummaryText}" />
+
+            <BoxView
+                HeightRequest="1"
+                Margin="0, 8"
+                Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
+
+            <Button
+                Command="{Binding ShowLibrariesDialogCommand}"
+                HorizontalOptions="Center"
+                Text="{x:Static resx:AppResources.AboutPageLibrariesButtonText}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</pages:ShelflyContentPageBase>

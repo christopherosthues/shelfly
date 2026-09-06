@@ -60,6 +60,96 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shelfly.
+        /// </summary>
+        internal static string AboutPageAppName {
+            get {
+                return ResourceManager.GetString("AboutPageAppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bau:.
+        /// </summary>
+        internal static string AboutPageBuildLabel {
+            get {
+                return ResourceManager.GetString("AboutPageBuildLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Über.
+        /// </summary>
+        internal static string AboutPageTitle {
+            get {
+                return ResourceManager.GetString("AboutPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version:.
+        /// </summary>
+        internal static string AboutPageVersionLabel {
+            get {
+                return ResourceManager.GetString("AboutPageVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lizenzen anzeigen.
+        /// </summary>
+        internal static string AboutPageLibrariesButtonText {
+            get {
+                return ResourceManager.GetString("AboutPageLibrariesButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drittanbieter-Bibliotheken.
+        /// </summary>
+        internal static string AboutPageLibrariesTitle {
+            get {
+                return ResourceManager.GetString("AboutPageLibrariesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lizenz:.
+        /// </summary>
+        internal static string AboutPageLicenseLabel {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GNU Affero General Public License v3.0 (AGPL-3.0).
+        /// </summary>
+        internal static string AboutPageLicenseText {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Über Shelfly.
+        /// </summary>
+        internal static string AboutPageFeatureSummaryLabel {
+            get {
+                return ResourceManager.GetString("AboutPageFeatureSummaryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shelfly ist ein Lesebegleiter zum Verwalten von Lesezeichen physischer Bücher. Verfolgen Sie Ihre Bibliothek, speichern Sie Seitenreferenzen mit Notizen und organisieren Sie Ihr Leseerlebnis..
+        /// </summary>
+        internal static string AboutPageFeatureSummaryText {
+            get {
+                return ResourceManager.GetString("AboutPageFeatureSummaryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Über.
         /// </summary>
         internal static string AppShellAboutText {

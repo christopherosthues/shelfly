@@ -6,4 +6,9 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
     }
+
+    private async void OnAboutTapped(object? sender, TappedEventArgs e)
+    {
+        await Current.GoToAsync(Routes.AboutPage);
+    }
 }

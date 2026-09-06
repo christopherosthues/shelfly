@@ -466,6 +466,36 @@
     <data name="AppShellCopyrightText" xml:space="preserve">
         <value>Shelfly © 2026</value>
     </data>
+    <data name="AboutPageTitle" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="AboutPageAppName" xml:space="preserve">
+        <value>Shelfly</value>
+    </data>
+    <data name="AboutPageVersionLabel" xml:space="preserve">
+        <value>Version:</value>
+    </data>
+    <data name="AboutPageBuildLabel" xml:space="preserve">
+        <value>Build:</value>
+    </data>
+    <data name="AboutPageLicenseLabel" xml:space="preserve">
+        <value>License:</value>
+    </data>
+    <data name="AboutPageLicenseText" xml:space="preserve">
+        <value>GNU Affero General Public License v3.0 (AGPL-3.0)</value>
+    </data>
+    <data name="AboutPageFeatureSummaryLabel" xml:space="preserve">
+        <value>About Shelfly</value>
+    </data>
+    <data name="AboutPageFeatureSummaryText" xml:space="preserve">
+        <value>Shelfly is a reading companion for managing bookmarks of physical books. Track your library, save page references with notes, and organize your reading experience.</value>
+    </data>
+    <data name="AboutPageLibrariesTitle" xml:space="preserve">
+        <value>Third-Party Libraries</value>
+    </data>
+    <data name="AboutPageLibrariesButtonText" xml:space="preserve">
+        <value>View Licenses</value>
+    </data>
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>No data available</value>
     </data>

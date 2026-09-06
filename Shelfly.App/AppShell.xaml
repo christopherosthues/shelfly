@@ -38,8 +38,14 @@
                 HorizontalOptions="Center"
                 Spacing="4">
                 <Label
+                    x:Name="AboutLabel"
                     HorizontalOptions="Center"
-                    Text="{x:Static resx:AppResources.AppShellAboutText}" />
+                    Text="{x:Static resx:AppResources.AppShellAboutText}"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAboutTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Text="•" />
                 <Label
                     HorizontalOptions="Center"

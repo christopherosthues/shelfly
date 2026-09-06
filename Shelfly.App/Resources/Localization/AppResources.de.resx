@@ -466,6 +466,36 @@
     <data name="AppShellCopyrightText" xml:space="preserve">
         <value>Shelfly © 2026</value>
     </data>
+    <data name="AboutPageTitle" xml:space="preserve">
+        <value>Über</value>
+    </data>
+    <data name="AboutPageAppName" xml:space="preserve">
+        <value>Shelfly</value>
+    </data>
+    <data name="AboutPageVersionLabel" xml:space="preserve">
+        <value>Version:</value>
+    </data>
+    <data name="AboutPageBuildLabel" xml:space="preserve">
+        <value>Bau:</value>
+    </data>
+    <data name="AboutPageLicenseLabel" xml:space="preserve">
+        <value>Lizenz:</value>
+    </data>
+    <data name="AboutPageLicenseText" xml:space="preserve">
+        <value>GNU Affero General Public License v3.0 (AGPL-3.0)</value>
+    </data>
+    <data name="AboutPageFeatureSummaryLabel" xml:space="preserve">
+        <value>Über Shelfly</value>
+    </data>
+    <data name="AboutPageFeatureSummaryText" xml:space="preserve">
+        <value>Shelfly ist ein Lesebegleiter zum Verwalten von Lesezeichen physischer Bücher. Verfolgen Sie Ihre Bibliothek, speichern Sie Seitenreferenzen mit Notizen und organisieren Sie Ihr Leseerlebnis.</value>
+    </data>
+    <data name="AboutPageLibrariesTitle" xml:space="preserve">
+        <value>Drittanbieter-Bibliotheken</value>
+    </data>
+    <data name="AboutPageLibrariesButtonText" xml:space="preserve">
+        <value>Lizenzen anzeigen</value>
+    </data>
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>Keine Daten verfügbar</value>
     </data>
