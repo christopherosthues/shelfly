@@ -38,50 +38,89 @@
             SortCommand="{Binding SortCommand}" />
 
         <!-- Book List -->
-        <CollectionView
+        <controls:MultiSelectView
             Grid.Row="1"
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookListDescription}"
-            ItemsSource="{Binding Books}">
-
-            <CollectionView.EmptyView>
+            ItemsSource="{Binding Books}"
+            SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+            IsSelectionMode="{Binding IsSelectionMode, Mode=TwoWay}"
+            ItemTapCommand="{Binding NavigateToDetailBookCommand}"
+            LongPressDuration="500">
+            <controls:MultiSelectView.EmptyView>
                 <Label
                     HorizontalOptions="Center"
                     SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}"
                     Text="{Binding EmptyStateMessage}" />
-            </CollectionView.EmptyView>
-
-            <CollectionView.ItemTemplate>
+            </controls:MultiSelectView.EmptyView>
+            <controls:MultiSelectView.ItemTemplate>
                 <DataTemplate x:DataType="entities:BookEntity">
-                    <SwipeView>
-                        <SwipeView.LeftItems>
+                    <controls:BookCardView
+                        SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}">
+                        <controls:BookCardView.LeftItem>
                             <SwipeItem
                                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                                 IconImageSource="edit_icon.svg"
                                 Text="{x:Static resx:AppResources.BookListPageSwipeToEditCommand}"
                                 Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                 CommandParameter="{Binding Id}" />
-                        </SwipeView.LeftItems>
-
-                        <SwipeView.RightItems>
+                        </controls:BookCardView.LeftItem>
+                        <controls:BookCardView.RightItem>
                             <SwipeItem
-                                BackgroundColor="Red"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource DarkMagenta}}"
                                 IconImageSource="delete_icon.svg"
                                 Text="{x:Static resx:AppResources.BookListPageSwipeToDeleteCommand}"
                                 Command="{Binding SoftDeleteCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
                                 CommandParameter="{Binding Id}" />
-                        </SwipeView.RightItems>
-
-                        <controls:BookCardView
-                            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}"
-                            IsSelected="{Binding Id, Converter={converters:ContainsConverter}, ConverterParameter={Binding SelectedItemIds, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}}"
-                            LongPressCommand="{Binding EnterSelectionModeCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
-                            TapCommand="{Binding NavigateToDetailBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}"
-                            TapCommandParameter="{Binding Id}" />
-
-                    </SwipeView>
+                        </controls:BookCardView.RightItem>
+                    </controls:BookCardView>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </controls:MultiSelectView.ItemTemplate>
+        </controls:MultiSelectView>
+
+        <!-- <CollectionView -->
+        <!--     Grid.Row="1" -->
+        <!--     SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookListDescription}" -->
+        <!--     ItemsSource="{Binding Books}"> -->
+        <!-- -->
+        <!--     <CollectionView.EmptyView> -->
+        <!--         <Label -->
+        <!--             HorizontalOptions="Center" -->
+        <!--             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}" -->
+        <!--             Text="{Binding EmptyStateMessage}" /> -->
+        <!--     </CollectionView.EmptyView> -->
+        <!-- -->
+        <!--     <CollectionView.ItemTemplate> -->
+        <!--         <DataTemplate x:DataType="entities:BookEntity"> -->
+        <!--             <SwipeView> -->
+        <!--                 <SwipeView.LeftItems> -->
+        <!--                     <SwipeItem -->
+        <!--                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" -->
+        <!--                         IconImageSource="edit_icon.svg" -->
+        <!--                         Text="{x:Static resx:AppResources.BookListPageSwipeToEditCommand}" -->
+        <!--                         Command="{Binding NavigateToEditBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}" -->
+        <!--                         CommandParameter="{Binding Id}" /> -->
+        <!--                 </SwipeView.LeftItems> -->
+        <!-- -->
+        <!--                 <SwipeView.RightItems> -->
+        <!--                     <SwipeItem -->
+        <!--                         BackgroundColor="Red" -->
+        <!--                         IconImageSource="delete_icon.svg" -->
+        <!--                         Text="{x:Static resx:AppResources.BookListPageSwipeToDeleteCommand}" -->
+        <!--                         Command="{Binding SoftDeleteCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}" -->
+        <!--                         CommandParameter="{Binding Id}" /> -->
+        <!--                 </SwipeView.RightItems> -->
+        <!-- -->
+        <!--                 <controls:BookCardView -->
+        <!--                     SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}" -->
+        <!--                     IsSelected="{Binding Id, Converter={converters:ContainsConverter}, ConverterParameter={Binding SelectedItemIds, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}}" -->
+        <!--                     LongPressCommand="{Binding EnterSelectionModeCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}" -->
+        <!--                     TapCommand="{Binding NavigateToDetailBookCommand, Source={x:RelativeSource AncestorType={x:Type local:BookListViewModel}}, x:DataType={x:Type local:BookListViewModel}}" -->
+        <!--                     TapCommandParameter="{Binding Id}" /> -->
+        <!-- -->
+        <!--             </SwipeView> -->
+        <!--         </DataTemplate> -->
+        <!--     </CollectionView.ItemTemplate> -->
+        <!-- </CollectionView> -->
 
         <!-- Loading Indicator -->
         <ActivityIndicator

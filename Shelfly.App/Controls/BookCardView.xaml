@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentView
     x:Class="Shelfly.App.Controls.BookCardView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -10,114 +11,115 @@
     Margin="16, 0"
     MinimumHeightRequest="48">
 
-    <Border
-        Style="{StaticResource CardBorder}"
-        Padding="12">
+    <SwipeView x:Name="SwipeView">
+        <Border
+            Style="{StaticResource CardBorder}"
+            Padding="12">
 
-        <Border.Shadow>
-            <Shadow
-                Brush="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
-                Opacity="0.3"
-                Radius="8"
-                Offset="2, 2" />
-        </Border.Shadow>
-
-        <Grid
-            ColumnDefinitions="44, *"
-            RowDefinitions="Auto, Auto, Auto, Auto">
+            <Border.Shadow>
+                <Shadow
+                    Brush="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                    Opacity="0.3"
+                    Radius="8"
+                    Offset="2, 2" />
+            </Border.Shadow>
 
             <Grid
-                  x:Name="Selection"
-                  Grid.Column="0"
-                  Grid.RowSpan="4"
-                  ColumnDefinitions="Auto"
-                  RowDefinitions="*"
-                  RotationY="90"
-                  Margin="0,0,16,0">
-                <BoxView
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    WidthRequest="28"
-                    HeightRequest="28"
-                    CornerRadius="32"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
-                    />
+                ColumnDefinitions="44, *"
+                RowDefinitions="Auto, Auto, Auto, Auto">
 
-                <Image
-                    WidthRequest="24"
-                    HeightRequest="24"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Aspect="AspectFit"
-                    Source="check_icon.svg">
-                    <Image.Behaviors>
-                        <toolkit:IconTintColorBehavior
-                            TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
-                    </Image.Behaviors>
-                </Image>
-            </Grid>
+                <Grid
+                    x:Name="Selection"
+                    Grid.Column="0"
+                    Grid.RowSpan="4"
+                    ColumnDefinitions="Auto"
+                    RowDefinitions="*"
+                    RotationY="90"
+                    Margin="0,0,16,0">
+                    <BoxView
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        WidthRequest="28"
+                        HeightRequest="28"
+                        CornerRadius="32"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
 
-            <!-- Title -->
-            <Label
-                Grid.Column="1"
-                Grid.Row="0"
-                FontAttributes="Bold"
-                Text="{Binding Title}" />
+                    <Image
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Aspect="AspectFit"
+                        Source="check_icon.svg">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior
+                                TintColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" />
+                        </Image.Behaviors>
+                    </Image>
+                </Grid>
 
-            <!-- Bookmark count - top right -->
-            <Grid
-                Grid.Column="1"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                HorizontalOptions="End"
-                VerticalOptions="Start"
-                ColumnDefinitions="36"
-                RowDefinitions="36">
-
-                <Image
-                    WidthRequest="36"
-                    HeightRequest="36"
-                    MaximumWidthRequest="36"
-                    MaximumHeightRequest="36"
-                    Aspect="AspectFit"
-                    Source="bookmark_icon.svg">
-                    <Image.Behaviors>
-                        <toolkit:IconTintColorBehavior
-                            TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-                    </Image.Behaviors>
-                </Image>
-
+                <!-- Title -->
                 <Label
-                    HorizontalOptions="Center"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    FontAttributes="Bold"
+                    Text="{Binding Title}" />
+
+                <!-- Bookmark count - top right -->
+                <Grid
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    ColumnDefinitions="36"
+                    RowDefinitions="36">
+
+                    <Image
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        MaximumWidthRequest="36"
+                        MaximumHeightRequest="36"
+                        Aspect="AspectFit"
+                        Source="bookmark_icon.svg">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior
+                                TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Label
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Padding="0,0,0,4"
+                        Style="{StaticResource BodySmall}"
+                        TextColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}"
+                        Text="{Binding BookmarkCount}" />
+                </Grid>
+
+                <!-- Author -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="{Binding Author}" />
+
+                <!-- Publisher -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Opacity="0.6"
+                    Text="{Binding Publisher}" />
+
+                <!-- Last modified date - bottom right -->
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    HorizontalOptions="End"
                     VerticalOptions="Center"
-                    Padding="0,0,0,4"
+                    Opacity="0.5"
                     Style="{StaticResource BodySmall}"
-                    TextColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}"
-                    Text="{Binding BookmarkCount}" />
+                    Text="{Binding Converter={converters:BookDateConverter}}" />
             </Grid>
-
-            <!-- Author -->
-            <Label
-                Grid.Column="1"
-                Grid.Row="1"
-                Text="{Binding Author}" />
-
-            <!-- Publisher -->
-            <Label
-                Grid.Column="1"
-                Grid.Row="2"
-                Opacity="0.6"
-                Text="{Binding Publisher}" />
-
-            <!-- Last modified date - bottom right -->
-            <Label
-                Grid.Column="1"
-                Grid.Row="3"
-                HorizontalOptions="End"
-                VerticalOptions="Center"
-                Opacity="0.5"
-                Style="{StaticResource BodySmall}"
-                Text="{Binding Converter={converters:BookDateConverter}}" />
-        </Grid>
-    </Border>
+        </Border>
+    </SwipeView>
 </ContentView>

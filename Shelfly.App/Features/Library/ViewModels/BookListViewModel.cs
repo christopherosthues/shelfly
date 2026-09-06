@@ -19,16 +19,16 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     public partial bool IsSelectionMode { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<Guid> SelectedItemIds { get; set; } = [];
+    public partial ObservableCollection<object> SelectedItems { get; set; } = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EmptyStateMessage))]
     public partial ObservableCollection<BookEntity> Books { get; set; } = [];
 
     public string EmptyStateMessage => Books.Count == 0
-        ? (string.IsNullOrWhiteSpace(SearchQuery)
+        ? string.IsNullOrWhiteSpace(SearchQuery)
             ? AppResources.BookListPageEmptyStateMessage
-            : AppResources.BookListPageSearchEmptyMessage)
+            : AppResources.BookListPageSearchEmptyMessage
         : string.Empty;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
@@ -67,9 +67,9 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     }
 
     [RelayCommand]
-    private static async Task NavigateToDetailBookAsync(Guid bookId)
+    private static async Task NavigateToDetailBookAsync(Book book)
     {
-        await Shell.Current.GoToAsync(Routes.BookDetailPage, new Dictionary<string, object> { [nameof(BookDetailViewModel.BookId)] = bookId });
+        await Shell.Current.GoToAsync(Routes.BookDetailPage, new Dictionary<string, object> { [nameof(BookDetailViewModel.BookId)] = book.Id });
     }
 
     [RelayCommand]
@@ -81,13 +81,13 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     [RelayCommand]
     private void ToggleSelection(BookEntity book)
     {
-        if (SelectedItemIds.Contains(book.Id))
+        if (SelectedItems.Contains(book.Id))
         {
-            SelectedItemIds.Remove(book.Id);
+            SelectedItems.Remove(book.Id);
         }
         else
         {
-            SelectedItemIds.Add(book.Id);
+            SelectedItems.Add(book.Id);
         }
     }
 
@@ -95,13 +95,13 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     private void EnterSelectionMode(BookEntity book)
     {
         IsSelectionMode = true;
-        SelectedItemIds.Add(book.Id);
+        SelectedItems.Add(book.Id);
     }
 
     public override void OnNavigatingFrom()
     {
         IsSelectionMode = false;
-        SelectedItemIds.Clear();
+        SelectedItems.Clear();
     }
 
     [RelayCommand]

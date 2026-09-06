@@ -20,7 +20,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     public partial bool IsSelectionMode { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<Guid> SelectedItemIds { get; set; } = [];
+    public partial ObservableCollection<object> SelectedItems { get; set; } = [];
 
     public string EmptyStateMessage => TrashBooks.Count == 0
         ? (string.IsNullOrWhiteSpace(SearchQuery)
@@ -30,8 +30,8 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
 
     public bool IsRestoreAllVisible => !IsSelectionMode && TrashBooks.Any();
     public bool IsDeleteAllVisible => !IsSelectionMode && TrashBooks.Any();
-    public bool IsRestoreSelectedVisible => IsSelectionMode && SelectedItemIds.Any();
-    public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItemIds.Any();
+    public bool IsRestoreSelectedVisible => IsSelectionMode && SelectedItems.Any();
+    public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItems.Any();
 
     public event EventHandler? ToolbarVisibilityChanged;
 
@@ -74,7 +74,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     [RelayCommand]
     private async Task RestoreSelectedAsync()
     {
-        foreach (Guid id in SelectedItemIds.ToList())
+        foreach (Guid id in SelectedItems.ToList())
         {
             BookEntity? book = TrashBooks.FirstOrDefault(b => b.Id == id);
             if (book is not null)
@@ -84,7 +84,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
             }
         }
 
-        SelectedItemIds.Clear();
+        SelectedItems.Clear();
         IsSelectionMode = false;
         OnToolbarVisibilityChanged();
     }
@@ -92,7 +92,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     [RelayCommand]
     private async Task DeleteSelectedAsync()
     {
-        foreach (Guid id in SelectedItemIds.ToList())
+        foreach (Guid id in SelectedItems.ToList())
         {
             BookEntity? book = TrashBooks.FirstOrDefault(b => b.Id == id);
             if (book is not null)
@@ -102,7 +102,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
             }
         }
 
-        SelectedItemIds.Clear();
+        SelectedItems.Clear();
         IsSelectionMode = false;
         OnToolbarVisibilityChanged();
     }
@@ -127,7 +127,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     private void EnterSelectionMode(BookEntity book)
     {
         IsSelectionMode = true;
-        SelectedItemIds.Add(book.Id);
+        SelectedItems.Add(book.Id);
         OnToolbarVisibilityChanged();
     }
 
@@ -135,7 +135,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     private void ExitSelectionMode()
     {
         IsSelectionMode = false;
-        SelectedItemIds.Clear();
+        SelectedItems.Clear();
         OnToolbarVisibilityChanged();
     }
 
@@ -153,7 +153,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     public override void OnNavigatingFrom()
     {
         IsSelectionMode = false;
-        SelectedItemIds.Clear();
+        SelectedItems.Clear();
         OnToolbarVisibilityChanged();
     }
 

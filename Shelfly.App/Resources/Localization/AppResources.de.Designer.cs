@@ -1140,6 +1140,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keine Daten verfügbar.
+        /// </summary>
+        internal static string MultiSelectViewEmptyText {
+            get {
+                return ResourceManager.GetString("MultiSelectViewEmptyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Einloggen.
         /// </summary>
         internal static string RegistrationPageLoginButtonText {
