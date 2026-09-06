@@ -3,7 +3,7 @@ using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Enums;
 
-namespace Shelfly.App.Features.Trash.Services;
+namespace Shelfly.App.Features.Trash;
 
 public class TrashService(LocalDbContext dbContext)
 {

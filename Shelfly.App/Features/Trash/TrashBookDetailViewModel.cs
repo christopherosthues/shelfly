@@ -1,11 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
-using Shelfly.App.Features.Trash.Services;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
 
-namespace Shelfly.App.Features.Trash.ViewModels;
+namespace Shelfly.App.Features.Trash;
 
 public partial class TrashBookDetailViewModel(TrashService trashService) : ShelflyViewModelBase, IQueryAttributable
 {

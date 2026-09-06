@@ -1,7 +1,6 @@
-using Shelfly.App.Features.BookmarkEditor.ViewModels;
 using Shelfly.App.Pages;
 
-namespace Shelfly.App.Features.BookmarkEditor.Pages;
+namespace Shelfly.App.Features.BookmarkEditor;
 
 public partial class BookmarkEditPage : ShelflyContentPageBase
 {

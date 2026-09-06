@@ -1,9 +1,8 @@
 using Shelfly.App.Controls;
-using Shelfly.App.Features.Trash.ViewModels;
 using Shelfly.App.Pages;
 using Shelfly.App.Resources.Localization;
 
-namespace Shelfly.App.Features.Trash.Pages;
+namespace Shelfly.App.Features.Trash;
 
 public partial class TrashListPage : ShelflyContentPageBase
 {

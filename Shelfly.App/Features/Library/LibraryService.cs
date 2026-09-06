@@ -4,7 +4,7 @@ using Shelfly.App.Data.Entities;
 using Shelfly.App.Enums;
 using Shelfly.Common;
 
-namespace Shelfly.App.Features.Library.Services;
+namespace Shelfly.App.Features.Library;
 
 public class LibraryService(LocalDbContext dbContext)
 {

@@ -1,7 +1,6 @@
-using Shelfly.App.Features.BookEditor.ViewModels;
 using Shelfly.App.Pages;
 
-namespace Shelfly.App.Features.BookEditor.Pages;
+namespace Shelfly.App.Features.BookEditor;
 
 public partial class BookEditPage : ShelflyContentPageBase
 {

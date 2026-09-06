@@ -1,12 +1,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Data.Entities;
-using Shelfly.App.Features.Library.Services;
+using Shelfly.App.Features.Library;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
 using Shelfly.Common;
 
-namespace Shelfly.App.Features.BookmarkEditor.ViewModels;
+namespace Shelfly.App.Features.BookmarkEditor;
 
 public partial class BookmarkEditViewModel(LibraryService libraryService)
     : ShelflyViewModelBase, IQueryAttributable

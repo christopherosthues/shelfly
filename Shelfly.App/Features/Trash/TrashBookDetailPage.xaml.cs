@@ -1,7 +1,6 @@
-using Shelfly.App.Features.Trash.ViewModels;
 using Shelfly.App.Pages;
 
-namespace Shelfly.App.Features.Trash.Pages;
+namespace Shelfly.App.Features.Trash;
 
 public partial class TrashBookDetailPage : ShelflyContentPageBase
 {

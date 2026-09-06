@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <pages:ShelflyContentPageBase
-    x:Class="Shelfly.App.Features.Trash.Pages.TrashListPage"
+    x:Class="Shelfly.App.Features.Trash.TrashListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Shelfly.App.Features.Trash.ViewModels"
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:controls="clr-namespace:Shelfly.App.Controls"
-    x:DataType="local:TrashListViewModel"
+    xmlns:trash="clr-namespace:Shelfly.App.Features.Trash"
+    x:DataType="trash:TrashListViewModel"
     Title="{x:Static resx:AppResources.TrashListPageTitle}">
 
     <ContentPage.ToolbarItems>
@@ -60,7 +60,7 @@
                                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                                 IconImageSource="restore_icon.svg"
                                 Text="{x:Static resx:AppResources.TrashListPageSwipeToRestoreCommand}"
-                                Command="{Binding RestoreBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                                Command="{Binding RestoreBookCommand, Source={x:RelativeSource AncestorType={x:Type trash:TrashListViewModel}}, x:DataType={x:Type trash:TrashListViewModel}}"
                                 CommandParameter="{Binding .}" />
                         </controls:BookCardView.LeftItem>
 
@@ -69,7 +69,7 @@
                                 BackgroundColor="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource DarkMagenta}}"
                                 IconImageSource="delete_icon.svg"
                                 Text="{x:Static resx:AppResources.TrashListPageSwipeToDeleteCommand}"
-                                Command="{Binding HardDeleteBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
+                                Command="{Binding HardDeleteBookCommand, Source={x:RelativeSource AncestorType={x:Type trash:TrashListViewModel}}, x:DataType={x:Type trash:TrashListViewModel}}"
                                 CommandParameter="{Binding .}" />
                         </controls:BookCardView.RightItem>
                     </controls:BookCardView>

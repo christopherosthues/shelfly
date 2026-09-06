@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <pages:ShelflyContentPageBase
-    x:Class="Shelfly.App.Features.Library.Pages.BookDetailPage"
+    x:Class="Shelfly.App.Features.Trash.TrashBookDetailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="using:Shelfly.App.Resources.Localization"
-    xmlns:viewModels="clr-namespace:Shelfly.App.Features.Library.ViewModels"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
-    xmlns:controls="clr-namespace:Shelfly.App.Controls"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
-    x:DataType="viewModels:BookDetailViewModel"
-    Title="{x:Static local:AppResources.BookDetailPageTitle}">
+    xmlns:trash="clr-namespace:Shelfly.App.Features.Trash"
+    x:DataType="trash:TrashBookDetailViewModel"
+    Title="{x:Static local:AppResources.TrashBookDetailPageTitle}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem
             SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageSoftDeleteBookDescription}"
-            Text="{x:Static local:AppResources.BookDetailPageDeleteBookButtonText}"
+            Text="{x:Static local:AppResources.TrashListPageRestoreAllButtonText}"
+            IconImageSource="restore_icon.svg"
+            Command="{Binding RestoreBookCommand}" />
+
+        <ToolbarItem
+            SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageSoftDeleteBookDescription}"
+            Text="{x:Static local:AppResources.TrashListPageDeleteAllButtonText}"
             IconImageSource="delete_icon.svg"
-            Command="{Binding DeleteBookCommand}" />
+            Command="{Binding HardDeleteBookCommand}" />
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="*" ColumnDefinitions="*">
@@ -107,15 +112,7 @@
                            Text="{x:Static local:AppResources.BookDetailPageBookmarksTitle}"
                            FontSize="20"
                            FontAttributes="Bold"
-                           VerticalOptions="Center"
-                           Margin="0,0,16,0" />
-
-                    <ImageButton
-                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageAddNewBookmarkDescription}"
-                        Source="add_icon.svg"
-                        Command="{Binding AddBookmarkCommand}"
-                        VerticalOptions="Center"
-                        Margin="0,0,0,0" />
+                           VerticalOptions="Center" />
                 </HorizontalStackLayout>
 
                 <CollectionView
@@ -137,6 +134,7 @@
                                        IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
 
                                 <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
+                                    <!-- Note icon only - no edit/delete buttons -->
                                     <ImageButton
                                         SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
                                         Source="note_icon.svg"
@@ -146,28 +144,8 @@
                                         MaximumWidthRequest="32"
                                         Margin="8,0,0,0"
                                         IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
-                                        Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
+                                        Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type trash:TrashBookDetailViewModel}}, x:DataType={x:Type trash:TrashBookDetailViewModel}}"
                                         CommandParameter="{Binding Note}" />
-
-                                    <ImageButton
-                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
-                                        Source="edit_icon.svg"
-                                        WidthRequest="32"
-                                        HeightRequest="32"
-                                        MaximumHeightRequest="32"
-                                        MaximumWidthRequest="32"
-                                        Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                        CommandParameter="{Binding}" />
-
-                                    <ImageButton
-                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
-                                        Source="delete_icon.svg"
-                                        WidthRequest="32"
-                                        HeightRequest="32"
-                                        MaximumHeightRequest="32"
-                                        MaximumWidthRequest="32"
-                                        Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type viewModels:BookDetailViewModel}}, x:DataType={x:Type viewModels:BookDetailViewModel}}"
-                                        CommandParameter="{Binding}" />
                                 </HorizontalStackLayout>
                             </Grid>
                         </DataTemplate>
@@ -175,12 +153,5 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
-
-        <!-- Floating Action Button (FAB) -->
-        <controls:FloatingActionButton
-            Grid.Row="0"
-            IconSource="edit_icon.svg"
-            Description="{x:Static local:AppResources.BookDetailPageEditFabDescription}"
-            Command="{Binding EditBookCommand}" />
     </Grid>
 </pages:ShelflyContentPageBase>

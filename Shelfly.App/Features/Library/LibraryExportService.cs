@@ -1,9 +1,8 @@
 using System.Text.Json;
 using Shelfly.App.Data.Entities;
-using Shelfly.App.Features.Library.Services;
 using Shelfly.Common;
 
-namespace Shelfly.App.Services;
+namespace Shelfly.App.Features.Library;
 
 public class LibraryExportService(LibraryService libraryService)
 {

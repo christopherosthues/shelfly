@@ -6,18 +6,12 @@ using NLog;
 using NLog.Extensions.Logging;
 #endif
 using Shelfly.App.Data;
-using Shelfly.App.Features.BookEditor.Pages;
-using Shelfly.App.Features.BookEditor.ViewModels;
-using Shelfly.App.Features.BookmarkEditor.Pages;
-using Shelfly.App.Features.BookmarkEditor.ViewModels;
-using Shelfly.App.Features.Library.Pages;
-using Shelfly.App.Features.Library.Services;
-using Shelfly.App.Features.Library.ViewModels;
-using Shelfly.App.Features.Trash.Pages;
-using Shelfly.App.Features.Trash.Services;
-using Shelfly.App.Features.Trash.ViewModels;
+using Shelfly.App.Features.About;
+using Shelfly.App.Features.BookEditor;
+using Shelfly.App.Features.BookmarkEditor;
+using Shelfly.App.Features.Library;
+using Shelfly.App.Features.Trash;
 using Shelfly.App.Migrations;
-using Shelfly.App.Services;
 
 namespace Shelfly.App;
 
@@ -66,6 +60,7 @@ public static class MauiProgram
         builder.Services.AddScopedWithShellRoute<BookmarkEditPage, BookmarkEditViewModel>(Routes.BookmarkEditPage);
         builder.Services.AddScopedWithShellRoute<TrashListPage, TrashListViewModel>(Routes.TrashListPage);
         builder.Services.AddScopedWithShellRoute<TrashBookDetailPage, TrashBookDetailViewModel>(Routes.TrashBookDetailPage);
+        builder.Services.AddScopedWithShellRoute<AboutPage, AboutViewModel>(Routes.AboutPage);
 
         return builder.Build();
     }

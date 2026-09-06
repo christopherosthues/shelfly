@@ -1,7 +1,6 @@
-using Shelfly.App.Features.Library.ViewModels;
 using Shelfly.App.Pages;
 
-namespace Shelfly.App.Features.Library.Pages;
+namespace Shelfly.App.Features.Library;
 
 public partial class BookListPage : ShelflyContentPageBase
 {

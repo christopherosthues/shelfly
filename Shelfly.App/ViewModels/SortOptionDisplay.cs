@@ -1,5 +1,4 @@
 using Shelfly.App.Enums;
-using Shelfly.App.Features.Library.Services;
 
 namespace Shelfly.App.ViewModels;
 
