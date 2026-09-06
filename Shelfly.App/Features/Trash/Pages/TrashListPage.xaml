@@ -42,16 +42,19 @@
             IsSelectionMode="{Binding IsSelectionMode, Mode=TwoWay}"
             ItemTapCommand="{Binding NavigateToTrashDetailCommand}"
             LongPressDuration="500">
+
             <controls:MultiSelectView.EmptyView>
                 <Label
                     HorizontalOptions="Center"
                     SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}"
                     Text="{Binding EmptyStateMessage}" />
             </controls:MultiSelectView.EmptyView>
+
             <controls:MultiSelectView.ItemTemplate>
                 <DataTemplate x:DataType="entities:BookEntity">
                     <controls:BookCardView
                         SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookEntryDescription}">
+
                         <controls:BookCardView.LeftItem>
                             <SwipeItem
                                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
@@ -60,6 +63,7 @@
                                 Command="{Binding RestoreBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}"
                                 CommandParameter="{Binding .}" />
                         </controls:BookCardView.LeftItem>
+
                         <controls:BookCardView.RightItem>
                             <SwipeItem
                                 BackgroundColor="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource DarkMagenta}}"
@@ -73,54 +77,6 @@
             </controls:MultiSelectView.ItemTemplate>
         </controls:MultiSelectView>
 
-
-        <!-- <CollectionView -->
-        <!--     Grid.Row="1" -->
-        <!--     SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookListDescription}" -->
-        <!--     ItemsSource="{Binding TrashBooks}"> -->
-        <!-- -->
-        <!--     <CollectionView.EmptyView> -->
-        <!--         <Label -->
-        <!--             HorizontalOptions="Center" -->
-        <!--             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageNoBooksFoundDescription}" -->
-        <!--             Text="{Binding EmptyStateMessage}" /> -->
-        <!--     </CollectionView.EmptyView> -->
-        <!-- -->
-        <!--     <CollectionView.ItemTemplate> -->
-        <!--         <DataTemplate x:DataType="entities:BookEntity"> -->
-        <!--             <SwipeView> -->
-        <!--                 ~1~ Left swipe (right-to-left) = Restore @1@ -->
-        <!--                 <SwipeView.LeftItems> -->
-        <!--                     <SwipeItem -->
-        <!--                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" -->
-        <!--                         IconImageSource="restore_icon.svg" -->
-        <!--                         Text="{x:Static resx:AppResources.TrashListPageSwipeToRestoreCommand}" -->
-        <!--                         Command="{Binding RestoreBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}" -->
-        <!--                         CommandParameter="{Binding .}" /> -->
-        <!--                 </SwipeView.LeftItems> -->
-        <!-- -->
-        <!--                 ~1~ Right swipe (left-to-right) = Delete @1@ -->
-        <!--                 <SwipeView.RightItems> -->
-        <!--                     <SwipeItem -->
-        <!--                         BackgroundColor="Red" -->
-        <!--                         IconImageSource="delete_icon.svg" -->
-        <!--                         Text="{x:Static resx:AppResources.TrashListPageSwipeToDeleteCommand}" -->
-        <!--                         Command="{Binding HardDeleteBookCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}" -->
-        <!--                         CommandParameter="{Binding .}" /> -->
-        <!--                 </SwipeView.RightItems> -->
-        <!-- -->
-        <!--                 <controls:BookCardView -->
-        <!--                     SemanticProperties.Description="{x:Static resx:AppResources.TrashListPageBookEntryDescription}" -->
-        <!--                     IsSelected="{Binding Id, Converter={converters:ContainsConverter}, ConverterParameter={Binding SelectedItems, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}}" -->
-        <!--                     LongPressCommand="{Binding EnterSelectionModeCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}" -->
-        <!--                     TapCommand="{Binding NavigateToTrashDetailCommand, Source={x:RelativeSource AncestorType={x:Type local:TrashListViewModel}}, x:DataType={x:Type local:TrashListViewModel}}" -->
-        <!--                     TapCommandParameter="{Binding Id}" /> -->
-        <!--             </SwipeView> -->
-        <!--         </DataTemplate> -->
-        <!--     </CollectionView.ItemTemplate> -->
-        <!-- </CollectionView> -->
-
-        <!-- Loading Indicator -->
         <ActivityIndicator
             Grid.Row="1"
             HorizontalOptions="Center"
