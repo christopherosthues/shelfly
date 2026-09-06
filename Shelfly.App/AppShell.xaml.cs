@@ -10,5 +10,6 @@ public partial class AppShell : Shell
     private async void OnAboutTapped(object? sender, TappedEventArgs e)
     {
         await Current.GoToAsync(Routes.AboutPage);
+        FlyoutIsPresented = false;
     }
 }
