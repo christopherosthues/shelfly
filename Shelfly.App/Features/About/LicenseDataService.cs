@@ -1,7 +1,6 @@
 using System.Text.Json;
-using Shelfly.App.Models;
 
-namespace Shelfly.App.Services;
+namespace Shelfly.App.Features.About;
 
 public class LicenseDataService
 {

@@ -1,9 +1,7 @@
 using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Shelfly.App.Models;
 using Shelfly.App.Resources.Localization;
-using Shelfly.App.Services;
 using Shelfly.App.ViewModels;
 
 namespace Shelfly.App.Features.About;

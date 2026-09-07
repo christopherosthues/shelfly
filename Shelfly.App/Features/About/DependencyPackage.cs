@@ -1,4 +1,4 @@
-namespace Shelfly.App.Models;
+namespace Shelfly.App.Features.About;
 
 public record DependencyPackage(
     string PackageId,

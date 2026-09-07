@@ -7,7 +7,6 @@
     xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     xmlns:about="clr-namespace:Shelfly.App.Features.About"
-    xmlns:models="clr-namespace:Shelfly.App.Models"
     Title="{x:Static resx:AppResources.AboutPageTitle}">
 
     <ScrollView>
@@ -98,7 +97,7 @@
             <CollectionView ItemsSource="{Binding Dependencies}"
                             SemanticProperties.Description="{x:Static resx:AppResources.AboutPageDependenciesListDescription}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:DependencyPackage">
+                    <DataTemplate x:DataType="about:DependencyPackage">
                         <VerticalStackLayout Padding="8" Spacing="4"
                                              SemanticProperties.Description="{x:Static resx:AppResources.AboutPageDependencyEntryDescription}">
                             <Label Text="{Binding PackageId}" FontAttributes="Bold" />

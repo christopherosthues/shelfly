@@ -12,7 +12,6 @@ using Shelfly.App.Features.BookmarkEditor;
 using Shelfly.App.Features.Library;
 using Shelfly.App.Features.Trash;
 using Shelfly.App.Migrations;
-using Shelfly.App.Services;
 
 namespace Shelfly.App;
 
