@@ -70,6 +70,9 @@
   <ItemGroup>
     <None Update="nlog.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <None Include="Resources\Raw\licenses-release.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Localization\AppResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -80,6 +83,9 @@
       <LastGenOutput>AppResources.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <Target Name="GenerateLicensesJson" AfterTargets="Restore">
+    <Exec Command="nuget-license -i Shelfly.App.csproj -o JsonPretty --include-transitive -fo Resources\Raw\licenses-release.json" WorkingDirectory="$(ProjectDir)" />
+  </Target>
   <ItemGroup>
     <Compile Update="Resources\Localization\AppResources.Designer.cs">
       <DesignTime>True</DesignTime>

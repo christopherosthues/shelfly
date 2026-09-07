@@ -532,6 +532,15 @@
     <data name="AboutPageLibrariesButtonText" xml:space="preserve">
         <value>Lizenzen anzeigen</value>
     </data>
+    <data name="AboutPageDependenciesListDescription" xml:space="preserve">
+        <value>Liste der Drittanbieter-Abhängigkeiten, die in dieser Anwendung verwendet werden</value>
+    </data>
+    <data name="AboutPageDependencyEntryDescription" xml:space="preserve">
+        <value>Tippen Sie auf den Lizenztyp, um den vollständigen Text im Browser anzuzeigen</value>
+    </data>
+    <data name="AboutPageDependenciesLoadErrorText" xml:space="preserve">
+        <value>Abhängigkeitsdaten konnten nicht geladen werden</value>
+    </data>
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>Keine Daten verfügbar</value>
     </data>

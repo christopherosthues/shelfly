@@ -78,6 +78,33 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List of third-party dependencies used by this application.
+        /// </summary>
+        internal static string AboutPageDependenciesListDescription {
+            get {
+                return ResourceManager.GetString("AboutPageDependenciesListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load dependency data.
+        /// </summary>
+        internal static string AboutPageDependenciesLoadErrorText {
+            get {
+                return ResourceManager.GetString("AboutPageDependenciesLoadErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tap the license type to view its full text in your browser.
+        /// </summary>
+        internal static string AboutPageDependencyEntryDescription {
+            get {
+                return ResourceManager.GetString("AboutPageDependencyEntryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About Shelfly.
         /// </summary>
         internal static string AboutPageFeatureSummaryLabel {

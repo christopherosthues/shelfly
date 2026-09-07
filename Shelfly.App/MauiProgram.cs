@@ -12,6 +12,7 @@ using Shelfly.App.Features.BookmarkEditor;
 using Shelfly.App.Features.Library;
 using Shelfly.App.Features.Trash;
 using Shelfly.App.Migrations;
+using Shelfly.App.Services;
 
 namespace Shelfly.App;
 
@@ -53,6 +54,7 @@ public static class MauiProgram
         builder.Services.AddScoped<LibraryService>();
         builder.Services.AddScoped<LibraryExportService>();
         builder.Services.AddScoped<TrashService>();
+        builder.Services.AddScoped<LicenseDataService>();
 
         builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>(Routes.BookListPage);
         builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>(Routes.BookEditPage);
