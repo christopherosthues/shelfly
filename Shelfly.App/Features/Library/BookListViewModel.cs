@@ -29,6 +29,14 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
             : AppResources.BookListPageSearchEmptyMessage
         : string.Empty;
 
+    public bool IsExportAllVisible => true;
+    public bool IsSelectAllVisible => SelectedItems.Count != Books.Count;
+    public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItems.Any();
+    public bool IsExportSelectedVisible => IsSelectionMode && SelectedItems.Any();
+    public bool IsDeselectAllVisible => IsSelectionMode && SelectedItems.Any();
+
+    public event EventHandler? ToolbarVisibilityChanged;
+
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
         await LoadSortedItemsAsync(string.Empty, SortCriterion.Title, SortDirection.Ascending, cancellationToken);
@@ -40,6 +48,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         {
             List<BookEntity> books = await libraryService.SearchSortedBooksAsync(query, criterion, direction, cancellationToken);
             Books = new ObservableCollection<BookEntity>(books);
+            OnToolbarVisibilityChanged();
         });
     }
 
@@ -55,7 +64,27 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         if (book is not null)
         {
             Books.Remove(book);
+            OnToolbarVisibilityChanged();
         }
+    }
+
+    [RelayCommand]
+    private async Task DeleteSelectedAsync()
+    {
+        List<BookEntity> booksToDelete = SelectedItems.Cast<BookEntity>().ToList();
+
+        foreach (BookEntity book in booksToDelete)
+        {
+            BookEntity? deletedBook = await libraryService.SoftDeleteBookAsync(book.Id);
+            if (deletedBook is not null)
+            {
+                Books.Remove(deletedBook);
+            }
+        }
+
+        SelectedItems.Clear();
+        IsSelectionMode = false;
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -80,6 +109,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     {
         IsSelectionMode = false;
         SelectedItems.Clear();
+        OnToolbarVisibilityChanged();
     }
 
     [RelayCommand]
@@ -89,42 +119,86 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
         {
             Result<string> exportResult = await exportService.ExportLibraryToJsonAsync();
 
-            if (exportResult.IsSuccess)
-            {
-                FilePickerFileType customFileType = new FilePickerFileType(
-                    new Dictionary<DevicePlatform, IEnumerable<string>>
-                    {
-                        { DevicePlatform.iOS, [".json"] },
-                        { DevicePlatform.Android, [".json"] },
-                        { DevicePlatform.WinUI, [".json"] },
-                        { DevicePlatform.Tizen, [".json"] },
-                        { DevicePlatform.macOS, [".json"] },
-                    });
-                FileResult? fileResult = await FilePicker.Default.PickAsync(new PickOptions()
+            await ExportBooksAsync(exportResult);
+        });
+    }
+
+    private static async Task ExportBooksAsync(Result<string> exportResult)
+    {
+        if (exportResult.IsSuccess)
+        {
+            FilePickerFileType customFileType = new FilePickerFileType(
+                new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
-                    PickerTitle = AppResources.BookListPageExportLibraryButtonText,
-                    FileTypes = customFileType
+                    { DevicePlatform.iOS, [".json"] },
+                    { DevicePlatform.Android, [".json"] },
+                    { DevicePlatform.WinUI, [".json"] },
+                    { DevicePlatform.Tizen, [".json"] },
+                    { DevicePlatform.macOS, [".json"] },
                 });
-
-                if (fileResult is not null)
-                {
-                    string fullPath = fileResult.FullPath;
-                    await File.WriteAllTextAsync(fullPath, exportResult.Value);
-
-                    await Shell.Current.DisplayAlertAsync(
-                        AppResources.BookListPageExportSuccessMessage,
-                        $"{AppResources.BookListPageExportFileSavedPrefix} {fullPath}",
-                        AppResources.CommonOkButton);
-                }
-            }
-            else
+            FileResult? fileResult = await FilePicker.Default.PickAsync(new PickOptions()
             {
-                LogManager.GetCurrentClassLogger().Warn("Export failed: {Error}", exportResult.Error);
+                PickerTitle = AppResources.BookListPageExportLibraryButtonText,
+                FileTypes = customFileType
+            });
+
+            if (fileResult is not null)
+            {
+                string fullPath = fileResult.FullPath;
+                await File.WriteAllTextAsync(fullPath, exportResult.Value);
+
                 await Shell.Current.DisplayAlertAsync(
-                    AppResources.BookListPageExportErrorMessage,
-                    exportResult.Error ?? AppResources.BookListPageUnknownErrorMessage,
+                    AppResources.BookListPageExportSuccessMessage,
+                    $"{AppResources.BookListPageExportFileSavedPrefix} {fullPath}",
                     AppResources.CommonOkButton);
             }
+        }
+        else
+        {
+            LogManager.GetCurrentClassLogger().Warn("Export failed: {Error}", exportResult.Error);
+            await Shell.Current.DisplayAlertAsync(
+                AppResources.BookListPageExportErrorMessage,
+                exportResult.Error ?? AppResources.BookListPageUnknownErrorMessage,
+                AppResources.CommonOkButton);
+        }
+    }
+
+    [RelayCommand]
+    private async Task ExportSelectedAsync()
+    {
+        List<BookEntity> selectedBooks = [.. SelectedItems.Cast<BookEntity>()];
+
+        await ExecuteWithLoadingAsync(async () =>
+        {
+            Result<string> exportResult = await exportService.ExportSelectedBooksToJsonAsync(selectedBooks);
+
+            await ExportBooksAsync(exportResult);
         });
+    }
+
+    [RelayCommand]
+    private void SelectAll()
+    {
+        HashSet<Guid> selectedIds = [.. SelectedItems.Cast<BookEntity>().Select(static book => book.Id)];
+        List<BookEntity> unselectedBooks = [.. Books.Where(book => !selectedIds.Contains(book.Id))];
+
+        foreach (BookEntity book in unselectedBooks)
+        {
+            SelectedItems.Add(book);
+        }
+
+        OnToolbarVisibilityChanged();
+    }
+
+    [RelayCommand]
+    private void DeselectAll()
+    {
+        SelectedItems.Clear();
+        OnToolbarVisibilityChanged();
+    }
+
+    private void OnToolbarVisibilityChanged()
+    {
+        ToolbarVisibilityChanged?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -10,6 +10,8 @@ public partial class TrashListPage : ShelflyContentPageBase
     private ToolbarItem? _deleteAllItem;
     private ToolbarItem? _restoreSelectedItem;
     private ToolbarItem? _deleteSelectedItem;
+    private ToolbarItem? _selectAllItem;
+    private ToolbarItem? _deselectAllItem;
 
     private TrashListViewModel ViewModel => (TrashListViewModel) BindingContext;
 
@@ -25,6 +27,15 @@ public partial class TrashListPage : ShelflyContentPageBase
 
     private void CreateToolbarItems(TrashListViewModel viewModel)
     {
+        _selectAllItem = new ToolbarItem
+        {
+            Text = AppResources.TrashListPageSelectAllButtonText,
+            IconImageSource = "select_all_icon.svg",
+            Command = viewModel.SelectAllCommand,
+            Order = ToolbarItemOrder.Secondary
+        };
+        SemanticProperties.SetDescription(_selectAllItem, AppResources.TrashListPageSelectAllDescription);
+
         _restoreAllItem = new ToolbarItem
         {
             Text = AppResources.TrashListPageRestoreAllButtonText,
@@ -60,6 +71,15 @@ public partial class TrashListPage : ShelflyContentPageBase
             Order = ToolbarItemOrder.Secondary
         };
         SemanticProperties.SetDescription(_deleteSelectedItem, AppResources.TrashListPageDeleteSelectedDescription);
+
+        _deselectAllItem = new ToolbarItem
+        {
+            Text = AppResources.TrashListPageDeselectAllButtonText,
+            IconImageSource = "deselect_all_icon.svg",
+            Command = viewModel.DeselectAllCommand,
+            Order = ToolbarItemOrder.Secondary
+        };
+        SemanticProperties.SetDescription(_selectAllItem, AppResources.TrashListPageDeselectAllDescription);
     }
 
     private void OnToolbarVisibilityChanged(object? sender, EventArgs e)
@@ -76,6 +96,11 @@ public partial class TrashListPage : ShelflyContentPageBase
     {
         TrashListViewModel viewModel = ViewModel;
         ToolbarItems.Clear();
+
+        if (viewModel.IsSelectAllVisible && _selectAllItem is not null)
+        {
+            ToolbarItems.Add(_selectAllItem);
+        }
 
         if (viewModel.IsRestoreAllVisible && _restoreAllItem is not null)
         {
@@ -95,6 +120,11 @@ public partial class TrashListPage : ShelflyContentPageBase
         if (viewModel.IsDeleteSelectedVisible && _deleteSelectedItem is not null)
         {
             ToolbarItems.Add(_deleteSelectedItem);
+        }
+
+        if (viewModel.IsDeselectAllVisible && _deselectAllItem is not null)
+        {
+            ToolbarItems.Add(_deselectAllItem);
         }
     }
 

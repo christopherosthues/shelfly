@@ -60,8 +60,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
 
         await trashService.RestoreBookAsync(Book.Id, cancellationToken);
 
-        // Navigate back to trash list
-        await Shell.Current.GoToAsync($"//{Routes.TrashListPage}");
+        await Shell.Current.GoToAsync("..");
     }
 
     [RelayCommand]
@@ -76,8 +75,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
 
         if (book is not null)
         {
-            // Navigate back to trash list
-            await Shell.Current.GoToAsync($"//{Routes.TrashListPage}");
+            await Shell.Current.GoToAsync("..");
         }
     }
 

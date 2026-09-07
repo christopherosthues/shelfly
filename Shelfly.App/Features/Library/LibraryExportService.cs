@@ -11,46 +11,7 @@ public class LibraryExportService(LibraryService libraryService)
         try
         {
             List<BookEntity> books = await libraryService.GetAllBooksAsync(cancellationToken);
-            List<LibraryBookDto> exportData = [];
-
-            foreach (BookEntity book in books)
-            {
-                List<BookmarkEntity> bookmarks = await libraryService.GetBookmarksByBookIdAsync(book.Id, cancellationToken);
-
-                LibraryBookDto bookDto = new()
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    ISBN = book.ISBN,
-                    Publisher = book.Publisher,
-                    PublishDate = book.PublishDate,
-                    CreatedAt = book.CreatedAt,
-                    LastModifiedAt = book.LastModifiedAt,
-                    Bookmarks =
-                    [
-                        .. bookmarks.Select(b => new LibraryBookmarkDto
-                        {
-                            Id = b.Id,
-                            StartPage = b.StartPage,
-                            EndPage = b.EndPage,
-                            Note = b.Note,
-                            CreatedAt = b.CreatedAt,
-                            LastModifiedAt = b.LastModifiedAt
-                        })
-                    ]
-                };
-
-                exportData.Add(bookDto);
-            }
-
-            JsonSerializerOptions options = new()
-            {
-                WriteIndented = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
-            };
-
-            string json = JsonSerializer.Serialize(exportData, options);
+            string json = await SerializeBooksAsync(books, cancellationToken);
 
             return Result<string>.Success(json);
         }
@@ -58,6 +19,64 @@ public class LibraryExportService(LibraryService libraryService)
         {
             return Result<string>.Failure($"Export failed: {ex.Message}");
         }
+    }
+
+    public async Task<Result<string>> ExportSelectedBooksToJsonAsync(IEnumerable<BookEntity> books, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string json = await SerializeBooksAsync([.. books], cancellationToken);
+
+            return Result<string>.Success(json);
+        }
+        catch (Exception ex)
+        {
+            return Result<string>.Failure($"Export failed: {ex.Message}");
+        }
+    }
+
+    private async Task<string> SerializeBooksAsync(List<BookEntity> books, CancellationToken cancellationToken)
+    {
+        List<LibraryBookDto> exportData = [];
+
+        foreach (BookEntity book in books)
+        {
+            List<BookmarkEntity> bookmarks = await libraryService.GetBookmarksByBookIdAsync(book.Id, cancellationToken);
+
+            LibraryBookDto bookDto = new()
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                ISBN = book.ISBN,
+                Publisher = book.Publisher,
+                PublishDate = book.PublishDate,
+                CreatedAt = book.CreatedAt,
+                LastModifiedAt = book.LastModifiedAt,
+                Bookmarks =
+                [
+                    .. bookmarks.Select(b => new LibraryBookmarkDto
+                    {
+                        Id = b.Id,
+                        StartPage = b.StartPage,
+                        EndPage = b.EndPage,
+                        Note = b.Note,
+                        CreatedAt = b.CreatedAt,
+                        LastModifiedAt = b.LastModifiedAt
+                    })
+                ]
+            };
+
+            exportData.Add(bookDto);
+        }
+
+        JsonSerializerOptions options = new()
+        {
+            WriteIndented = true,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
+        };
+
+        return JsonSerializer.Serialize(exportData, options);
     }
 }
 

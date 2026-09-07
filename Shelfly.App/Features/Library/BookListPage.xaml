@@ -12,11 +12,7 @@
     Title="{x:Static resx:AppResources.BookListPageTitle}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem
-            SemanticProperties.Description="{x:Static resx:AppResources.BookListPageExportLibraryDescription}"
-            IconImageSource="export_icon.svg"
-            Text="{x:Static resx:AppResources.BookListPageExportLibraryButtonText}"
-            Command="{Binding ExportLibraryCommand}" />
+        <!-- Dynamically managed by code-behind via ToolbarVisibilityChanged event -->
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
@@ -38,6 +34,7 @@
 
         <!-- Book List -->
         <controls:MultiSelectView
+            x:Name="MultiSelectView"
             Grid.Row="1"
             SemanticProperties.Description="{x:Static resx:AppResources.BookListPageBookListDescription}"
             ItemsSource="{Binding Books}"

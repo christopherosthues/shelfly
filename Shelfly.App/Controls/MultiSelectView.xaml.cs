@@ -20,6 +20,7 @@ public partial class MultiSelectView : ContentView
     private readonly HashSet<object> _selectedItems = [];
 
     private INotifyCollectionChanged? _observableItems;
+    private INotifyCollectionChanged? _observableSelectedItems;
 
     private bool _updatingSelectionMode;
     private bool _updatingSelectedItems;
@@ -237,15 +238,20 @@ public partial class MultiSelectView : ContentView
     {
         MultiSelectView control = (MultiSelectView)bindable;
 
+        control.UnsubscribeFromSelectedItems();
+
+        if (newValue is INotifyCollectionChanged collection)
+        {
+            control._observableSelectedItems = collection;
+            collection.CollectionChanged += control.OnSelectedItemsCollectionChanged;
+        }
+
         if (control._updatingSelectedItems)
         {
             return;
         }
 
-        if (newValue is IList list)
-        {
-            control.ApplyExternalSelection(list);
-        }
+        control.ApplyExternalSelection(newValue as IList);
     }
 
     public static readonly BindableProperty IsSelectionModeProperty =
@@ -442,7 +448,7 @@ public partial class MultiSelectView : ContentView
                 .ToHashSet()
             ?? [];
 
-        foreach (var item in _selectedItems
+        foreach (object item in _selectedItems
                      .Where(x => !desired.Contains(x))
                      .ToList())
         {
@@ -596,5 +602,31 @@ public partial class MultiSelectView : ContentView
         {
             UnsubscribeFromItems();
         }
+    }
+
+    private void UnsubscribeFromSelectedItems()
+    {
+        if (_observableSelectedItems == null)
+        {
+            return;
+        }
+
+        _observableSelectedItems.CollectionChanged -= OnSelectedItemsCollectionChanged;
+        _observableSelectedItems = null;
+    }
+
+    private void OnSelectedItemsCollectionChanged(
+        object? sender,
+        NotifyCollectionChangedEventArgs e)
+    {
+        if (_updatingSelectedItems)
+        {
+            return;
+        }
+
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            ApplyExternalSelection(SelectedItems);
+        });
     }
 }

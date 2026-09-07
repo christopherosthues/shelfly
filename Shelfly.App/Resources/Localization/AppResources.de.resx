@@ -274,6 +274,18 @@
     <data name="BookListPageExportLibraryDescription" xml:space="preserve">
         <value>Bibliothek als JSON-Datei exportieren</value>
     </data>
+    <data name="BookListPageDeleteSelectedButtonText" xml:space="preserve">
+        <value>Ausgewählte löschen</value>
+    </data>
+    <data name="BookListPageDeleteSelectedDescription" xml:space="preserve">
+        <value>Ausgewählte Bücher in den Papierkorb verschieben</value>
+    </data>
+    <data name="BookListPageExportSelectedButtonText" xml:space="preserve">
+        <value>Ausgewählte exportieren</value>
+    </data>
+    <data name="BookListPageExportSelectedDescription" xml:space="preserve">
+        <value>Ausgewählte Bücher als JSON-Datei exportieren</value>
+    </data>
     <data name="BookListPageExportSuccessMessage" xml:space="preserve">
         <value>Bibliothek erfolgreich exportiert</value>
     </data>
@@ -281,7 +293,19 @@
         <value>Export fehlgeschlagen</value>
     </data>
     <data name="BookListPageLongPressToSelectDescription" xml:space="preserve">
-        <value>Langes Drücken zum Auswählen</value>
+        <value>Lange drücken zum Auswählen</value>
+    </data>
+    <data name="BookListPageSelectAllButtonText" xml:space="preserve">
+        <value>Alle auswählen</value>
+    </data>
+    <data name="BookListPageSelectAllDescription" xml:space="preserve">
+        <value>Alle Bücher auswählen</value>
+    </data>
+    <data name="BookListPageDeselectAllButtonText" xml:space="preserve">
+        <value>Alle abwählen</value>
+    </data>
+    <data name="BookListPageDeselectAllDescription" xml:space="preserve">
+        <value>Alle Bücher abwählen</value>
     </data>
 
     <data name="BookListPageSelectedStateDescription" xml:space="preserve">
@@ -420,6 +444,18 @@
     </data>
     <data name="TrashListPageDeleteSelectedButtonText" xml:space="preserve">
         <value>Ausgewählte löschen</value>
+    </data>
+    <data name="TrashListPageSelectAllButtonText" xml:space="preserve">
+        <value>Alle auswählen</value>
+    </data>
+    <data name="TrashListPageSelectAllDescription" xml:space="preserve">
+        <value>Alle Bücher im Papierkorb auswählen</value>
+    </data>
+    <data name="TrashListPageDeselectAllButtonText" xml:space="preserve">
+        <value>Alle abwählen</value>
+    </data>
+    <data name="TrashListPageDeselectAllDescription" xml:space="preserve">
+        <value>Alle Bücher im Papierkorb abwählen</value>
     </data>
     <data name="TrashListPageDoneButtonText" xml:space="preserve">
         <value>Fertig</value>

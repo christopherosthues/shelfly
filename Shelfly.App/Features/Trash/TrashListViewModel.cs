@@ -29,6 +29,9 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     public bool IsRestoreSelectedVisible => IsSelectionMode && SelectedItems.Any();
     public bool IsDeleteSelectedVisible => IsSelectionMode && SelectedItems.Any();
 
+    public bool IsSelectAllVisible => SelectedItems.Count != TrashBooks.Count;
+    public bool IsDeselectAllVisible => IsSelectionMode && SelectedItems.Any();
+
     public event EventHandler? ToolbarVisibilityChanged;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
@@ -122,6 +125,27 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
         };
 
         await Shell.Current.GoToAsync(Routes.TrashBookDetailPage, parameters);
+    }
+
+    [RelayCommand]
+    private void SelectAll()
+    {
+        HashSet<Guid> selectedIds = [.. SelectedItems.Cast<BookEntity>().Select(static book => book.Id)];
+        List<BookEntity> unselectedBooks = [.. TrashBooks.Where(book => !selectedIds.Contains(book.Id))];
+
+        foreach (BookEntity book in unselectedBooks)
+        {
+            SelectedItems.Add(book);
+        }
+
+        OnToolbarVisibilityChanged();
+    }
+
+    [RelayCommand]
+    private void DeselectAll()
+    {
+        SelectedItems.Clear();
+        OnToolbarVisibilityChanged();
     }
 
     public override void OnNavigatingFrom()

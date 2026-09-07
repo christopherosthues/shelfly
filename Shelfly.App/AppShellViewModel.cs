@@ -8,7 +8,7 @@ public partial class AppShellViewModel : ObservableObject
     [RelayCommand]
     private async Task NavigateToAboutAsync()
     {
-        await Shell.Current.GoToAsync(Routes.AboutPage);
         Shell.Current.FlyoutIsPresented = false;
+        await Shell.Current.GoToAsync(Routes.AboutPage);
     }
 }

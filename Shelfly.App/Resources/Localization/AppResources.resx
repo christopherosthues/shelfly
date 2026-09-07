@@ -274,6 +274,18 @@
     <data name="BookListPageExportLibraryDescription" xml:space="preserve">
         <value>Export library to JSON file</value>
     </data>
+    <data name="BookListPageDeleteSelectedButtonText" xml:space="preserve">
+        <value>Delete Selected</value>
+    </data>
+    <data name="BookListPageDeleteSelectedDescription" xml:space="preserve">
+        <value>Delete selected books to trash</value>
+    </data>
+    <data name="BookListPageExportSelectedButtonText" xml:space="preserve">
+        <value>Export Selected</value>
+    </data>
+    <data name="BookListPageExportSelectedDescription" xml:space="preserve">
+        <value>Export selected books to JSON file</value>
+    </data>
     <data name="BookListPageExportSuccessMessage" xml:space="preserve">
         <value>Library exported successfully</value>
     </data>
@@ -282,6 +294,18 @@
     </data>
     <data name="BookListPageLongPressToSelectDescription" xml:space="preserve">
         <value>Long press to select</value>
+    </data>
+    <data name="BookListPageSelectAllButtonText" xml:space="preserve">
+        <value>Select All</value>
+    </data>
+    <data name="BookListPageSelectAllDescription" xml:space="preserve">
+        <value>Select all books</value>
+    </data>
+    <data name="BookListPageDeselectAllButtonText" xml:space="preserve">
+        <value>Deselect All</value>
+    </data>
+    <data name="BookListPageDeselectAllDescription" xml:space="preserve">
+        <value>Deselect all books</value>
     </data>
 
     <data name="BookListPageSelectedStateDescription" xml:space="preserve">
@@ -420,6 +444,18 @@
     </data>
     <data name="TrashListPageDeleteSelectedButtonText" xml:space="preserve">
         <value>Delete Selected</value>
+    </data>
+    <data name="TrashListPageSelectAllButtonText" xml:space="preserve">
+        <value>Select All</value>
+    </data>
+    <data name="TrashListPageSelectAllDescription" xml:space="preserve">
+        <value>Select all books in trash</value>
+    </data>
+    <data name="TrashListPageDeselectAllButtonText" xml:space="preserve">
+        <value>Deselect All</value>
+    </data>
+    <data name="TrashListPageDeselectAllDescription" xml:space="preserve">
+        <value>Deselect all books in trash</value>
     </data>
     <data name="TrashListPageDoneButtonText" xml:space="preserve">
         <value>Done</value>

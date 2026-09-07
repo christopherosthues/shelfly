@@ -78,20 +78,20 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Über.
+        ///   Looks up a localized string similar to Über Shelfly.
         /// </summary>
-        internal static string AboutPageTitle {
+        internal static string AboutPageFeatureSummaryLabel {
             get {
-                return ResourceManager.GetString("AboutPageTitle", resourceCulture);
+                return ResourceManager.GetString("AboutPageFeatureSummaryLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version:.
+        ///   Looks up a localized string similar to Shelfly ist ein Lesebegleiter zum Verwalten von Lesezeichen physischer Bücher. Verfolgen Sie Ihre Bibliothek, speichern Sie Seitenreferenzen mit Notizen und organisieren Sie Ihr Leseerlebnis..
         /// </summary>
-        internal static string AboutPageVersionLabel {
+        internal static string AboutPageFeatureSummaryText {
             get {
-                return ResourceManager.GetString("AboutPageVersionLabel", resourceCulture);
+                return ResourceManager.GetString("AboutPageFeatureSummaryText", resourceCulture);
             }
         }
         
@@ -132,20 +132,20 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Über Shelfly.
+        ///   Looks up a localized string similar to Über.
         /// </summary>
-        internal static string AboutPageFeatureSummaryLabel {
+        internal static string AboutPageTitle {
             get {
-                return ResourceManager.GetString("AboutPageFeatureSummaryLabel", resourceCulture);
+                return ResourceManager.GetString("AboutPageTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shelfly ist ein Lesebegleiter zum Verwalten von Lesezeichen physischer Bücher. Verfolgen Sie Ihre Bibliothek, speichern Sie Seitenreferenzen mit Notizen und organisieren Sie Ihr Leseerlebnis..
+        ///   Looks up a localized string similar to Version:.
         /// </summary>
-        internal static string AboutPageFeatureSummaryText {
+        internal static string AboutPageVersionLabel {
             get {
-                return ResourceManager.GetString("AboutPageFeatureSummaryText", resourceCulture);
+                return ResourceManager.GetString("AboutPageVersionLabel", resourceCulture);
             }
         }
         
@@ -699,6 +699,42 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte löschen.
+        /// </summary>
+        internal static string BookListPageDeleteSelectedButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageDeleteSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte Bücher in den Papierkorb verschieben.
+        /// </summary>
+        internal static string BookListPageDeleteSelectedDescription {
+            get {
+                return ResourceManager.GetString("BookListPageDeleteSelectedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle abwählen.
+        /// </summary>
+        internal static string BookListPageDeselectAllButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageDeselectAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Bücher abwählen.
+        /// </summary>
+        internal static string BookListPageDeselectAllDescription {
+            get {
+                return ResourceManager.GetString("BookListPageDeselectAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Noch keine Bücher. Tippe auf +, um dein erstes Buch hinzuzufügen..
         /// </summary>
         internal static string BookListPageEmptyStateMessage {
@@ -744,6 +780,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte exportieren.
+        /// </summary>
+        internal static string BookListPageExportSelectedButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageExportSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ausgewählte Bücher als JSON-Datei exportieren.
+        /// </summary>
+        internal static string BookListPageExportSelectedDescription {
+            get {
+                return ResourceManager.GetString("BookListPageExportSelectedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bibliothek erfolgreich exportiert.
         /// </summary>
         internal static string BookListPageExportSuccessMessage {
@@ -753,7 +807,7 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Langes Drücken zum Auswählen.
+        ///   Looks up a localized string similar to Lange drücken zum Auswählen.
         /// </summary>
         internal static string BookListPageLongPressToSelectDescription {
             get {
@@ -785,6 +839,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookListPageSearchPlaceholder {
             get {
                 return ResourceManager.GetString("BookListPageSearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle auswählen.
+        /// </summary>
+        internal static string BookListPageSelectAllButtonText {
+            get {
+                return ResourceManager.GetString("BookListPageSelectAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Bücher auswählen.
+        /// </summary>
+        internal static string BookListPageSelectAllDescription {
+            get {
+                return ResourceManager.GetString("BookListPageSelectAllDescription", resourceCulture);
             }
         }
         
@@ -1374,6 +1446,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alle abwählen.
+        /// </summary>
+        internal static string TrashListPageDeselectAllButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageDeselectAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Bücher im Papierkorb abwählen.
+        /// </summary>
+        internal static string TrashListPageDeselectAllDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageDeselectAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fertig.
         /// </summary>
         internal static string TrashListPageDoneButtonText {
@@ -1460,6 +1550,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string TrashListPageSearchPlaceholder {
             get {
                 return ResourceManager.GetString("TrashListPageSearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle auswählen.
+        /// </summary>
+        internal static string TrashListPageSelectAllButtonText {
+            get {
+                return ResourceManager.GetString("TrashListPageSelectAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle Bücher im Papierkorb auswählen.
+        /// </summary>
+        internal static string TrashListPageSelectAllDescription {
+            get {
+                return ResourceManager.GetString("TrashListPageSelectAllDescription", resourceCulture);
             }
         }
         

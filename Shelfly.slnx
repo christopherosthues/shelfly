@@ -7,6 +7,7 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />
+    <File Path="LICENSE" />
   </Folder>
   <Project Path="Shelfly.AdminConsole.Tests/Shelfly.AdminConsole.Tests.csproj" />
   <Project Path="Shelfly.AdminConsole/Shelfly.AdminConsole.csproj" />
