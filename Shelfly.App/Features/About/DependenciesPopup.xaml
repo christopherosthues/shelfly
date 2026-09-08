@@ -50,9 +50,12 @@
                             <VerticalStackLayout
                                 Padding="8" Spacing="4"
                                 SemanticProperties.Description="{x:Static resx:AppResources.AboutPageDependencyEntryDescription}">
-                                <Label Text="{Binding PackageId}" FontAttributes="Bold" />
+                                <Label Text="{Binding PackageId}"
+                                       LineBreakMode="WordWrap"
+                                       FontAttributes="Bold" />
                                 <Label Text="{Binding PackageVersion}" />
-                                <Label Text="{Binding Authors}" />
+                                <Label Text="{Binding Authors}"
+                                       LineBreakMode="WordWrap" />
                                 <Label Text="{Binding License}"
                                        TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                                        TextDecorations="Underline">
@@ -62,6 +65,10 @@
                                             CommandParameter="{Binding .}" />
                                     </Label.GestureRecognizers>
                                 </Label>
+                                <BoxView
+                                    HeightRequest="1"
+                                    Margin="0, 2"
+                                    Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
                             </VerticalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

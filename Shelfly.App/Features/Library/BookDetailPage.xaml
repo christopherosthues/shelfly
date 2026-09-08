@@ -95,9 +95,12 @@
                                FontSize="14"
                                VerticalOptions="Center"
                                Margin="0,0,8,0" />
+                        <!-- TODO publish date format depending on locale -->
                         <Label Grid.Column="1" Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}"
                                FontSize="16"
                                VerticalOptions="Center" />
+                        <!-- TODO CreatedAt date -->
+                        <!-- TODO LastModifiedAt date -->
                     </Grid>
                 </VerticalStackLayout>
 
