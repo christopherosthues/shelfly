@@ -157,6 +157,12 @@
                 <VerticalStackLayout
                     SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkListDescription}"
                     BindableLayout.ItemsSource="{Binding Bookmarks}">
+                    <BindableLayout.EmptyView>
+                        <Label Text="{x:Static local:AppResources.BookDetailPageNoBookmarksText}"
+                               FontSize="16"
+                               Opacity="0.7"
+                               HorizontalOptions="Center" />
+                    </BindableLayout.EmptyView>
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="entities:BookmarkEntity">
                             <VerticalStackLayout Spacing="2">

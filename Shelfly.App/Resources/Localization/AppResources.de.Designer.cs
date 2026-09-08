@@ -474,6 +474,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keine Lesezeichen verfügbar.
+        /// </summary>
+        internal static string BookDetailPageNoBookmarksText {
+            get {
+                return ResourceManager.GetString("BookDetailPageNoBookmarksText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notiz.
         /// </summary>
         internal static string BookDetailPageNoteAlertTitle {

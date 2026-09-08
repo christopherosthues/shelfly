@@ -262,6 +262,9 @@
     <data name="BookDetailPageBookmarkListDescription" xml:space="preserve">
         <value>Lesezeichenliste</value>
     </data>
+    <data name="BookDetailPageNoBookmarksText" xml:space="preserve">
+        <value>Keine Lesezeichen verfügbar</value>
+    </data>
     <data name="BookDetailPageViewNoteDescription" xml:space="preserve">
         <value>Notiz anzeigen</value>
     </data>
