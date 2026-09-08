@@ -115,42 +115,48 @@
                            VerticalOptions="Center" />
                 </HorizontalStackLayout>
 
-                <CollectionView
+                <VerticalStackLayout
                     SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkListDescription}"
-                    ItemsSource="{Binding Bookmarks}">
-                    <CollectionView.ItemTemplate>
+                    BindableLayout.ItemsSource="{Binding Bookmarks}">
+                    <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="entities:BookmarkEntity">
-                            <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
-                                  SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
-                                <Label Grid.Column="0"
-                                       Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
-                                       FontSize="16"
-                                       VerticalOptions="Center" />
+                            <VerticalStackLayout Spacing="2">
+                                <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
+                                      SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
+                                           FontSize="16"
+                                           VerticalOptions="Center" />
 
-                                <Label Grid.Column="1"
-                                       Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
-                                       VerticalOptions="Center"
-                                       FontSize="16"
-                                       IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
+                                           VerticalOptions="Center"
+                                           FontSize="16"
+                                           IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
 
-                                <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
-                                    <!-- Note icon only - no edit/delete buttons -->
-                                    <ImageButton
-                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
-                                        Source="note_icon.svg"
-                                        WidthRequest="32"
-                                        HeightRequest="32"
-                                        MaximumHeightRequest="32"
-                                        MaximumWidthRequest="32"
-                                        Margin="8,0,0,0"
-                                        IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
-                                        Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type trash:TrashBookDetailViewModel}}, x:DataType={x:Type trash:TrashBookDetailViewModel}}"
-                                        CommandParameter="{Binding Note}" />
-                                </HorizontalStackLayout>
-                            </Grid>
+                                    <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
+                                        <ImageButton
+                                            SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
+                                            Source="note_icon.svg"
+                                            WidthRequest="32"
+                                            HeightRequest="32"
+                                            MaximumHeightRequest="32"
+                                            MaximumWidthRequest="32"
+                                            Margin="8,0,0,0"
+                                            IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
+                                            Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type trash:TrashBookDetailViewModel}}, x:DataType={x:Type trash:TrashBookDetailViewModel}}"
+                                            CommandParameter="{Binding Note}" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+
+                                <BoxView
+                                    HeightRequest="1"
+                                    Margin="0, 2"
+                                    Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
+                            </VerticalStackLayout>
                         </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

@@ -154,16 +154,12 @@
                         Margin="0,0,0,0" />
                 </HorizontalStackLayout>
 
-                <!-- <VerticalStackLayout -->
-                <!--     BindableLayout.ItemsSource="{Binding Bookmarks}" -->
-                <!--     BindableLayout.ItemTemplate=""> -->
-                <!-- </VerticalStackLayout> -->
-                <CollectionView
+                <VerticalStackLayout
                     SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkListDescription}"
-                    ItemsSource="{Binding Bookmarks}">
-                    <CollectionView.ItemTemplate>
+                    BindableLayout.ItemsSource="{Binding Bookmarks}">
+                    <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="entities:BookmarkEntity">
-                            <VerticalStackLayout>
+                            <VerticalStackLayout Spacing="2">
                                 <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
                                       SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
                                     <Label Grid.Column="0"
@@ -218,8 +214,8 @@
                                     Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
                             </VerticalStackLayout>
                         </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
 
