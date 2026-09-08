@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Shelfly.App.Features.About.LicenseTextPopup"
+    x:DataType="about:AboutViewModel"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:about="clr-namespace:Shelfly.App.Features.About"
+    HorizontalOptions="Center"
+    VerticalOptions="Center">
+
+    <Border
+        Padding="16"
+        MaximumWidthRequest="360"
+        MaximumHeightRequest="480"
+        StrokeShape="RoundRectangle 12"
+        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+
+        <Grid RowDefinitions="Auto, Auto, *, Auto" RowSpacing="12">
+
+            <Label
+                Grid.Row="0"
+                Style="{StaticResource SubHeadline}"
+                HorizontalOptions="Start"
+                HorizontalTextAlignment="Start"
+                Text="{x:Static resx:AppResources.AboutPageLicenseTextDialogTitle}" />
+
+            <Label
+                Grid.Row="1"
+                FontAttributes="Bold"
+                Text="{Binding SelectedLicensePackageId}" />
+
+            <Grid Grid.Row="2">
+
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    IsRunning="{Binding IsLicenseTextLoading}"
+                    IsVisible="{Binding IsLicenseTextLoading}" />
+
+                <Label
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    LineBreakMode="WordWrap"
+                    Text="{Binding LicenseTextErrorMessage}"
+                    IsVisible="{Binding LicenseTextErrorMessage, Converter={toolkit:IsNotNullConverter}}" />
+
+                <ScrollView
+                    IsVisible="{Binding IsLicenseTextLoading, Converter={toolkit:InvertedBoolConverter}}">
+                    <Label
+                        Text="{Binding LicenseText}"
+                        LineBreakMode="WordWrap"
+                        IsVisible="{Binding LicenseTextErrorMessage, Converter={toolkit:IsNullConverter}}" />
+                </ScrollView>
+
+            </Grid>
+
+            <Button
+                Grid.Row="3"
+                HorizontalOptions="End"
+                Text="{x:Static resx:AppResources.CommonOkButton}"
+                Clicked="OnCloseButtonClicked" />
+
+        </Grid>
+    </Border>
+
+</ContentView>

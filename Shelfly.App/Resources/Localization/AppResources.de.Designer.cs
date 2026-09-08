@@ -141,6 +141,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die gebündelte Lizenzdatei für diese Abhängigkeit konnte nicht geladen werden.
+        /// </summary>
+        internal static string AboutPageLicenseFileErrorMessage {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lizenz:.
         /// </summary>
         internal static string AboutPageLicenseLabel {
@@ -155,6 +164,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string AboutPageLicenseText {
             get {
                 return ResourceManager.GetString("AboutPageLicenseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lizenztext.
+        /// </summary>
+        internal static string AboutPageLicenseTextDialogTitle {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseTextDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Für diese Abhängigkeit ist kein Lizenzlink verfügbar.
+        /// </summary>
+        internal static string AboutPageLicenseUnavailableMessage {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseUnavailableMessage", resourceCulture);
             }
         }
         

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Shelfly.App.Features.About.DependenciesPopup"
+    x:DataType="about:AboutViewModel"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:about="clr-namespace:Shelfly.App.Features.About"
+    HorizontalOptions="Center"
+    VerticalOptions="Center">
+
+    <Border
+        Padding="16"
+        MaximumWidthRequest="360"
+        MaximumHeightRequest="480"
+        StrokeShape="RoundRectangle 12"
+        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+
+        <Grid RowDefinitions="Auto, *, Auto" RowSpacing="12">
+
+            <Label
+                Grid.Row="0"
+                Style="{StaticResource SubHeadline}"
+                HorizontalOptions="Start"
+                HorizontalTextAlignment="Start"
+                Text="{x:Static resx:AppResources.AboutPageLibrariesTitle}" />
+
+            <Grid Grid.Row="1">
+
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    IsRunning="{Binding IsDependenciesLoading}"
+                    IsVisible="{Binding IsDependenciesLoading}" />
+
+                <Label
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    LineBreakMode="WordWrap"
+                    Text="{Binding DependenciesErrorMessage}"
+                    IsVisible="{Binding DependenciesErrorMessage, Converter={toolkit:IsNotNullConverter}}" />
+
+                <CollectionView
+                    ItemsSource="{Binding Dependencies}"
+                    IsVisible="{Binding IsDependenciesLoading, Converter={toolkit:InvertedBoolConverter}}"
+                    SemanticProperties.Description="{x:Static resx:AppResources.AboutPageDependenciesListDescription}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="about:DependencyPackage">
+                            <VerticalStackLayout
+                                Padding="8" Spacing="4"
+                                SemanticProperties.Description="{x:Static resx:AppResources.AboutPageDependencyEntryDescription}">
+                                <Label Text="{Binding PackageId}" FontAttributes="Bold" />
+                                <Label Text="{Binding PackageVersion}" />
+                                <Label Text="{Binding Authors}" />
+                                <Label Text="{Binding License}"
+                                       TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                       TextDecorations="Underline">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding ShowLicenseCommand, Source={x:RelativeSource AncestorType={x:Type about:AboutViewModel}}, x:DataType={x:Type about:AboutViewModel}}"
+                                            CommandParameter="{Binding .}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+
+            <Button
+                Grid.Row="2"
+                HorizontalOptions="End"
+                Text="{x:Static resx:AppResources.CommonOkButton}"
+                Clicked="OnCloseButtonClicked" />
+
+        </Grid>
+    </Border>
+
+</ContentView>

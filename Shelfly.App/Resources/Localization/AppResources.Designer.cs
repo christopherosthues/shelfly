@@ -141,6 +141,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load the bundled license file for this dependency.
+        /// </summary>
+        internal static string AboutPageLicenseFileErrorMessage {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to License:.
         /// </summary>
         internal static string AboutPageLicenseLabel {
@@ -155,6 +164,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string AboutPageLicenseText {
             get {
                 return ResourceManager.GetString("AboutPageLicenseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License Text.
+        /// </summary>
+        internal static string AboutPageLicenseTextDialogTitle {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseTextDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No license link is available for this dependency.
+        /// </summary>
+        internal static string AboutPageLicenseUnavailableMessage {
+            get {
+                return ResourceManager.GetString("AboutPageLicenseUnavailableMessage", resourceCulture);
             }
         }
         

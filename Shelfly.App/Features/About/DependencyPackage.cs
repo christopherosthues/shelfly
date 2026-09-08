@@ -5,4 +5,8 @@ public record DependencyPackage(
     string PackageVersion,
     string? Authors,
     string? License,
-    Uri? LicenseUrl);
+    Uri? LicenseUrl,
+    LicenseInformationOrigin LicenseOrigin)
+{
+    public bool IsFileBased => LicenseOrigin == LicenseInformationOrigin.File;
+}

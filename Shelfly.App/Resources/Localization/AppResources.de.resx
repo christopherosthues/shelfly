@@ -541,6 +541,15 @@
     <data name="AboutPageDependenciesLoadErrorText" xml:space="preserve">
         <value>Abhängigkeitsdaten konnten nicht geladen werden</value>
     </data>
+    <data name="AboutPageLicenseTextDialogTitle" xml:space="preserve">
+        <value>Lizenztext</value>
+    </data>
+    <data name="AboutPageLicenseUnavailableMessage" xml:space="preserve">
+        <value>Für diese Abhängigkeit ist kein Lizenzlink verfügbar</value>
+    </data>
+    <data name="AboutPageLicenseFileErrorMessage" xml:space="preserve">
+        <value>Die gebündelte Lizenzdatei für diese Abhängigkeit konnte nicht geladen werden</value>
+    </data>
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>Keine Daten verfügbar</value>
     </data>

@@ -541,6 +541,15 @@
     <data name="AboutPageDependenciesLoadErrorText" xml:space="preserve">
         <value>Failed to load dependency data</value>
     </data>
+    <data name="AboutPageLicenseTextDialogTitle" xml:space="preserve">
+        <value>License Text</value>
+    </data>
+    <data name="AboutPageLicenseUnavailableMessage" xml:space="preserve">
+        <value>No license link is available for this dependency</value>
+    </data>
+    <data name="AboutPageLicenseFileErrorMessage" xml:space="preserve">
+        <value>Failed to load the bundled license file for this dependency</value>
+    </data>
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>No data available</value>
     </data>

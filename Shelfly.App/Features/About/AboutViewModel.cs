@@ -1,8 +1,11 @@
 using System.Reflection;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.About;
 
@@ -14,62 +17,122 @@ public partial class AboutViewModel(LicenseDataService licenseService) : Shelfly
 
     [ObservableProperty] public partial List<DependencyPackage> Dependencies { get; set; } = [];
 
-    protected override async Task LoadAsync(CancellationToken cancellationToken)
+    [ObservableProperty] public partial bool IsDependenciesLoading { get; set; }
+
+    [ObservableProperty] public partial string? DependenciesErrorMessage { get; set; }
+
+    [ObservableProperty] public partial string SelectedLicensePackageId { get; set; } = string.Empty;
+
+    [ObservableProperty] public partial string? LicenseText { get; set; }
+
+    [ObservableProperty] public partial bool IsLicenseTextLoading { get; set; }
+
+    [ObservableProperty] public partial string? LicenseTextErrorMessage { get; set; }
+
+    protected override Task LoadAsync(CancellationToken cancellationToken)
     {
         Assembly entryAssembly = Assembly.GetExecutingAssembly();
 
         Version? version = entryAssembly.GetName().Version;
         AppVersion = version != null ? $"v{version.Major}.{version.Minor}.{version.Build}" : "Unknown";
 
-        string? informationalVersion = entryAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        string? informationalVersion = entryAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            ?.InformationalVersion;
         BuildInfo = informationalVersion ?? "Unknown build";
 
-        try
-        {
-            Dependencies = await licenseService.LoadDependenciesAsync(cancellationToken);
-        }
-        catch
-        {
-            Dependencies = [new DependencyPackage("Error", "", AppResources.AboutPageDependenciesLoadErrorText, "", null)];
-        }
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
-    private static async Task OpenLicenseUrlAsync(Uri? url)
+    private async Task ShowLicenseAsync(DependencyPackage? package, CancellationToken cancellationToken)
     {
-        if (url is not null)
+        if (package is null)
         {
-            await Launcher.OpenAsync(url);
+            return;
+        }
+
+        if (package.IsFileBased)
+        {
+            await ShowLicenseTextPopupAsync(package, cancellationToken);
+
+            return;
+        }
+
+        if (package.LicenseUrl is not null)
+        {
+            await Launcher.OpenAsync(package.LicenseUrl);
+
+            return;
+        }
+
+        if (Shell.Current is not null)
+        {
+            await Shell.Current.DisplayAlertAsync(
+                AppResources.AboutPageLibrariesTitle,
+                AppResources.AboutPageLicenseUnavailableMessage,
+                AppResources.CommonOkButton);
         }
     }
 
-    [RelayCommand]
-    private async Task ShowLibrariesDialogAsync()
+    private async Task ShowLicenseTextPopupAsync(DependencyPackage package, CancellationToken cancellationToken)
     {
-        string librariesText = @"CommunityToolkit.Mvvm (MIT License)
-  - Version: 8.4.2
-  - URL: https://github.com/CommunityToolkit/dotnet
+        if (Shell.Current is null)
+        {
+            return;
+        }
 
- CommunityToolkit.Maui (MIT License)
-  - Version: 15.0.1
-  - URL: https://github.com/CommunityToolkit/Maui
+        SelectedLicensePackageId = package.PackageId;
+        LicenseText = null;
+        LicenseTextErrorMessage = null;
+        IsLicenseTextLoading = true;
 
- Microsoft.Maui.Controls (MIT License)
-  - Version: 10.0.100
-  - URL: https://github.com/dotnet/maui
+        LicenseTextPopup popup = new(this);
+        Task<IPopupResult> showPopupTask = Shell.Current.ShowPopupAsync(popup, options: null, token: cancellationToken);
 
- Microsoft.EntityFrameworkCore.Sqlite (Apache-2.0 License)
-  - Version: 10.0.11
-  - URL: https://github.com/dotnet/efcore
+        Result<string> result = await licenseService.LoadLicenseFileContentAsync(package, cancellationToken);
 
- SQLitePCLRaw.bundle_e_sqlite3 (BSD-3-Clause / Apache-2.0)
-  - Version: 2.1.12
-  - URL: https://github.com/ericsink/SQLCipher
+        if (result.IsSuccess)
+        {
+            LicenseText = result.Value;
+        }
+        else
+        {
+            LicenseTextErrorMessage = AppResources.AboutPageLicenseFileErrorMessage;
+        }
 
- NLog (BSD-2-Clause License)
-  - Version: 6.2.0
-  - URL: https://github.com/NLog/NLog";
+        IsLicenseTextLoading = false;
 
-        await Shell.Current.DisplayAlertAsync(AppResources.AboutPageLibrariesTitle, librariesText, AppResources.CommonOkButton);
+        await showPopupTask;
+    }
+
+    [RelayCommand]
+    private async Task ShowLibrariesDialogAsync(CancellationToken cancellationToken)
+    {
+        if (Shell.Current is null)
+        {
+            return;
+        }
+
+        IsDependenciesLoading = true;
+        DependenciesErrorMessage = null;
+        Dependencies = [];
+
+        DependenciesPopup popup = new(this);
+        Task<IPopupResult> showPopupTask = Shell.Current.ShowPopupAsync(popup, options: null, token: cancellationToken);
+
+        Result<List<DependencyPackage>> result = await licenseService.LoadDependenciesAsync(cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            Dependencies = result.Value;
+        }
+        else
+        {
+            DependenciesErrorMessage = result.Error;
+        }
+
+        IsDependenciesLoading = false;
+
+        await showPopupTask;
     }
 }

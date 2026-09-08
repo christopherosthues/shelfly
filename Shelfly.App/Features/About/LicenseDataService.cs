@@ -1,22 +1,42 @@
 using System.Text.Json;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.About;
 
 public class LicenseDataService
 {
-    private readonly string _jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "licenses-release.json");
+    private const string LicensesFileName = "licenses-release.json";
 
-    public async Task<List<DependencyPackage>> LoadDependenciesAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<List<DependencyPackage>>> LoadDependenciesAsync(CancellationToken cancellationToken = default)
     {
-        if (!File.Exists(_jsonFilePath))
+        Stream jsonStream;
+
+        try
         {
-            return [new DependencyPackage("Error", "", "Failed to load dependency data", "", null)];
+            jsonStream = await FileSystem.Current.OpenAppPackageFileAsync(LicensesFileName);
+        }
+        catch (FileNotFoundException ex)
+        {
+            return Result<List<DependencyPackage>>.Failure($"Failed to load dependency data: {ex.Message}");
         }
 
-        string jsonContent = await File.ReadAllTextAsync(_jsonFilePath, cancellationToken);
+        try
+        {
+            await using (jsonStream)
+            {
+                using JsonDocument doc = await JsonDocument.ParseAsync(jsonStream, cancellationToken: cancellationToken);
 
-        using JsonDocument doc = JsonDocument.Parse(jsonContent);
+                return Result<List<DependencyPackage>>.Success(ParseDependencies(doc));
+            }
+        }
+        catch (JsonException ex)
+        {
+            return Result<List<DependencyPackage>>.Failure($"Failed to load dependency data: {ex.Message}");
+        }
+    }
 
+    private static List<DependencyPackage> ParseDependencies(JsonDocument doc)
+    {
         List<DependencyPackage> dependencies = [];
 
         foreach (JsonElement element in doc.RootElement.EnumerateArray())
@@ -28,15 +48,53 @@ public class LicenseDataService
             string? licenseUrlString = element.GetProperty("LicenseUrl").GetString();
 
             Uri? licenseUri = licenseUrlString != null ? new Uri(licenseUrlString) : null;
+            LicenseInformationOrigin licenseOrigin = ParseLicenseOrigin(element);
 
             dependencies.Add(new DependencyPackage(
                 packageId,
                 version ?? "Unknown",
                 authors,
                 license,
-                licenseUri));
+                licenseUri,
+                licenseOrigin));
         }
 
         return dependencies;
+    }
+
+    private static LicenseInformationOrigin ParseLicenseOrigin(JsonElement element)
+    {
+        if (element.TryGetProperty("LicenseInformationOrigin", out JsonElement originElement)
+            && originElement.TryGetInt32(out int originValue)
+            && Enum.IsDefined(typeof(LicenseInformationOrigin), originValue))
+        {
+            return (LicenseInformationOrigin)originValue;
+        }
+
+        return LicenseInformationOrigin.Unknown;
+    }
+
+    public async Task<Result<string>> LoadLicenseFileContentAsync(DependencyPackage package, CancellationToken cancellationToken = default)
+    {
+        string fileName = $"licenses/{package.PackageId}__{package.PackageVersion}.txt";
+
+        Stream fileStream;
+
+        try
+        {
+            fileStream = await FileSystem.Current.OpenAppPackageFileAsync(fileName);
+        }
+        catch (FileNotFoundException ex)
+        {
+            return Result<string>.Failure($"Failed to load license file for {package.PackageId}: {ex.Message}");
+        }
+
+        await using (fileStream)
+        {
+            using StreamReader reader = new(fileStream);
+            string content = await reader.ReadToEndAsync(cancellationToken);
+
+            return Result<string>.Success(content);
+        }
     }
 }

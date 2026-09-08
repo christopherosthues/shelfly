@@ -16,7 +16,7 @@
             <Image Aspect="AspectFit"
                    Source="app_icon.svg"
                    HeightRequest="200"
-                   Margin="0,0,0,16"/>
+                   Margin="0,16,0,16"/>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
@@ -38,6 +38,7 @@
         <DataTemplate x:DataType="app:AppShellViewModel">
             <HorizontalStackLayout
                 HorizontalOptions="Center"
+                Margin="16"
                 Spacing="4">
                 <Label
                     HorizontalOptions="Center"

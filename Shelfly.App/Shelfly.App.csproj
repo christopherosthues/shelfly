@@ -84,7 +84,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Target Name="GenerateLicensesJson" AfterTargets="Restore">
-    <Exec Command="nuget-license -i Shelfly.App.csproj -o JsonPretty --include-transitive -fo Resources\Raw\licenses-release.json" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="nuget-license -i Shelfly.App.csproj -o JsonPretty --include-transitive -fo Resources\Raw\licenses-release.json -d Resources\Raw\licenses" WorkingDirectory="$(ProjectDir)" />
   </Target>
   <ItemGroup>
     <Compile Update="Resources\Localization\AppResources.Designer.cs">
