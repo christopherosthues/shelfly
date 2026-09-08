@@ -8,6 +8,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:pages="clr-namespace:Shelfly.App.Pages"
     xmlns:controls="clr-namespace:Shelfly.App.Controls"
+    xmlns:converters="clr-namespace:Shelfly.App.Converters"
     xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
     xmlns:library="clr-namespace:Shelfly.App.Features.Library"
     x:DataType="library:BookDetailViewModel"
@@ -88,19 +89,51 @@
                     <!-- Publish Date with label -->
                     <Grid ColumnDefinitions="Auto, *"
                           Padding="0,4,0,0"
-                          IsVisible="{Binding Book.PublishDate, Converter={toolkit:IsStringNotNullOrWhiteSpaceConverter}}">
+                          IsVisible="{Binding Book.PublishDate, Converter={toolkit:IsNotNullConverter}}">
                         <Label Grid.Column="0"
                                SemanticProperties.Description="{x:Static local:AppResources.BookDetailPagePublicationDateDescription}"
                                Text="{x:Static local:AppResources.BookDetailPagePublishDateLabel}"
                                FontSize="14"
                                VerticalOptions="Center"
                                Margin="0,0,8,0" />
-                        <!-- TODO publish date format depending on locale -->
-                        <Label Grid.Column="1" Text="{Binding Book.PublishDate, StringFormat='{0:yyyy-MM-dd}'}"
+                        <Label Grid.Column="1"
+                               Text="{Binding Book.PublishDate, Converter={converters:DateOnlyConverter}}"
                                FontSize="16"
                                VerticalOptions="Center" />
-                        <!-- TODO CreatedAt date -->
-                        <!-- TODO LastModifiedAt date -->
+                    </Grid>
+
+                    <!-- CreatedAt date -->
+                    <Grid ColumnDefinitions="Auto, *" Padding="0,4,0,0">
+                        <Label Grid.Column="0"
+                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageCreatedDateDescription}"
+                               Text="{x:Static local:AppResources.BookDetailPageCreatedLabel}"
+                               FontSize="14"
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0"
+                               Opacity="0.7" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Book.CreatedAt, Converter={converters:DateTimeConverter}}"
+                               FontSize="16"
+                               VerticalOptions="Center"
+                               Opacity="0.7" />
+                    </Grid>
+
+                    <!-- LastModifiedAt date -->
+                    <Grid ColumnDefinitions="Auto, *"
+                          Padding="0,4,0,0"
+                          IsVisible="{Binding Book.LastModifiedAt, Converter={toolkit:IsNotNullConverter}}">
+                        <Label Grid.Column="0"
+                               SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageLastModifiedDateDescription}"
+                               Text="{x:Static local:AppResources.BookDetailPageLastModifiedLabel}"
+                               FontSize="14"
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0"
+                               Opacity="0.7" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Book.LastModifiedAt, Converter={converters:DateTimeNullableConverter}}"
+                               FontSize="16"
+                               VerticalOptions="Center"
+                               Opacity="0.7" />
                     </Grid>
                 </VerticalStackLayout>
 
@@ -121,58 +154,69 @@
                         Margin="0,0,0,0" />
                 </HorizontalStackLayout>
 
+                <!-- <VerticalStackLayout -->
+                <!--     BindableLayout.ItemsSource="{Binding Bookmarks}" -->
+                <!--     BindableLayout.ItemTemplate=""> -->
+                <!-- </VerticalStackLayout> -->
                 <CollectionView
                     SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkListDescription}"
                     ItemsSource="{Binding Bookmarks}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="entities:BookmarkEntity">
-                            <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
-                                  SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
-                                <Label Grid.Column="0"
-                                       Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
-                                       FontSize="16"
-                                       VerticalOptions="Center" />
+                            <VerticalStackLayout>
+                                <Grid ColumnDefinitions="Auto, Auto, *, Auto" Padding="8"
+                                      SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageBookmarkEntryDescription}">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding StartPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkPageLabel}}"
+                                           FontSize="16"
+                                           VerticalOptions="Center" />
 
-                                <Label Grid.Column="1"
-                                       Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
-                                       VerticalOptions="Center"
-                                       FontSize="16"
-                                       IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding EndPage, StringFormat={x:Static local:AppResources.BookDetailPageBookmarkRangeLabel}}"
+                                           VerticalOptions="Center"
+                                           FontSize="16"
+                                           IsVisible="{Binding EndPage, Converter={toolkit:IsNotNullConverter}}" />
 
-                                <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
-                                    <ImageButton
-                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
-                                        Source="note_icon.svg"
-                                        WidthRequest="32"
-                                        HeightRequest="32"
-                                        MaximumHeightRequest="32"
-                                        MaximumWidthRequest="32"
-                                        Margin="8,0,0,0"
-                                        IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
-                                        Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type library:BookDetailViewModel}}, x:DataType={x:Type library:BookDetailViewModel}}"
-                                        CommandParameter="{Binding Note}" />
+                                    <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center">
+                                        <ImageButton
+                                            SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageViewNoteDescription}"
+                                            Source="note_icon.svg"
+                                            WidthRequest="32"
+                                            HeightRequest="32"
+                                            MaximumHeightRequest="32"
+                                            MaximumWidthRequest="32"
+                                            Margin="8,0,0,0"
+                                            IsVisible="{Binding Note, Converter={toolkit:IsNotNullConverter}}"
+                                            Command="{Binding ShowNoteCommand, Source={x:RelativeSource AncestorType={x:Type library:BookDetailViewModel}}, x:DataType={x:Type library:BookDetailViewModel}}"
+                                            CommandParameter="{Binding Note}" />
 
-                                    <ImageButton
-                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
-                                        Source="edit_icon.svg"
-                                        WidthRequest="32"
-                                        HeightRequest="32"
-                                        MaximumHeightRequest="32"
-                                        MaximumWidthRequest="32"
-                                        Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type library:BookDetailViewModel}}, x:DataType={x:Type library:BookDetailViewModel}}"
-                                        CommandParameter="{Binding}" />
+                                        <ImageButton
+                                            SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageEditBookmarkDescription}"
+                                            Source="edit_icon.svg"
+                                            WidthRequest="32"
+                                            HeightRequest="32"
+                                            MaximumHeightRequest="32"
+                                            MaximumWidthRequest="32"
+                                            Command="{Binding EditBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type library:BookDetailViewModel}}, x:DataType={x:Type library:BookDetailViewModel}}"
+                                            CommandParameter="{Binding}" />
 
-                                    <ImageButton
-                                        SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
-                                        Source="delete_icon.svg"
-                                        WidthRequest="32"
-                                        HeightRequest="32"
-                                        MaximumHeightRequest="32"
-                                        MaximumWidthRequest="32"
-                                        Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type library:BookDetailViewModel}}, x:DataType={x:Type library:BookDetailViewModel}}"
-                                        CommandParameter="{Binding}" />
-                                </HorizontalStackLayout>
-                            </Grid>
+                                        <ImageButton
+                                            SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageDeleteBookmarkCommand}"
+                                            Source="delete_icon.svg"
+                                            WidthRequest="32"
+                                            HeightRequest="32"
+                                            MaximumHeightRequest="32"
+                                            MaximumWidthRequest="32"
+                                            Command="{Binding DeleteBookmarkCommand, Source={x:RelativeSource AncestorType={x:Type library:BookDetailViewModel}}, x:DataType={x:Type library:BookDetailViewModel}}"
+                                            CommandParameter="{Binding}" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+
+                                <BoxView
+                                    HeightRequest="1"
+                                    Margin="0, 2"
+                                    Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
+                            </VerticalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

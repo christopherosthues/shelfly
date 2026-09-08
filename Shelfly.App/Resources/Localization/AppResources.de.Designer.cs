@@ -339,6 +339,24 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Datum, an dem dieses Buch zur Bibliothek hinzugefügt wurde.
+        /// </summary>
+        internal static string BookDetailPageCreatedDateDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageCreatedDateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erstellt.
+        /// </summary>
+        internal static string BookDetailPageCreatedLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPageCreatedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buch löschen.
         /// </summary>
         internal static string BookDetailPageDeleteBookButtonText {
@@ -434,6 +452,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookDetailPageISBNLabel {
             get {
                 return ResourceManager.GetString("BookDetailPageISBNLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Letzte Änderung an diesem Buch.
+        /// </summary>
+        internal static string BookDetailPageLastModifiedDateDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageLastModifiedDateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zuletzt geändert.
+        /// </summary>
+        internal static string BookDetailPageLastModifiedLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPageLastModifiedLabel", resourceCulture);
             }
         }
         

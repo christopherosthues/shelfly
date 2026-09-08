@@ -163,6 +163,18 @@
     <data name="BookDetailPagePublishDateLabel" xml:space="preserve">
         <value>Publish Date</value>
     </data>
+    <data name="BookDetailPageCreatedLabel" xml:space="preserve">
+        <value>Created</value>
+    </data>
+    <data name="BookDetailPageLastModifiedLabel" xml:space="preserve">
+        <value>Last Modified</value>
+    </data>
+    <data name="BookDetailPageCreatedDateDescription" xml:space="preserve">
+        <value>Date when this book was added to the library</value>
+    </data>
+    <data name="BookDetailPageLastModifiedDateDescription" xml:space="preserve">
+        <value>Last time this book was modified</value>
+    </data>
     <data name="BookDetailPageBookmarksTitle" xml:space="preserve">
         <value>Bookmarks</value>
     </data>
