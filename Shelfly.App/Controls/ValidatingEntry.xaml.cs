@@ -20,7 +20,7 @@ public partial class ValidatingEntry : ContentView
         {
             if (view.Validator is not null)
             {
-                Result<bool> result = view.Validator.Validate(newValue);
+                Result<bool> result = view.Validator.Validate(newValue, view.ValidatorParameter);
                 if (result.IsSuccess)
                 {
                     view.IsValid = true;

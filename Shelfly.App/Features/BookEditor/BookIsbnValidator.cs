@@ -29,9 +29,9 @@ public class BookIsbnValidator : IValidator<string>
             return Result<bool>.Success(true);
         }
 
-        if (parameter is not string bookIdString || !Guid.TryParse(bookIdString, out Guid bookId))
+        if (parameter is not Guid bookId)
         {
-            return Result<bool>.Failure(AppResources.BookEditPageIsbnDuplicateError);
+            return Result<bool>.Failure(AppResources.BookEditPageIsbnFormatError);
         }
 
         using IServiceScope scope = ServiceProvider.CreateScope();
