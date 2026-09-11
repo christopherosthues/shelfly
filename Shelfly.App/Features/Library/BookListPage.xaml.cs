@@ -116,12 +116,17 @@ public partial class BookListPage : ShelflyContentPageBase
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
+
+        ViewModel.ToolbarVisibilityChanged -= OnToolbarVisibilityChanged;
+        ViewModel.ToolbarVisibilityChanged += OnToolbarVisibilityChanged;
+        MultiSelectView.SelectionChanged += OnSelectionChanged;
         UpdateToolbarItems();
     }
 
     protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
     {
-        base.OnNavigatingFrom(args);
         ViewModel.ToolbarVisibilityChanged -= OnToolbarVisibilityChanged;
+        MultiSelectView.SelectionChanged -= OnSelectionChanged;
+        base.OnNavigatingFrom(args);
     }
 }
