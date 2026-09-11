@@ -193,6 +193,7 @@ public partial class BookListViewModel(LibraryService libraryService, LibraryExp
     [RelayCommand]
     private void DeselectAll()
     {
+        IsSelectionMode = false;
         SelectedItems.Clear();
         OnToolbarVisibilityChanged();
     }

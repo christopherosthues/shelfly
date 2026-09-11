@@ -19,6 +19,7 @@
         <!-- Top Controls: Search + Sort -->
         <controls:SortFilterView
             Grid.Row="0"
+            MaximumWidthRequest="500"
             SearchText="{Binding SearchQuery, Mode=TwoWay}"
             SearchPlaceholder="{x:Static resx:AppResources.TrashListPageSearchPlaceholder}"
             SearchDescription="{x:Static resx:AppResources.TrashListPageSearchPlaceholder}"

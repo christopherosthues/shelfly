@@ -19,6 +19,7 @@
         <!-- Top Controls: Search + Sort -->
         <controls:SortFilterView
             Grid.Row="0"
+            HorizontalOptions="Center"
             SearchText="{Binding SearchQuery, Mode=TwoWay}"
             SearchPlaceholder="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"
             SearchDescription="{x:Static resx:AppResources.BookListPageSearchPlaceholder}"

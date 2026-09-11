@@ -17,6 +17,7 @@
         FlexLayout.Order="1"
         SemanticProperties.Description="{Binding Path=SearchDescription, Source={x:Reference Self}}"
         Placeholder="{Binding Path=SearchPlaceholder, Source={x:Reference Self}}"
+        MaximumWidthRequest="500"
         Text="{Binding Path=SearchText, Source={x:Reference Self}, Mode=TwoWay}">
         <SearchBar.Behaviors>
             <toolkit:EventToCommandBehavior

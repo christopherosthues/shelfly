@@ -144,6 +144,7 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
     [RelayCommand]
     private void DeselectAll()
     {
+        IsSelectionMode = false;
         SelectedItems.Clear();
         OnToolbarVisibilityChanged();
     }
