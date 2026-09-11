@@ -32,6 +32,7 @@ public class TrashService(LocalDbContext dbContext)
         SortDirection direction, CancellationToken cancellationToken = default)
     {
         IQueryable<BookEntity> baseQuery = dbContext.Books
+            .AsNoTracking()
             .IgnoreQueryFilters()
             .AsQueryable();
 
@@ -86,6 +87,14 @@ public class TrashService(LocalDbContext dbContext)
                 return book.Book;
             })
         ];
+    }
+
+    public async Task<BookEntity?> GetBookByIdAsync(Guid bookId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Books
+            .AsNoTracking()
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
     }
 
     public async Task<BookEntity?> RestoreBookAsync(Guid bookId, CancellationToken cancellationToken = default)

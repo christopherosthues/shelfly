@@ -48,6 +48,12 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         BookId = id;
     }
 
+    public override void OnNavigatingFrom()
+    {
+        base.OnNavigatingFrom();
+        Book = null;
+    }
+
     [RelayCommand]
     private async Task DeleteBookAsync(CancellationToken cancellationToken = default)
     {

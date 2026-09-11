@@ -620,27 +620,36 @@ namespace Shelfly.App.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to ISBN already exists.
         /// </summary>
-        internal static string BookEditPageISBNDuplicateError {
+        internal static string BookEditPageIsbnDuplicateError {
             get {
-                return ResourceManager.GetString("BookEditPageISBNDuplicateError", resourceCulture);
+                return ResourceManager.GetString("BookEditPageIsbnDuplicateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISBN cannot be empty.
+        /// </summary>
+        internal static string BookEditPageIsbnEmptyError {
+            get {
+                return ResourceManager.GetString("BookEditPageIsbnEmptyError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Invalid ISBN format (expected ISBN-10 or ISBN-13).
         /// </summary>
-        internal static string BookEditPageISBNFormatError {
+        internal static string BookEditPageIsbnFormatError {
             get {
-                return ResourceManager.GetString("BookEditPageISBNFormatError", resourceCulture);
+                return ResourceManager.GetString("BookEditPageIsbnFormatError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ISBN.
         /// </summary>
-        internal static string BookEditPageISBNLabel {
+        internal static string BookEditPageIsbnLabel {
             get {
-                return ResourceManager.GetString("BookEditPageISBNLabel", resourceCulture);
+                return ResourceManager.GetString("BookEditPageIsbnLabel", resourceCulture);
             }
         }
         

@@ -112,7 +112,7 @@
     <data name="BookEditPagePublisherLabel" xml:space="preserve">
         <value>Verlag</value>
     </data>
-    <data name="BookEditPageISBNLabel" xml:space="preserve">
+    <data name="BookEditPageIsbnLabel" xml:space="preserve">
         <value>ISBN</value>
     </data>
     <data name="BookEditPagePublishDateLabel" xml:space="preserve">
@@ -133,10 +133,10 @@
     <data name="BookEditPagePublisherEmptyError" xml:space="preserve">
         <value>Verlag darf nicht leer sein</value>
     </data>
-    <data name="BookEditPageISBNFormatError" xml:space="preserve">
+    <data name="BookEditPageIsbnFormatError" xml:space="preserve">
         <value>Ungültiges ISBN-Format (ISBN-10 oder ISBN-13 erwartet)</value>
     </data>
-    <data name="BookEditPageISBNDuplicateError" xml:space="preserve">
+    <data name="BookEditPageIsbnDuplicateError" xml:space="preserve">
         <value>ISBN existiert bereits</value>
     </data>
     <data name="BookEditPageTitleMaxLengthError" xml:space="preserve">
@@ -567,5 +567,8 @@
     </data>
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>Keine Daten verfügbar</value>
+    </data>
+    <data name="BookEditPageIsbnEmptyError" xml:space="preserve">
+        <value>ISBN darf nicht leer sein</value>
     </data>
 </root>

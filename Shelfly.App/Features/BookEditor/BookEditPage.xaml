@@ -10,66 +10,47 @@
     xmlns:bookEditor="clr-namespace:Shelfly.App.Features.BookEditor"
     x:DataType="bookEditor:BookEditViewModel"
     Title="{Binding PageTitle}">
+
+    <pages:ShelflyContentPageBase.Resources>
+        <bookEditor:BookAuthorValidator x:Key="AuthorValidator" />
+        <bookEditor:BookIsbnValidator x:Key="IsbnValidator" />
+        <bookEditor:BookPublisherValidator x:Key="PublisherValidator" />
+        <bookEditor:BookTitleValidator x:Key="TitleValidator" />
+    </pages:ShelflyContentPageBase.Resources>
+
     <Grid RowDefinitions="*" ColumnDefinitions="*">
         <ScrollView Grid.Row="0" IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
             <VerticalStackLayout
                 Spacing="16"
                 Padding="16">
 
-                <Entry
-                    x:Name="TitleEditor"
+                <controls:ValidatingEntry
+                    IsValid="{Binding IsTitleValid, Mode=OneWayToSource}"
                     Placeholder="{x:Static local:AppResources.BookEditPageTitleLabel}"
                     Text="{Binding Title, Mode=TwoWay}"
-                    MaxLength="256" />
+                    MaxLength="{x:Static bookEditor:BookTitleValidator.MaxLength}"
+                    Validator="{StaticResource TitleValidator}" />
 
-                <Label
-                    Margin="0,-8,0,0"
-                    FontSize="12"
-                    Text="{Binding TitleError}"
-                    TextColor="Red" />
-
-                <Entry
-                    x:Name="AuthorEditor"
+                <controls:ValidatingEntry
+                    IsValid="{Binding IsAuthorValid, Mode=OneWayToSource}"
                     Placeholder="{x:Static local:AppResources.BookEditPageAuthorLabel}"
                     Text="{Binding Author, Mode=TwoWay}"
-                    MaxLength="256" />
+                    MaxLength="{x:Static bookEditor:BookAuthorValidator.MaxLength}"
+                    Validator="{StaticResource AuthorValidator}" />
 
-                <Label
-                    Margin="0,-8,0,0"
-                    FontSize="12"
-                    Text="{Binding AuthorError}"
-                    TextColor="Red" />
-
-                <Entry
-                    x:Name="PublisherEditor"
+                <controls:ValidatingEntry
+                    IsValid="{Binding IsPublisherValid, Mode=OneWayToSource}"
                     Placeholder="{x:Static local:AppResources.BookEditPagePublisherLabel}"
                     Text="{Binding Publisher, Mode=TwoWay}"
-                    MaxLength="256" />
+                    MaxLength="{x:Static bookEditor:BookPublisherValidator.MaxLength}"
+                    Validator="{StaticResource PublisherValidator}" />
 
-                <Label
-                    Margin="0,-8,0,0"
-                    FontSize="12"
-                    Text="{Binding PublisherError}"
-                    TextColor="Red" />
-
-                <Entry
-                    x:Name="ISBNEntry"
-                    Keyboard="Text"
-                    Placeholder="{x:Static local:AppResources.BookEditPageISBNLabel}"
-                    Text="{Binding ISBN, Mode=TwoWay}" />
-
-                <Label
-                    Margin="0,-8,0,0"
-                    FontSize="12"
-                    Text="{Binding ISBNError}"
-                    TextColor="Red" />
-
-                <Label
-                    Margin="0,-8,0,0"
-                    FontSize="12"
-                    Text="{Binding IsbnDuplicateError}"
-                    TextColor="Red"
-                    IsVisible="{Binding IsbnDuplicateError}" />
+                <controls:ValidatingEntry
+                    IsValid="{Binding IsIsbnValid, Mode=OneWayToSource}"
+                    Placeholder="{x:Static local:AppResources.BookEditPageIsbnLabel}"
+                    Text="{Binding ISBN, Mode=TwoWay}"
+                    Validator="{StaticResource IsbnValidator}"
+                    ValidatorParameter="{Binding BookId}" />
 
                 <Grid ColumnDefinitions="*, Auto">
                     <DatePicker

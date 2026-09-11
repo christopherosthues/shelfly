@@ -41,6 +41,9 @@
     <Color x:Key="Gray900">#2A2118</Color>
     <Color x:Key="Gray950">#181209</Color>
 
+    <Color x:Key="Error">#9C0606</Color>
+    <Color x:Key="ErrorDark">#E91919</Color>
+
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>

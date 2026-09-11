@@ -25,8 +25,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
         IsLoading = true;
         try
         {
-            List<BookEntity> books = await trashService.GetAllTrashBooksAsync(cancellationToken);
-            Book = books.FirstOrDefault(b => b.Id == BookId);
+            Book = await trashService.GetBookByIdAsync(BookId, cancellationToken);
 
             if (Book is not null)
             {
@@ -48,6 +47,15 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
         }
 
         BookId = id;
+    }
+
+    public override void OnNavigatingFrom()
+    {
+        base.OnNavigatingFrom();
+        RestoreBookCommand.Cancel();
+        HardDeleteBookCommand.Cancel();
+        ShowNoteCommand.Cancel();
+        Book = null;
     }
 
     [RelayCommand]
@@ -87,6 +95,7 @@ public partial class TrashBookDetailViewModel(TrashService trashService) : Shelf
             return;
         }
 
-        await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageNoteAlertTitle, note, AppResources.CommonOkButton);
+        await Shell.Current.DisplayAlertAsync(AppResources.BookDetailPageNoteAlertTitle, note,
+            AppResources.CommonOkButton);
     }
 }

@@ -13,6 +13,7 @@ public class LibraryService(LocalDbContext dbContext)
         return
         [
             .. (await dbContext.Books
+                .AsNoTracking()
                 .Select(e => new
                 {
                     Book = e,
@@ -88,7 +89,9 @@ public class LibraryService(LocalDbContext dbContext)
 
     public async Task<Result<BookEntity>> AddBookAsync(string title, string author, string isbn, string publisher, DateTime? publishDate, CancellationToken cancellationToken = default)
     {
-        BookEntity? existingBook = await dbContext.Books.IgnoreQueryFilters()
+        BookEntity? existingBook = await dbContext.Books
+            .AsNoTracking()
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(b => b.ISBN == isbn, cancellationToken);
 
         if (existingBook is not null)
@@ -98,7 +101,7 @@ public class LibraryService(LocalDbContext dbContext)
 
         BookEntity book = new()
         {
-            Id = IdGenerator.NewId(),
+            Id = Guid.CreateVersion7(),
             Title = title,
             Author = author,
             ISBN = isbn,
@@ -123,7 +126,9 @@ public class LibraryService(LocalDbContext dbContext)
             return Result<BookEntity>.Failure("Book not found");
         }
 
-        BookEntity? existingBook = await dbContext.Books.IgnoreQueryFilters()
+        BookEntity? existingBook = await dbContext.Books
+            .AsNoTracking()
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(b => b.ISBN == isbn && b.Id != bookId, cancellationToken);
 
         if (existingBook is not null)
@@ -146,6 +151,7 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<BookEntity?> GetBookByIdAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Books
+            .AsNoTracking()
             .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
     }
 
@@ -168,7 +174,7 @@ public class LibraryService(LocalDbContext dbContext)
 
         BookmarkEntity bookmark = new()
         {
-            Id = IdGenerator.NewId(),
+            Id = Guid.CreateVersion7(),
             BookId = bookId,
             StartPage = startPage,
             EndPage = endPage,
@@ -236,6 +242,7 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<List<BookmarkEntity>> GetBookmarksByBookIdAsync(Guid bookId, CancellationToken cancellationToken = default)
     {
         List<BookmarkEntity> bookmarks = await dbContext.Bookmarks
+            .AsNoTracking()
             .Where(b => b.BookId == bookId)
             .ToListAsync(cancellationToken);
 
@@ -245,6 +252,7 @@ public class LibraryService(LocalDbContext dbContext)
     public async Task<BookmarkEntity?> GetBookmarkByIdAsync(Guid bookmarkId, CancellationToken cancellationToken = default)
     {
         BookmarkEntity? bookmark = await dbContext.Bookmarks
+            .AsNoTracking()
             .FirstOrDefaultAsync(b => b.Id == bookmarkId, cancellationToken);
 
         return bookmark;
@@ -264,5 +272,24 @@ public class LibraryService(LocalDbContext dbContext)
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> IsbnExistsAsync(string isbn, Guid bookId, CancellationToken cancellationToken = default)
+    {
+        IQueryable<BookEntity> query = dbContext.Books
+            .AsNoTracking()
+            .IgnoreQueryFilters();
+
+        bool exists;
+        if (bookId != Guid.Empty)
+        {
+            exists = await query.AnyAsync(b => b.ISBN == isbn && b.Id != bookId, cancellationToken);
+        }
+        else
+        {
+            exists = await query.AnyAsync(b => b.ISBN == isbn, cancellationToken);
+        }
+
+        return Result<bool>.Success(exists);
     }
 }

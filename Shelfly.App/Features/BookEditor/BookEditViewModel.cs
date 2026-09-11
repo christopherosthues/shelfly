@@ -26,19 +26,16 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
     public partial DateTime? PublishDate { get; set; }
 
     [ObservableProperty]
-    public partial string? TitleError { get; set; }
+    public partial bool IsTitleValid { get; set; } = true;
 
     [ObservableProperty]
-    public partial string? AuthorError { get; set; }
+    public partial bool IsAuthorValid { get; set; } = true;
 
     [ObservableProperty]
-    public partial string? PublisherError { get; set; }
+    public partial bool IsPublisherValid { get; set; } = true;
 
     [ObservableProperty]
-    public partial string? ISBNError { get; set; }
-
-    [ObservableProperty]
-    public partial string? IsbnDuplicateError { get; set; }
+    public partial bool IsIsbnValid { get; set; } = true;
 
     [ObservableProperty]
     public partial bool IsLoading { get; set; } = false;
@@ -124,9 +121,8 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
     private async Task SaveAsync(CancellationToken cancellationToken = default)
     {
         ClearErrors();
-        bool isValid = Validate();
 
-        if (!isValid)
+        if (!(IsTitleValid && IsAuthorValid && IsPublisherValid && IsIsbnValid))
         {
             return;
         }
@@ -144,7 +140,8 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
             }
             else if (result.Error?.Contains("ISBN", StringComparison.OrdinalIgnoreCase) == true)
             {
-                IsbnDuplicateError = AppResources.BookEditPageISBNDuplicateError;
+                // TODO: duplicated ISBN error handling
+                // IsbnDuplicateError = AppResources.BookEditPageISBNDuplicateError;
             }
         }
         finally
@@ -153,57 +150,11 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
         }
     }
 
-    private bool Validate()
-    {
-        bool isValid = true;
-
-        if (string.IsNullOrWhiteSpace(Title))
-        {
-            TitleError = AppResources.BookEditPageTitleEmptyError;
-            isValid = false;
-        }
-        else if (Title.Length > 256)
-        {
-            TitleError = AppResources.BookEditPageTitleMaxLengthError;
-            isValid = false;
-        }
-
-        if (string.IsNullOrWhiteSpace(Author))
-        {
-            AuthorError = AppResources.BookEditPageAuthorEmptyError;
-            isValid = false;
-        }
-        else if (Author.Length > 256)
-        {
-            AuthorError = AppResources.BookEditPageAuthorMaxLengthError;
-            isValid = false;
-        }
-
-        if (string.IsNullOrWhiteSpace(Publisher))
-        {
-            PublisherError = AppResources.BookEditPagePublisherEmptyError;
-            isValid = false;
-        }
-        else if (Publisher.Length > 256)
-        {
-            PublisherError = AppResources.BookEditPagePublisherMaxLengthError;
-            isValid = false;
-        }
-
-        if (!IsbnValidator.IsValid(ISBN))
-        {
-            ISBNError = AppResources.BookEditPageISBNFormatError;
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
     private void ClearErrors()
     {
-        TitleError = null;
-        AuthorError = null;
-        PublisherError = null;
-        ISBNError = null;
+        IsTitleValid = true;
+        IsAuthorValid = true;
+        IsPublisherValid = true;
+        IsIsbnValid = true;
     }
 }

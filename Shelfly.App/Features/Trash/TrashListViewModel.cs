@@ -51,6 +51,19 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
         });
     }
 
+    public override void OnNavigatingFrom()
+    {
+        IsSelectionMode = false;
+        SelectedItems.Clear();
+        OnToolbarVisibilityChanged();
+        RestoreBookCommand.Cancel();
+        HardDeleteBookCommand.Cancel();
+        RestoreSelectedCommand.Cancel();
+        DeleteSelectedCommand.Cancel();
+        RestoreAllCommand.Cancel();
+        DeleteAllCommand.Cancel();
+    }
+
     protected override void OnSearchQueryChangedCore(string value)
     {
         OnPropertyChanged(nameof(EmptyStateMessage));
@@ -143,13 +156,6 @@ public partial class TrashListViewModel(TrashService trashService) : SortableLis
 
     [RelayCommand]
     private void DeselectAll()
-    {
-        IsSelectionMode = false;
-        SelectedItems.Clear();
-        OnToolbarVisibilityChanged();
-    }
-
-    public override void OnNavigatingFrom()
     {
         IsSelectionMode = false;
         SelectedItems.Clear();

@@ -6,6 +6,7 @@ namespace Shelfly.App.Data.Entities;
 
 [Index(nameof(Title), nameof(Author), nameof(Publisher))]
 [Index(nameof(ISBN), IsUnique = true)]
+[Index(nameof(ISBN), nameof(Id))]
 public class BookEntity
 {
     [Key]

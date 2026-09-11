@@ -112,7 +112,7 @@
     <data name="BookEditPagePublisherLabel" xml:space="preserve">
         <value>Publisher</value>
     </data>
-    <data name="BookEditPageISBNLabel" xml:space="preserve">
+    <data name="BookEditPageIsbnLabel" xml:space="preserve">
         <value>ISBN</value>
     </data>
     <data name="BookEditPagePublishDateLabel" xml:space="preserve">
@@ -133,10 +133,13 @@
     <data name="BookEditPagePublisherEmptyError" xml:space="preserve">
         <value>Publisher cannot be empty</value>
     </data>
-    <data name="BookEditPageISBNFormatError" xml:space="preserve">
+    <data name="BookEditPageIsbnEmptyError" xml:space="preserve">
+        <value>ISBN cannot be empty</value>
+    </data>
+    <data name="BookEditPageIsbnFormatError" xml:space="preserve">
         <value>Invalid ISBN format (expected ISBN-10 or ISBN-13)</value>
     </data>
-    <data name="BookEditPageISBNDuplicateError" xml:space="preserve">
+    <data name="BookEditPageIsbnDuplicateError" xml:space="preserve">
         <value>ISBN already exists</value>
     </data>
     <data name="BookEditPageTitleMaxLengthError" xml:space="preserve">
