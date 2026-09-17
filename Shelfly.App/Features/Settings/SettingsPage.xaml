@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:ShelflyContentPageBase
+    x:Class="Shelfly.App.Features.Settings.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:settings="clr-namespace:Shelfly.App.Features.Settings"
+    xmlns:entities="clr-namespace:Shelfly.App.Data.Entities;assembly=Shelfly.App.Data"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="settings:SettingsViewModel"
+    Title="{x:Static resx:AppResources.SettingsPageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20"
+            HorizontalOptions="Center"
+            VerticalOptions="Start">
+
+            <!-- Active Server Section -->
+            <Label
+                FontSize="20"
+                FontAttributes="Bold"
+                Text="{x:Static resx:AppResources.SettingsPageActiveServerSectionTitle}" />
+
+            <StackLayout
+                Padding="15"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}">
+
+                <Label
+                    FontSize="16"
+                    Text="{x:Static resx:AppResources.SettingsPageActiveServerLabel}" />
+
+                <Label
+                    Margin="0, 5, 0, 0"
+                    Text="{Binding ActiveServerEntry.Server.Url, Mode=OneWay}"
+                    IsVisible="{Binding ActiveServerEntry}" />
+
+                <Label
+                    Margin="0, 5, 0, 0"
+                    Text="{x:Static resx:AppResources.SettingsPageNoActiveServerText}"
+                    IsVisible="{Binding HasActiveServer, Converter={toolkit:InvertedBoolConverter}}" />
+            </StackLayout>
+
+            <!-- Saved Servers List -->
+            <Label
+                FontSize="20"
+                FontAttributes="Bold"
+                Text="{x:Static resx:AppResources.SettingsPageSavedServersSectionTitle}" />
+
+            <CollectionView
+                x:Name="serversList"
+                ItemsSource="{Binding SavedServers}">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="entities:SavedServerEntry">
+                        <HorizontalStackLayout
+                            Padding="10"
+                            Spacing="10"
+                            VerticalOptions="Center">
+
+                            <Label
+                                VerticalOptions="Center"
+                                Text="{Binding Server.Url}" />
+
+                            <Label
+                                Margin="5, 0, 0, 0"
+                                VerticalOptions="Center"
+                                Text="{Binding ProfileUsername}"
+                                Opacity="0.7" />
+
+                            <Button
+                                Margin="10, 0, 0, 0"
+                                VerticalOptions="Center"
+                                Command="{Binding Source={x:Reference serversList}, Path=BindingContext.SelectServerCommand}"
+                                CommandParameter="{Binding}"
+                                Text="{x:Static resx:AppResources.SettingsPageSelectServerButtonText}" />
+
+                            <Button
+                                Margin="5, 0, 0, 0"
+                                VerticalOptions="Center"
+                                Command="{Binding Source={x:Reference serversList}, Path=BindingContext.SignInCommand}"
+                                CommandParameter="{Binding}"
+                                Text="{x:Static resx:AppResources.ServerEntryPageLoginButtonText}" />
+
+                            <Label
+                                Margin="10, 0, 0, 0"
+                                VerticalOptions="Center"
+                                Text="{x:Static resx:AppResources.SettingsPageActiveIndicatorText}"
+                                Opacity="0.7"
+                                IsVisible="{Binding IsActive}" />
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Label
+                        HorizontalOptions="Center"
+                        Text="{x:Static resx:AppResources.SettingsPageNoSavedServersText}" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <!-- Add Server Button -->
+            <Button
+                Command="{Binding AddServerCommand}"
+                Text="{x:Static resx:AppResources.SettingsPageAddServerButtonText}" />
+
+            <!-- Sync Controls Section -->
+            <BoxView
+                Height="1"
+                Margin="0, 20, 0, 20"
+                HorizontalOptions="Fill"
+                Color="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+
+            <Label
+                FontSize="20"
+                FontAttributes="Bold"
+                Text="{x:Static resx:AppResources.SettingsPageSyncSectionTitle}" />
+
+            <!-- Sync Toggle -->
+            <HorizontalStackLayout
+                HorizontalOptions="Fill"
+                VerticalOptions="Center">
+
+                <Label
+                    VerticalOptions="Center"
+                    Text="{x:Static resx:AppResources.SettingsPageSyncToggleLabel}" />
+
+                <Switch
+                    Margin="10, 0, 0, 0"
+                    IsToggled="{Binding SyncEnabled, Mode=TwoWay}" />
+            </HorizontalStackLayout>
+
+            <!-- Sync Status -->
+            <Label
+                Margin="0, 10, 0, 0"
+                Text="{Binding LastSyncResult}" />
+
+            <Label
+                Margin="0, 5, 0, 0"
+                Text="{Binding LastSuccessfulSyncAt, StringFormat='{0:yyyy-MM-dd HH:mm:ss}'}"
+                Opacity="0.7"
+                IsVisible="{Binding LastSuccessfulSyncAt}" />
+
+            <!-- Sync Now Button -->
+            <Button
+                Command="{Binding SyncNowCommand}"
+                Text="{x:Static resx:AppResources.SettingsPageSyncNowButtonText}" />
+
+            <!-- Sign Out Button -->
+            <Button
+                Margin="0, 10, 0, 0"
+                Command="{Binding SignOutCommand}"
+                IsVisible="{Binding ActiveServerEntry}"
+                Text="{x:Static resx:AppResources.SettingsPageSignOutButtonText}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</pages:ShelflyContentPageBase>

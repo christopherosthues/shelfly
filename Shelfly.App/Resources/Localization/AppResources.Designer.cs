@@ -474,6 +474,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Sync.
+        /// </summary>
+        internal static string BookDetailPageLastSyncAtLabel {
+            get {
+                return ResourceManager.GetString("BookDetailPageLastSyncAtLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No bookmarks available.
         /// </summary>
         internal static string BookDetailPageNoBookmarksText {
@@ -533,6 +542,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookDetailPageSoftDeleteBookDescription {
             get {
                 return ResourceManager.GetString("BookDetailPageSoftDeleteBookDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronized Profiles.
+        /// </summary>
+        internal static string BookDetailPageSyncedProfilesTitle {
+            get {
+                return ResourceManager.GetString("BookDetailPageSyncedProfilesTitle", resourceCulture);
             }
         }
         
@@ -1320,11 +1338,38 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string CommonErrorTitle {
+            get {
+                return ResourceManager.GetString("CommonErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        internal static string CommonInfoTitle {
+            get {
+                return ResourceManager.GetString("CommonInfoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         internal static string CommonOkButton {
             get {
                 return ResourceManager.GetString("CommonOkButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string CommonSuccessTitle {
+            get {
+                return ResourceManager.GetString("CommonSuccessTitle", resourceCulture);
             }
         }
         
@@ -1460,6 +1505,384 @@ namespace Shelfly.App.Resources.Localization {
         internal static string RegistrationPageUserNamePlaceholder {
             get {
                 return ResourceManager.GetString("RegistrationPageUserNamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        internal static string ServerEntryPageConfirmPasswordPlaceholder {
+            get {
+                return ResourceManager.GetString("ServerEntryPageConfirmPasswordPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection failed.
+        /// </summary>
+        internal static string ServerEntryPageConnectionFailureText {
+            get {
+                return ResourceManager.GetString("ServerEntryPageConnectionFailureText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection successful.
+        /// </summary>
+        internal static string ServerEntryPageConnectionSuccessText {
+            get {
+                return ResourceManager.GetString("ServerEntryPageConnectionSuccessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        internal static string ServerEntryPageEmailPlaceholder {
+            get {
+                return ResourceManager.GetString("ServerEntryPageEmailPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign in failed. Please check your credentials and try again..
+        /// </summary>
+        internal static string ServerEntryPageGenericAuthError {
+            get {
+                return ResourceManager.GetString("ServerEntryPageGenericAuthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign In.
+        /// </summary>
+        internal static string ServerEntryPageLoginButtonText {
+            get {
+                return ResourceManager.GetString("ServerEntryPageLoginButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign In.
+        /// </summary>
+        internal static string ServerEntryPageLoginSectionTitle {
+            get {
+                return ResourceManager.GetString("ServerEntryPageLoginSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwords do not match.
+        /// </summary>
+        internal static string ServerEntryPagePasswordMismatchError {
+            get {
+                return ResourceManager.GetString("ServerEntryPagePasswordMismatchError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string ServerEntryPagePasswordPlaceholder {
+            get {
+                return ResourceManager.GetString("ServerEntryPagePasswordPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        internal static string ServerEntryPageRegisterButtonText {
+            get {
+                return ResourceManager.GetString("ServerEntryPageRegisterButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register Account.
+        /// </summary>
+        internal static string ServerEntryPageRegisterSectionTitle {
+            get {
+                return ResourceManager.GetString("ServerEntryPageRegisterSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration.
+        /// </summary>
+        internal static string ServerEntryPageRegistrationSectionTitle {
+            get {
+                return ResourceManager.GetString("ServerEntryPageRegistrationSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Connection.
+        /// </summary>
+        internal static string ServerEntryPageTestConnectionButtonText {
+            get {
+                return ResourceManager.GetString("ServerEntryPageTestConnectionButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Server.
+        /// </summary>
+        internal static string ServerEntryPageTitle {
+            get {
+                return ResourceManager.GetString("ServerEntryPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://example.com.
+        /// </summary>
+        internal static string ServerEntryPageUrlPlaceholder {
+            get {
+                return ResourceManager.GetString("ServerEntryPageUrlPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        internal static string ServerEntryPageUsernamePlaceholder {
+            get {
+                return ResourceManager.GetString("ServerEntryPageUsernamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (active).
+        /// </summary>
+        internal static string SettingsPageActiveIndicatorText {
+            get {
+                return ResourceManager.GetString("SettingsPageActiveIndicatorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Server.
+        /// </summary>
+        internal static string SettingsPageActiveServerLabel {
+            get {
+                return ResourceManager.GetString("SettingsPageActiveServerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Server.
+        /// </summary>
+        internal static string SettingsPageActiveServerSectionTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageActiveServerSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Server.
+        /// </summary>
+        internal static string SettingsPageAddServerButtonText {
+            get {
+                return ResourceManager.GetString("SettingsPageAddServerButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection failed.
+        /// </summary>
+        internal static string SettingsPageConnectionFailureMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageConnectionFailureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection successful.
+        /// </summary>
+        internal static string SettingsPageConnectionSuccessMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageConnectionSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Successful Sync.
+        /// </summary>
+        internal static string SettingsPageLastSyncAtLabel {
+            get {
+                return ResourceManager.GetString("SettingsPageLastSyncAtLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        internal static string SettingsPageLastSyncNeverText {
+            get {
+                return ResourceManager.GetString("SettingsPageLastSyncNeverText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No active server selected. Please add a server first..
+        /// </summary>
+        internal static string SettingsPageNoActiveServerMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageNoActiveServerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No server selected.
+        /// </summary>
+        internal static string SettingsPageNoActiveServerText {
+            get {
+                return ResourceManager.GetString("SettingsPageNoActiveServerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No servers saved.
+        /// </summary>
+        internal static string SettingsPageNoSavedServersText {
+            get {
+                return ResourceManager.GetString("SettingsPageNoSavedServersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwords do not match.
+        /// </summary>
+        internal static string SettingsPagePasswordMismatchMessage {
+            get {
+                return ResourceManager.GetString("SettingsPagePasswordMismatchMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration failed.
+        /// </summary>
+        internal static string SettingsPageRegistrationFailureMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageRegistrationFailureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration successful. You can now sign in..
+        /// </summary>
+        internal static string SettingsPageRegistrationSuccessMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageRegistrationSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved Servers.
+        /// </summary>
+        internal static string SettingsPageSavedServersSectionTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageSavedServersSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string SettingsPageSelectServerButtonText {
+            get {
+                return ResourceManager.GetString("SettingsPageSelectServerButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sync Server.
+        /// </summary>
+        internal static string SettingsPageServerSectionTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageServerSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign Out.
+        /// </summary>
+        internal static string SettingsPageSignOutButtonText {
+            get {
+                return ResourceManager.GetString("SettingsPageSignOutButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have been signed out successfully.
+        /// </summary>
+        internal static string SettingsPageSignOutSuccessMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageSignOutSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Sync.
+        /// </summary>
+        internal static string SettingsPageSyncEnabledLabel {
+            get {
+                return ResourceManager.GetString("SettingsPageSyncEnabledLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization failed.
+        /// </summary>
+        internal static string SettingsPageSyncFailureMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageSyncFailureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sync Now.
+        /// </summary>
+        internal static string SettingsPageSyncNowButtonText {
+            get {
+                return ResourceManager.GetString("SettingsPageSyncNowButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization.
+        /// </summary>
+        internal static string SettingsPageSyncSectionTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageSyncSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization completed successfully.
+        /// </summary>
+        internal static string SettingsPageSyncSuccessMessage {
+            get {
+                return ResourceManager.GetString("SettingsPageSyncSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable automatic synchronization.
+        /// </summary>
+        internal static string SettingsPageSyncToggleLabel {
+            get {
+                return ResourceManager.GetString("SettingsPageSyncToggleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string SettingsPageTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageTitle", resourceCulture);
             }
         }
         

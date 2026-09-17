@@ -9,9 +9,12 @@ using NLog.Extensions.Logging;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.About;
+using Shelfly.App.Features.Authentication;
 using Shelfly.App.Features.BookEditor;
 using Shelfly.App.Features.BookmarkEditor;
 using Shelfly.App.Features.Library;
+using Shelfly.App.Features.Settings;
+using Shelfly.App.Features.Settings.Services;
 using Shelfly.App.Features.Trash;
 using Shelfly.App.Migrations;
 
@@ -77,6 +80,12 @@ public static class MauiProgram
         builder.Services.AddScoped<TrashService>();
         builder.Services.AddScoped<LicenseDataService>();
 
+        builder.Services.AddHttpClient<ApiClient>();
+        builder.Services.AddSingleton<CredentialStore>();
+        builder.Services.AddScoped<SyncService>();
+
+        builder.Services.AddScopedWithShellRoute<LoginPage, LoginViewModel>(Routes.LoginPage);
+        builder.Services.AddScopedWithShellRoute<RegistrationPage, RegistrationViewModel>(Routes.LoginPage);
         builder.Services.AddScopedWithShellRoute<BookListPage, BookListViewModel>(Routes.BookListPage);
         builder.Services.AddScopedWithShellRoute<BookEditPage, BookEditViewModel>(Routes.BookEditPage);
         builder.Services.AddScopedWithShellRoute<BookDetailPage, BookDetailViewModel>(Routes.BookDetailPage);
@@ -85,6 +94,8 @@ public static class MauiProgram
         builder.Services.AddScopedWithShellRoute<TrashBookDetailPage, TrashBookDetailViewModel>(Routes.TrashBookDetailPage);
         builder.Services.AddSingleton<AppShellViewModel>();
         builder.Services.AddScopedWithShellRoute<AboutPage, AboutViewModel>(Routes.AboutPage);
+        builder.Services.AddScopedWithShellRoute<SettingsPage, SettingsViewModel>(Routes.SettingsPage);
+        builder.Services.AddScopedWithShellRoute<ServerEntryPage, ServerEntryViewModel>(Routes.ServerEntryPage);
 
         return builder.Build();
     }
@@ -94,7 +105,7 @@ public static class MauiProgram
         if (!await context.Set<BookEntity>().AnyAsync(cancellationToken))
         {
             Faker<BookEntity> faker = new Faker<BookEntity>()
-                .RuleFor(a => a.Id, f => Guid.CreateVersion7())
+                .RuleFor(a => a.Id, _ => Guid.CreateVersion7())
                 .RuleFor(a => a.Title, f => f.Commerce.ProductName())
                 .RuleFor(a => a.Author, f => f.Name.FullName())
                 .RuleFor(a => a.ISBN, f => GenerateIsbn(f.Random))
@@ -118,7 +129,7 @@ public static class MauiProgram
 
             // Add bookmarks to some books (not all)
             Faker<BookmarkEntity> bookmarkFaker = new Faker<BookmarkEntity>()
-                .RuleFor(b => b.Id, f => Guid.CreateVersion7())
+                .RuleFor(b => b.Id, _ => Guid.CreateVersion7())
                 .RuleFor(b => b.BookId, f => f.Random.Guid())
                 .RuleFor(b => b.StartPage, f => f.Random.Int(1, 500))
                 .RuleFor(b => b.EndPage,

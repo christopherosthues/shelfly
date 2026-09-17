@@ -222,6 +222,48 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
+
+                <HorizontalStackLayout Margin="0,16,0,8" IsVisible="{Binding HasSyncedProfiles}">
+                    <Label SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageSyncedProfilesSectionDescription}"
+                           Text="{x:Static local:AppResources.BookDetailPageSyncedProfilesTitle}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <VerticalStackLayout IsVisible="{Binding HasSyncedProfiles}"
+                                     BindableLayout.ItemsSource="{Binding SyncedProfiles}">
+                    <BindableLayout.EmptyView>
+                        <Label Text="{x:Static local:AppResources.BookDetailPageNoSyncedProfilesText}"
+                               FontSize="16"
+                               Opacity="0.7"
+                               HorizontalOptions="Center" />
+                    </BindableLayout.EmptyView>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="entities:BookProfileSyncRecord">
+                            <VerticalStackLayout Spacing="2">
+                                <Grid ColumnDefinitions="Auto, *" Padding="8"
+                                      SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageSyncedProfileEntryDescription}">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding ProfileUsername}"
+                                           FontSize="16"
+                                           VerticalOptions="Center"
+                                           Margin="0,0,8,0" />
+                                    <Label Grid.Column="1"
+                                           SemanticProperties.Description="{x:Static local:AppResources.BookDetailPageLastSyncAtDescription}"
+                                           Text="{Binding LastSyncAt}"
+                                           FontSize="14"
+                                           VerticalOptions="Center"
+                                           Opacity="0.7" />
+                                </Grid>
+
+                                <BoxView HeightRequest="1"
+                                         Margin="0, 2"
+                                         Color="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDarkText}}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
 

@@ -84,7 +84,7 @@ public partial class BookEditViewModel(LibraryService libraryService) : ShelflyV
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid id)
+        if (!query.TryGetValue(nameof(BookId), out object? bookId) || bookId is not Guid id)
         {
             BookId = Guid.Empty;
             return;

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:ShelflyContentPageBase
+    x:Class="Shelfly.App.Features.Settings.ServerEntryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:resx="clr-namespace:Shelfly.App.Resources.Localization"
+    xmlns:pages="clr-namespace:Shelfly.App.Pages"
+    xmlns:settings="clr-namespace:Shelfly.App.Features.Settings"
+    x:DataType="settings:ServerEntryViewModel"
+    Title="{x:Static resx:AppResources.ServerEntryPageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="15"
+            HorizontalOptions="Fill"
+            VerticalOptions="Start">
+
+            <!-- Server URL Section -->
+            <Label
+                FontSize="20"
+                FontAttributes="Bold"
+                Text="{x:Static resx:AppResources.SettingsPageServerSectionTitle}" />
+
+            <Entry
+                Placeholder="{x:Static resx:AppResources.ServerEntryPageUrlPlaceholder}"
+                Text="{Binding Url, Mode=TwoWay}"
+                Keyboard="Url" />
+
+            <Button
+                Command="{Binding TestConnectionCommand}"
+                Text="{x:Static resx:AppResources.ServerEntryPageTestConnectionButtonText}" />
+
+            <!-- Registration Form Section -->
+            <StackLayout
+                IsVisible="{Binding ShowRegistrationForm}"
+                Spacing="15">
+
+                <BoxView
+                    Height="1"
+                    Margin="0, 20, 0, 20"
+                    HorizontalOptions="Fill"
+                    Color="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+
+                <Label
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Text="{x:Static resx:AppResources.ServerEntryPageRegistrationSectionTitle}" />
+
+                <Entry
+                    Placeholder="{x:Static resx:AppResources.ServerEntryPageUsernamePlaceholder}"
+                    Text="{Binding Username, Mode=TwoWay}" />
+
+                <Entry
+                    Placeholder="{x:Static resx:AppResources.ServerEntryPageEmailPlaceholder}"
+                    Text="{Binding Email, Mode=TwoWay}"
+                    Keyboard="EmailAddress" />
+
+                <Entry
+                    Placeholder="{x:Static resx:AppResources.ServerEntryPagePasswordPlaceholder}"
+                    Text="{Binding Password, Mode=TwoWay}"
+                    Keyboard="Default"
+                    IsPassword="True" />
+
+                <Entry
+                    Placeholder="{x:Static resx:AppResources.ServerEntryPageConfirmPasswordPlaceholder}"
+                    Text="{Binding ConfirmPassword, Mode=TwoWay}"
+                    Keyboard="Default"
+                    IsPassword="True" />
+
+                <Button
+                    Command="{Binding RegisterCommand}"
+                    Text="{x:Static resx:AppResources.ServerEntryPageRegisterButtonText}" />
+
+                <Label
+                    Margin="0, 10, 0, 0"
+                    HorizontalOptions="Center"
+                    Text="{Binding RegistrationResultMessage}" />
+            </StackLayout>
+
+            <!-- Login Form Section -->
+            <StackLayout
+                IsVisible="{Binding ShowLoginForm}"
+                Spacing="15">
+
+                <BoxView
+                    Height="1"
+                    Margin="0, 20, 0, 20"
+                    HorizontalOptions="Fill"
+                    Color="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+
+                <Label
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Text="{x:Static resx:AppResources.ServerEntryPageLoginSectionTitle}" />
+
+                <Entry
+                    Placeholder="{x:Static resx:AppResources.ServerEntryPageUsernamePlaceholder}"
+                    Text="{Binding Username, Mode=TwoWay}" />
+
+                <Entry
+                    Placeholder="{x:Static resx:AppResources.ServerEntryPagePasswordPlaceholder}"
+                    Text="{Binding Password, Mode=TwoWay}"
+                    Keyboard="Default"
+                    IsPassword="True" />
+
+                <Button
+                    Command="{Binding LoginCommand}"
+                    Text="{x:Static resx:AppResources.ServerEntryPageLoginButtonText}" />
+
+                <Label
+                    Margin="0, 10, 0, 0"
+                    HorizontalOptions="Center"
+                    Text="{Binding LoginResultMessage}" />
+            </StackLayout>
+
+            <!-- Connection Result -->
+            <Label
+                Margin="0, 10, 0, 0"
+                HorizontalOptions="Center"
+                Text="{Binding ConnectionResultMessage}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</pages:ShelflyContentPageBase>

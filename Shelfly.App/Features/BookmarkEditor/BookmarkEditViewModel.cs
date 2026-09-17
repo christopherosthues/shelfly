@@ -77,8 +77,8 @@ public partial class BookmarkEditViewModel(LibraryService libraryService)
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid bookGuid ||
-            !query.TryGetValue(nameof(BookmarkId), out var bookmarkId) || bookmarkId is not Guid bookmarkGuid)
+        if (!query.TryGetValue(nameof(BookId), out object? bookId) || bookId is not Guid bookGuid ||
+            !query.TryGetValue(nameof(BookmarkId), out object? bookmarkId) || bookmarkId is not Guid bookmarkGuid)
         {
             return;
         }

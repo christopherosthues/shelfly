@@ -57,6 +57,10 @@ docker compose up                          # API only
 - **Unit**: TUnit. **Assertions**: Shouldly. **Mocking**: NSubstitute.
 - **Integration**: Testcontainers (`Shelfly.Api.Tests`: isolated MongoDB, Keycloak, PostgreSQL; `Shelfly.AdminConsole.Tests`: MongoDB).
 
+## Entity Framework Core
+
+- Use the ``ef-core`` skill for all work on entities, migrations, DbContext and DB queries and updates.
+
 ## .specify
 
 `.specify/` holds workflow config for the specify toolchain (SDD cycle: specify → plan → tasks → implement); explains the dev process, not code changes.

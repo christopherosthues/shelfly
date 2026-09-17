@@ -38,6 +38,10 @@ public class BookEntity
 
     public ICollection<BookmarkEntity> Bookmarks { get; set; } = [];
 
+    public ICollection<BookServerMapping> ServerMappings { get; set; } = [];
+
+    public ICollection<BookProfileSyncRecord> ProfileSyncRecords { get; set; } = [];
+
     [NotMapped]
     public int BookmarkCount { get; set; }
 }

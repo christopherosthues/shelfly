@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using CommunityToolkit.Mvvm.Messaging;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Enums;
+using Shelfly.App.Messages;
 using Shelfly.Common;
 
 namespace Shelfly.App.Features.Library;
@@ -113,6 +115,8 @@ public class LibraryService(LocalDbContext dbContext)
         dbContext.Books.Add(book);
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        WeakReferenceMessenger.Default.Send(LibraryChangedMessage.Instance);
+
         return Result<BookEntity>.Success(book);
     }
 
@@ -144,6 +148,8 @@ public class LibraryService(LocalDbContext dbContext)
         book.LastModifiedAt = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        WeakReferenceMessenger.Default.Send(LibraryChangedMessage.Instance);
 
         return Result<BookEntity>.Success(book);
     }
@@ -185,6 +191,8 @@ public class LibraryService(LocalDbContext dbContext)
         dbContext.Bookmarks.Add(bookmark);
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        WeakReferenceMessenger.Default.Send(LibraryChangedMessage.Instance);
+
         return Result<BookmarkEntity>.Success(bookmark);
     }
 
@@ -220,6 +228,8 @@ public class LibraryService(LocalDbContext dbContext)
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        WeakReferenceMessenger.Default.Send(LibraryChangedMessage.Instance);
+
         return Result<BookmarkEntity>.Success(bookmark);
     }
 
@@ -235,6 +245,8 @@ public class LibraryService(LocalDbContext dbContext)
 
         dbContext.Bookmarks.Remove(bookmark);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        WeakReferenceMessenger.Default.Send(LibraryChangedMessage.Instance);
 
         return Result<BookmarkEntity?>.Success(bookmark);
     }
@@ -271,6 +283,8 @@ public class LibraryService(LocalDbContext dbContext)
         book.DeletedAt = DateTime.UtcNow;
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        WeakReferenceMessenger.Default.Send(LibraryChangedMessage.Instance);
+
         return Result<bool>.Success(true);
     }
 
@@ -291,5 +305,13 @@ public class LibraryService(LocalDbContext dbContext)
         }
 
         return Result<bool>.Success(exists);
+    }
+
+    public async Task<List<BookProfileSyncRecord>> GetBookProfileSyncRecordsAsync(Guid bookId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.BookProfileSyncRecords
+            .Where(r => r.BookId == bookId)
+            .OrderByDescending(r => r.LastSyncAt)
+            .ToListAsync(cancellationToken);
     }
 }

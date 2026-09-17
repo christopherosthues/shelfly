@@ -7,6 +7,11 @@ public partial class LocalDbContext(DbContextOptions<LocalDbContext> options) : 
 {
     public DbSet<BookEntity> Books => Set<BookEntity>();
     public DbSet<BookmarkEntity> Bookmarks => Set<BookmarkEntity>();
+    public DbSet<ServerEntity> Servers => Set<ServerEntity>();
+    public DbSet<SavedServerEntry> SavedServerEntries => Set<SavedServerEntry>();
+    public DbSet<SyncState> SyncStates => Set<SyncState>();
+    public DbSet<BookServerMapping> BookServerMappings => Set<BookServerMapping>();
+    public DbSet<BookProfileSyncRecord> BookProfileSyncRecords => Set<BookProfileSyncRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

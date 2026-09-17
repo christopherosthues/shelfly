@@ -571,4 +571,100 @@
     <data name="BookEditPageIsbnEmptyError" xml:space="preserve">
         <value>ISBN darf nicht leer sein</value>
     </data>
+    <data name="SettingsPageTitle" xml:space="preserve">
+        <value>Einstellungen</value>
+    </data>
+    <data name="SettingsPageServerSectionTitle" xml:space="preserve">
+        <value>Synchronisationsserver</value>
+    </data>
+    <data name="SettingsPageAddServerButtonText" xml:space="preserve">
+        <value>Server hinzufügen</value>
+    </data>
+    <data name="SettingsPageActiveServerLabel" xml:space="preserve">
+        <value>Aktiver Server</value>
+    </data>
+    <data name="SettingsPageNoActiveServerText" xml:space="preserve">
+        <value>Kein Server ausgewählt</value>
+    </data>
+    <data name="SettingsPageSyncSectionTitle" xml:space="preserve">
+        <value>Synchronisation</value>
+    </data>
+    <data name="SettingsPageSyncEnabledLabel" xml:space="preserve">
+        <value>Synchronisation aktivieren</value>
+    </data>
+    <data name="SettingsPageLastSyncAtLabel" xml:space="preserve">
+        <value>Letzte erfolgreiche Synchronisation</value>
+    </data>
+    <data name="SettingsPageLastSyncNeverText" xml:space="preserve">
+        <value>Nie</value>
+    </data>
+    <data name="SettingsPageSignOutButtonText" xml:space="preserve">
+        <value>Anmelden</value>
+    </data>
+    <data name="ServerEntryPageTitle" xml:space="preserve">
+        <value>Server hinzufügen</value>
+    </data>
+    <data name="ServerEntryPageUrlPlaceholder" xml:space="preserve">
+        <value>https://example.com</value>
+    </data>
+    <data name="ServerEntryPageTestConnectionButtonText" xml:space="preserve">
+        <value>Verbindung testen</value>
+    </data>
+    <data name="ServerEntryPageConnectionSuccessText" xml:space="preserve">
+        <value>Verbindung erfolgreich</value>
+    </data>
+    <data name="ServerEntryPageConnectionFailureText" xml:space="preserve">
+        <value>Verbindung fehlgeschlagen</value>
+    </data>
+     <data name="ServerEntryPageRegisterSectionTitle" xml:space="preserve">
+         <value>Konto registrieren</value>
+     </data>
+     <data name="ServerEntryPageRegistrationSectionTitle" xml:space="preserve">
+         <value>Registrierung</value>
+     </data>
+    <data name="ServerEntryPageUsernamePlaceholder" xml:space="preserve">
+        <value>Nutzername</value>
+    </data>
+    <data name="ServerEntryPageEmailPlaceholder" xml:space="preserve">
+        <value>E-Mail-Adresse</value>
+    </data>
+    <data name="ServerEntryPagePasswordPlaceholder" xml:space="preserve">
+        <value>Passwort</value>
+    </data>
+    <data name="ServerEntryPageConfirmPasswordPlaceholder" xml:space="preserve">
+        <value>Passwort bestätigen</value>
+    </data>
+    <data name="ServerEntryPageRegisterButtonText" xml:space="preserve">
+        <value>Registrieren</value>
+    </data>
+    <data name="ServerEntryPageLoginSectionTitle" xml:space="preserve">
+        <value>Anmelden</value>
+    </data>
+    <data name="ServerEntryPageLoginButtonText" xml:space="preserve">
+        <value>Anmelden</value>
+    </data>
+    <data name="ServerEntryPagePasswordMismatchError" xml:space="preserve">
+        <value>Pässe stimmen nicht überein</value>
+    </data>
+    <data name="ServerEntryPageGenericAuthError" xml:space="preserve">
+        <value>Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut.</value>
+    </data>
+    <data name="BookDetailPageSyncedProfilesTitle" xml:space="preserve">
+        <value>Synchronisierte Profile</value>
+    </data>
+    <data name="BookDetailPageLastSyncAtLabel" xml:space="preserve">
+        <value>Letzte Synchronisation</value>
+    </data>
+    <data name="BookDetailPageSyncedProfilesSectionDescription" xml:space="preserve">
+        <value>Liste der Profile, mit denen dieses Buch synchronisiert wurde.</value>
+    </data>
+    <data name="BookDetailPageNoSyncedProfilesText" xml:space="preserve">
+        <value>Noch keine Synchronisierungshistorie</value>
+    </data>
+    <data name="BookDetailPageSyncedProfileEntryDescription" xml:space="preserve">
+        <value>Synchronisierter Profileintrag mit Benutzername und letztem Synchronisierungszeitpunkt.</value>
+    </data>
+    <data name="BookDetailPageLastSyncAtDescription" xml:space="preserve">
+        <value>Letzter Synchronisierungszeitpunkt für dieses Profil.</value>
+    </data>
 </root>

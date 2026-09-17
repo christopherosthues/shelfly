@@ -55,7 +55,7 @@
   },
   {
     "PackageId": "HotChocolate.Language.SyntaxTree",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -66,7 +66,7 @@
   },
   {
     "PackageId": "HotChocolate.Language.Utf8",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -77,7 +77,7 @@
   },
   {
     "PackageId": "HotChocolate.Language.Utf8.SyntaxTree",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -88,7 +88,7 @@
   },
   {
     "PackageId": "HotChocolate.Language.Visitors",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -99,7 +99,7 @@
   },
   {
     "PackageId": "HotChocolate.Language.Web",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -110,7 +110,7 @@
   },
   {
     "PackageId": "HotChocolate.Transport.Abstractions",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -121,7 +121,7 @@
   },
   {
     "PackageId": "HotChocolate.Transport.Http",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -132,7 +132,7 @@
   },
   {
     "PackageId": "HotChocolate.Utilities.Buffers",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -143,7 +143,7 @@
   },
   {
     "PackageId": "HotChocolate.Utilities.Tasks",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -165,7 +165,7 @@
   },
   {
     "PackageId": "Microsoft.Data.Sqlite",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/dotnet/standard/data/sqlite/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -176,7 +176,7 @@
   },
   {
     "PackageId": "Microsoft.Data.Sqlite.Core",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/dotnet/standard/data/sqlite/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -187,7 +187,7 @@
   },
   {
     "PackageId": "Microsoft.EntityFrameworkCore",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/ef/core/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -198,7 +198,7 @@
   },
   {
     "PackageId": "Microsoft.EntityFrameworkCore.Abstractions",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/ef/core/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -209,7 +209,7 @@
   },
   {
     "PackageId": "Microsoft.EntityFrameworkCore.Analyzers",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/ef/core/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -220,7 +220,7 @@
   },
   {
     "PackageId": "Microsoft.EntityFrameworkCore.Relational",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/ef/core/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -231,7 +231,7 @@
   },
   {
     "PackageId": "Microsoft.EntityFrameworkCore.Sqlite",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/ef/core/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -242,7 +242,7 @@
   },
   {
     "PackageId": "Microsoft.EntityFrameworkCore.Sqlite.Core",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://docs.microsoft.com/ef/core/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -253,7 +253,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Caching.Abstractions",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -264,7 +264,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Caching.Memory",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -286,7 +286,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Configuration.Abstractions",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -308,7 +308,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.DependencyInjection",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -319,7 +319,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.DependencyInjection.Abstractions",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -330,7 +330,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.DependencyModel",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -396,7 +396,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Logging",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -407,7 +407,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Logging.Abstractions",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -418,7 +418,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Logging.Debug",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -440,7 +440,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Options",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -462,7 +462,7 @@
   },
   {
     "PackageId": "Microsoft.Extensions.Primitives",
-    "PackageVersion": "10.0.11",
+    "PackageVersion": "10.0.12",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -494,8 +494,85 @@
     "LicenseInformationOrigin": 0
   },
   {
+    "PackageId": "Microsoft.Kiota.Abstractions",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Abstractions library for the Kiota generated SDKs in dotnet.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.Kiota.Bundle",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Kiota Bundle package providing default implementations for client setup.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.Kiota.Http.HttpClientLibrary",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Kiota Http provider implementation for dotnet with HttpClient.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.Kiota.Serialization.Form",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Kiota URI form encoded serialization provider.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.Kiota.Serialization.Json",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Kiota JSON serialization provider implementation with System.Text.Json.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.Kiota.Serialization.Multipart",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Kiota Multipart serialization provider implementation.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
+    "PackageId": "Microsoft.Kiota.Serialization.Text",
+    "PackageVersion": "2.1.2",
+    "PackageProjectUrl": "https://aka.ms/kiota/docs",
+    "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+    "Authors": "Microsoft",
+    "Description": "Text/plain serialization provider implementation for Kiota based SDKs.",
+    "License": "MIT",
+    "LicenseUrl": "https://licenses.nuget.org/MIT",
+    "LicenseInformationOrigin": 0
+  },
+  {
     "PackageId": "Microsoft.Maui.Controls",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -506,7 +583,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Controls.Build.Tasks",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -517,7 +594,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Controls.Core",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -528,7 +605,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Controls.Xaml",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -539,7 +616,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Core",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -550,7 +627,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Essentials",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -561,7 +638,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Graphics",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -572,7 +649,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Graphics.Win2D.WinUI.Desktop",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -583,7 +660,7 @@
   },
   {
     "PackageId": "Microsoft.Maui.Resizetizer",
-    "PackageVersion": "10.0.100",
+    "PackageVersion": "10.0.101",
     "PackageProjectUrl": "https://github.com/dotnet/maui",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -605,7 +682,7 @@
   },
   {
     "PackageId": "Microsoft.NET.ILLink.Tasks",
-    "PackageVersion": "10.0.8",
+    "PackageVersion": "10.0.10",
     "PackageProjectUrl": "https://dot.net/",
     "Copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
     "Authors": "Microsoft",
@@ -760,7 +837,7 @@
   },
   {
     "PackageId": "NLog",
-    "PackageVersion": "6.2.0",
+    "PackageVersion": "6.2.1",
     "PackageProjectUrl": "https://nlog-project.org/",
     "Copyright": "Copyright (c) 2004-2026 NLog Project - https://nlog-project.org/",
     "Authors": "Jarek Kowalski,Kim Christensen,Julian Verdurmen",
@@ -771,7 +848,7 @@
   },
   {
     "PackageId": "NLog.Extensions.Logging",
-    "PackageVersion": "6.2.0",
+    "PackageVersion": "6.2.1",
     "PackageProjectUrl": "https://github.com/NLog/NLog.Extensions.Logging",
     "Copyright": "Copyright (c) 2004-2026 NLog Project - https://nlog-project.org/",
     "Authors": "Julian Verdurmen",
@@ -852,8 +929,17 @@
     "LicenseInformationOrigin": 0
   },
   {
+    "PackageId": "Std.UriTemplate",
+    "PackageVersion": "2.0.12",
+    "Authors": "Std.UriTemplate",
+    "Description": "Std.Uritemplate for .NET - Implementation of RFC 6570 (Level 4)",
+    "License": "Apache-2.0",
+    "LicenseUrl": "https://licenses.nuget.org/Apache-2.0",
+    "LicenseInformationOrigin": 0
+  },
+  {
     "PackageId": "StrawberryShake",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -864,7 +950,7 @@
   },
   {
     "PackageId": "StrawberryShake.Core",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -875,7 +961,7 @@
   },
   {
     "PackageId": "StrawberryShake.Maui",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -886,7 +972,7 @@
   },
   {
     "PackageId": "StrawberryShake.Resources",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -897,7 +983,7 @@
   },
   {
     "PackageId": "StrawberryShake.Transport.Http",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",
@@ -908,7 +994,7 @@
   },
   {
     "PackageId": "StrawberryShake.Transport.WebSockets",
-    "PackageVersion": "16.6.4",
+    "PackageVersion": "16.6.6",
     "PackageProjectUrl": "https://chillicream.com/",
     "Copyright": "Copyright \u00A9 2018 - present ChilliCream Inc.",
     "Authors": "ChilliCream authors and contributors",

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
 
 namespace Shelfly.App.Controls;
 

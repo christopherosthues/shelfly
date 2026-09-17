@@ -571,4 +571,157 @@
     <data name="MultiSelectViewEmptyText" xml:space="preserve">
         <value>No data available</value>
     </data>
+    <data name="SettingsPageTitle" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="SettingsPageServerSectionTitle" xml:space="preserve">
+        <value>Sync Server</value>
+    </data>
+    <data name="SettingsPageAddServerButtonText" xml:space="preserve">
+        <value>Add Server</value>
+    </data>
+    <data name="SettingsPageActiveServerLabel" xml:space="preserve">
+        <value>Active Server</value>
+    </data>
+    <data name="SettingsPageNoActiveServerText" xml:space="preserve">
+        <value>No server selected</value>
+    </data>
+    <data name="SettingsPageSyncSectionTitle" xml:space="preserve">
+        <value>Synchronization</value>
+    </data>
+    <data name="SettingsPageSyncEnabledLabel" xml:space="preserve">
+        <value>Enable Sync</value>
+    </data>
+    <data name="SettingsPageLastSyncAtLabel" xml:space="preserve">
+        <value>Last Successful Sync</value>
+    </data>
+    <data name="SettingsPageLastSyncNeverText" xml:space="preserve">
+        <value>Never</value>
+    </data>
+    <data name="SettingsPageSignOutButtonText" xml:space="preserve">
+        <value>Sign Out</value>
+    </data>
+    <data name="ServerEntryPageTitle" xml:space="preserve">
+        <value>Add Server</value>
+    </data>
+    <data name="ServerEntryPageUrlPlaceholder" xml:space="preserve">
+        <value>https://example.com</value>
+    </data>
+    <data name="ServerEntryPageTestConnectionButtonText" xml:space="preserve">
+        <value>Test Connection</value>
+    </data>
+    <data name="ServerEntryPageConnectionSuccessText" xml:space="preserve">
+        <value>Connection successful</value>
+    </data>
+    <data name="ServerEntryPageConnectionFailureText" xml:space="preserve">
+        <value>Connection failed</value>
+    </data>
+     <data name="ServerEntryPageRegisterSectionTitle" xml:space="preserve">
+         <value>Register Account</value>
+     </data>
+     <data name="ServerEntryPageRegistrationSectionTitle" xml:space="preserve">
+         <value>Registration</value>
+     </data>
+    <data name="ServerEntryPageUsernamePlaceholder" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="ServerEntryPageEmailPlaceholder" xml:space="preserve">
+        <value>Email Address</value>
+    </data>
+    <data name="ServerEntryPagePasswordPlaceholder" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="ServerEntryPageConfirmPasswordPlaceholder" xml:space="preserve">
+        <value>Confirm Password</value>
+    </data>
+    <data name="ServerEntryPageRegisterButtonText" xml:space="preserve">
+        <value>Register</value>
+    </data>
+    <data name="ServerEntryPageLoginSectionTitle" xml:space="preserve">
+        <value>Sign In</value>
+    </data>
+    <data name="ServerEntryPageLoginButtonText" xml:space="preserve">
+        <value>Sign In</value>
+    </data>
+    <data name="ServerEntryPagePasswordMismatchError" xml:space="preserve">
+        <value>Passwords do not match</value>
+    </data>
+    <data name="ServerEntryPageGenericAuthError" xml:space="preserve">
+        <value>Sign in failed. Please check your credentials and try again.</value>
+    </data>
+    <data name="BookDetailPageSyncedProfilesTitle" xml:space="preserve">
+        <value>Synchronized Profiles</value>
+    </data>
+    <data name="BookDetailPageLastSyncAtLabel" xml:space="preserve">
+        <value>Last Sync</value>
+    </data>
+    <data name="BookDetailPageSyncedProfilesSectionDescription" xml:space="preserve">
+        <value>List of profiles this book has been synchronized with.</value>
+    </data>
+    <data name="BookDetailPageNoSyncedProfilesText" xml:space="preserve">
+        <value>No synchronization history yet</value>
+    </data>
+    <data name="BookDetailPageSyncedProfileEntryDescription" xml:space="preserve">
+        <value>Synchronized profile entry showing username and last sync time.</value>
+    </data>
+    <data name="BookDetailPageLastSyncAtDescription" xml:space="preserve">
+        <value>Last synchronization timestamp for this profile.</value>
+    </data>
+    <data name="CommonSuccessTitle" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="CommonErrorTitle" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="CommonInfoTitle" xml:space="preserve">
+        <value>Information</value>
+    </data>
+    <data name="SettingsPageSyncSuccessMessage" xml:space="preserve">
+        <value>Synchronization completed successfully</value>
+    </data>
+    <data name="SettingsPageSyncFailureMessage" xml:space="preserve">
+        <value>Synchronization failed</value>
+    </data>
+    <data name="SettingsPageSignOutSuccessMessage" xml:space="preserve">
+        <value>You have been signed out successfully</value>
+    </data>
+    <data name="SettingsPageNoActiveServerMessage" xml:space="preserve">
+        <value>No active server selected. Please add a server first.</value>
+    </data>
+    <data name="SettingsPageConnectionSuccessMessage" xml:space="preserve">
+        <value>Connection successful</value>
+    </data>
+    <data name="SettingsPageConnectionFailureMessage" xml:space="preserve">
+        <value>Connection failed</value>
+    </data>
+    <data name="SettingsPagePasswordMismatchMessage" xml:space="preserve">
+        <value>Passwords do not match</value>
+    </data>
+    <data name="SettingsPageRegistrationSuccessMessage" xml:space="preserve">
+        <value>Registration successful. You can now sign in.</value>
+    </data>
+    <data name="SettingsPageRegistrationFailureMessage" xml:space="preserve">
+        <value>Registration failed</value>
+    </data>
+    <data name="SettingsPageActiveServerSectionTitle" xml:space="preserve">
+        <value>Active Server</value>
+    </data>
+    <data name="SettingsPageSavedServersSectionTitle" xml:space="preserve">
+        <value>Saved Servers</value>
+    </data>
+    <data name="SettingsPageSelectServerButtonText" xml:space="preserve">
+        <value>Select</value>
+    </data>
+    <data name="SettingsPageActiveIndicatorText" xml:space="preserve">
+        <value>(active)</value>
+    </data>
+    <data name="SettingsPageNoSavedServersText" xml:space="preserve">
+        <value>No servers saved</value>
+    </data>
+    <data name="SettingsPageSyncToggleLabel" xml:space="preserve">
+        <value>Enable automatic synchronization</value>
+    </data>
+    <data name="SettingsPageSyncNowButtonText" xml:space="preserve">
+        <value>Sync Now</value>
+    </data>
 </root>

@@ -21,6 +21,11 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
     public partial List<BookmarkEntity> Bookmarks { get; set; } = [];
 
     [ObservableProperty]
+    public partial List<BookProfileSyncRecord> SyncedProfiles { get; set; } = [];
+
+    public bool HasSyncedProfiles => SyncedProfiles.Count > 0;
+
+    [ObservableProperty]
     public partial bool IsLoading { get; set; } = true;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
@@ -30,6 +35,7 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
         {
             Book = await libraryService.GetBookByIdAsync(BookId, cancellationToken);
             Bookmarks = await libraryService.GetBookmarksByBookIdAsync(BookId, cancellationToken);
+            SyncedProfiles = await libraryService.GetBookProfileSyncRecordsAsync(BookId, cancellationToken);
         }
         finally
         {
@@ -39,7 +45,7 @@ public partial class BookDetailViewModel(LibraryService libraryService) : Shelfl
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (!query.TryGetValue(nameof(BookId), out var bookId) || bookId is not Guid id)
+        if (!query.TryGetValue(nameof(BookId), out object? bookId) || bookId is not Guid id)
         {
             BookId = Guid.Empty;
             return;
