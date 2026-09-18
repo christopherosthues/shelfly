@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.Settings.Services;
 
 public class SettingsService(LocalDbContext dbContext, CredentialStore credentialStore, ApiClient apiClient)
 {
-    public async Task<ApiResult<bool>> TestConnectionAsync(string url)
+    public async Task<Result<bool>> TestConnectionAsync(string url, CancellationToken cancellationToken = default)
     {
-        return await apiClient.TestConnectionAsync(url);
+        return await apiClient.TestConnectionAsync(url, cancellationToken);
     }
 
     public async Task<List<SavedServerEntry>> GetSavedServersAsync(CancellationToken cancellationToken = default)
@@ -30,14 +31,14 @@ public class SettingsService(LocalDbContext dbContext, CredentialStore credentia
             .FirstOrDefaultAsync(e => e.Id == entryId, cancellationToken);
     }
 
-    public async Task<ApiResult<SavedServerEntry>> RegisterAndSaveServerAsync(string url, string username, string email, string password, CancellationToken cancellationToken = default)
+    public async Task<Result<SavedServerEntry>> RegisterAndSaveServerAsync(string url, string username, string email, string password, CancellationToken cancellationToken = default)
     {
         // Call API to register the user
-        ApiResult<string> loginResult = await apiClient.RegisterAsync(url, username, email, password, cancellationToken);
+        Result<string> loginResult = await apiClient.RegisterAsync(url, username, email, password, cancellationToken);
 
         if (!loginResult.IsSuccess)
         {
-            return ApiResult<SavedServerEntry>.Failure(loginResult.ErrorMessage ?? "Registration failed");
+            return Result<SavedServerEntry>.Failure(loginResult.Error ?? "Registration failed");
         }
 
         // Create or find server entity
@@ -76,25 +77,25 @@ public class SettingsService(LocalDbContext dbContext, CredentialStore credentia
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return ApiResult<SavedServerEntry>.Success(entry);
+        return Result<SavedServerEntry>.Success(entry);
     }
 
-    public async Task<ApiResult<bool>> SignInExistingServerAsync(Guid serverEntryId, string username, string password, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> SignInExistingServerAsync(Guid serverEntryId, string username, string password, CancellationToken cancellationToken = default)
     {
         // Find the saved server entry
         SavedServerEntry? entry = await GetSavedServerEntryByIdAsync(serverEntryId, cancellationToken);
 
         if (entry is null)
         {
-            return ApiResult<bool>.Failure("Server entry not found");
+            return Result<bool>.Failure("Server entry not found");
         }
 
         // Call API to login the user
-        ApiResult<string> loginResult = await apiClient.LoginAsync(entry.Server?.Url ?? string.Empty, username, password, cancellationToken);
+        Result<string> loginResult = await apiClient.LoginAsync(entry.Server?.Url ?? string.Empty, username, password, cancellationToken);
 
         if (!loginResult.IsSuccess)
         {
-            return ApiResult<bool>.Failure(loginResult.ErrorMessage ?? "Sign in failed");
+            return Result<bool>.Failure(loginResult.Error ?? "Sign in failed");
         }
 
         // Update entry with profile data
@@ -114,7 +115,7 @@ public class SettingsService(LocalDbContext dbContext, CredentialStore credentia
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return ApiResult<bool>.Success(true);
+        return Result<bool>.Success(true);
     }
 
     public async Task SetActiveServerEntryAsync(Guid entryId, bool syncEnabled, CancellationToken cancellationToken = default)

@@ -50,7 +50,6 @@
                 Text="{x:Static resx:AppResources.SettingsPageSavedServersSectionTitle}" />
 
             <CollectionView
-                x:Name="serversList"
                 ItemsSource="{Binding SavedServers}">
 
                 <CollectionView.ItemTemplate>
@@ -73,14 +72,14 @@
                             <Button
                                 Margin="10, 0, 0, 0"
                                 VerticalOptions="Center"
-                                Command="{Binding Source={x:Reference serversList}, Path=BindingContext.SelectServerCommand}"
+                                Command="{Binding SelectServerCommand, Source={x:RelativeSource AncestorType={x:Type settings:SettingsViewModel}}, x:DataType={x:Type settings:SettingsViewModel}}"
                                 CommandParameter="{Binding}"
                                 Text="{x:Static resx:AppResources.SettingsPageSelectServerButtonText}" />
 
                             <Button
                                 Margin="5, 0, 0, 0"
                                 VerticalOptions="Center"
-                                Command="{Binding Source={x:Reference serversList}, Path=BindingContext.SignInCommand}"
+                                Command="{Binding SignInCommand, Source={x:RelativeSource AncestorType={x:Type settings:SettingsViewModel}}, x:DataType={x:Type settings:SettingsViewModel}}"
                                 CommandParameter="{Binding}"
                                 Text="{x:Static resx:AppResources.ServerEntryPageLoginButtonText}" />
 

@@ -4,6 +4,7 @@ using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.Settings.Services;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.Settings;
 
@@ -52,6 +53,9 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
     public partial bool ShowLoginForm { get; set; }
 
     private Guid _selectedServerEntryId;
+    private CancellationTokenSource? _connectionCts;
+    private CancellationTokenSource? _registrationCts;
+    private CancellationTokenSource? _loginCts;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
@@ -90,9 +94,11 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
         IsTestingConnection = true;
         ConnectionResultMessage = null;
 
+        _connectionCts = new CancellationTokenSource();
+
         try
         {
-            ApiResult<bool> result = await settingsService.TestConnectionAsync(Url);
+            Result<bool> result = await settingsService.TestConnectionAsync(Url, _connectionCts.Token);
 
             if (result.IsSuccess)
             {
@@ -107,13 +113,17 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
             }
             else
             {
-                ConnectionResultMessage = result.ErrorMessage ?? AppResources.ServerEntryPageConnectionFailureText;
+                ConnectionResultMessage = result.Error ?? AppResources.ServerEntryPageConnectionFailureText;
 
                 await Shell.Current.DisplayAlertAsync(
                     AppResources.CommonErrorTitle,
                     ConnectionResultMessage,
                     AppResources.CommonOkButton);
             }
+        }
+        catch (OperationCanceledException)
+        {
+            // Cancelled by navigation
         }
         catch (Exception ex)
         {
@@ -127,6 +137,8 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
         finally
         {
             IsTestingConnection = false;
+            _connectionCts?.Dispose();
+            _connectionCts = null;
         }
     }
 
@@ -148,9 +160,11 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
         IsRegistering = true;
         RegistrationResultMessage = null;
 
+        _registrationCts = new CancellationTokenSource();
+
         try
         {
-            ApiResult<SavedServerEntry> result = await settingsService.RegisterAndSaveServerAsync(Url, Username, Email, Password);
+            Result<SavedServerEntry> result = await settingsService.RegisterAndSaveServerAsync(Url, Username, Email, Password, _registrationCts.Token);
 
             if (result.IsSuccess)
             {
@@ -169,13 +183,17 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
             }
             else
             {
-                RegistrationResultMessage = result.ErrorMessage ?? AppResources.SettingsPageRegistrationFailureMessage;
+                RegistrationResultMessage = result.Error ?? AppResources.SettingsPageRegistrationFailureMessage;
 
                 await Shell.Current.DisplayAlertAsync(
                     AppResources.CommonErrorTitle,
                     RegistrationResultMessage,
                     AppResources.CommonOkButton);
             }
+        }
+        catch (OperationCanceledException)
+        {
+            // Cancelled by navigation
         }
         catch (Exception ex)
         {
@@ -189,6 +207,8 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
         finally
         {
             IsRegistering = false;
+            _registrationCts?.Dispose();
+            _registrationCts = null;
         }
     }
 
@@ -210,9 +230,11 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
         IsLoggingIn = true;
         LoginResultMessage = null;
 
+        _loginCts = new CancellationTokenSource();
+
         try
         {
-            ApiResult<bool> result = await settingsService.SignInExistingServerAsync(_selectedServerEntryId, Username, Password);
+            Result<bool> result = await settingsService.SignInExistingServerAsync(_selectedServerEntryId, Username, Password, _loginCts.Token);
 
             if (result.IsSuccess)
             {
@@ -231,13 +253,17 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
             }
             else
             {
-                LoginResultMessage = result.ErrorMessage ?? AppResources.ServerEntryPageGenericAuthError;
+                LoginResultMessage = result.Error ?? AppResources.ServerEntryPageGenericAuthError;
 
                 await Shell.Current.DisplayAlertAsync(
                     AppResources.CommonErrorTitle,
                     LoginResultMessage,
                     AppResources.CommonOkButton);
             }
+        }
+        catch (OperationCanceledException)
+        {
+            // Cancelled by navigation
         }
         catch (Exception ex)
         {
@@ -251,8 +277,19 @@ public partial class ServerEntryViewModel(SettingsService settingsService) : She
         finally
         {
             IsLoggingIn = false;
+            _loginCts?.Dispose();
+            _loginCts = null;
         }
     }
 
     public const string NavigationMode = "NavigationMode";
+
+    public override void OnNavigatingFrom()
+    {
+        _connectionCts?.Cancel();
+        _registrationCts?.Cancel();
+        _loginCts?.Cancel();
+
+        base.OnNavigatingFrom();
+    }
 }

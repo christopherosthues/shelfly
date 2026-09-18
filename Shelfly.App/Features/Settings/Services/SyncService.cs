@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Shelfly.App.Data;
 using Shelfly.App.Data.Entities;
 using Shelfly.App.Messages;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.Settings.Services;
 
@@ -35,13 +36,13 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
         await SyncAsync();
     }
 
-    public async Task<ApiResult<string>> SyncAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<string>> SyncAsync(CancellationToken cancellationToken = default)
     {
         SyncState syncState = await GetActiveSyncStateAsync();
 
         if (!syncState.SyncEnabled || !syncState.ActiveServerEntryId.HasValue)
         {
-            return ApiResult<string>.Failure("Sync not enabled or no active server");
+            return Result<string>.Failure("Sync not enabled or no active server");
         }
 
         SavedServerEntry? activeEntry = await _dbContext.SavedServerEntries
@@ -49,7 +50,7 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
 
         if (activeEntry is null)
         {
-            return ApiResult<string>.Failure("Active server entry not found");
+            return Result<string>.Failure("Active server entry not found");
         }
 
         try
@@ -62,17 +63,17 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
             await _dbContext.SaveChangesAsync(cancellationToken);
             _lastSyncAttempt = DateTime.UtcNow;
 
-            return ApiResult<string>.Success("Synchronization completed");
+            return Result<string>.Success("Synchronization completed");
         }
         catch (OperationCanceledException)
         {
-            return ApiResult<string>.Failure("Sync cancelled");
+            return Result<string>.Failure("Sync cancelled");
         }
         catch (IOException ex)
         {
             syncState.LastSyncResult = $"Sync failed: {ex.Message}";
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return ApiResult<string>.Failure($"Network error: {ex.Message}");
+            return Result<string>.Failure($"Network error: {ex.Message}");
         }
     }
 
@@ -100,7 +101,7 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
         {
             if (!syncedBookIds.Contains(book.Id))
             {
-                ApiResult<string> uploadResult = await _apiClient.UploadBookAsync(book, cancellationToken);
+                Result<string> uploadResult = await _apiClient.UploadBookAsync(book, cancellationToken);
 
                 if (uploadResult.IsSuccess && !string.IsNullOrEmpty(uploadResult.Value))
                 {
@@ -117,7 +118,7 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
 
                     foreach (BookmarkEntity bookmark in book.Bookmarks)
                     {
-                        ApiResult<string> bmResult = await _apiClient.UploadBookmarkAsync(bookmark, cancellationToken);
+                        Result<string> bmResult = await _apiClient.UploadBookmarkAsync(bookmark, cancellationToken);
                     }
 
                     UpdateProfileSyncRecord(book.Id, activeEntry.ProfileUsername);
@@ -128,7 +129,7 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
 
     private async Task DownloadServerChangesAsync(SavedServerEntry activeEntry, CancellationToken cancellationToken)
     {
-        ApiResult<List<BookEntity>> fetchResult = await _apiClient.FetchServerBooksAsync(cancellationToken);
+        Result<List<BookEntity>> fetchResult = await _apiClient.FetchServerBooksAsync(cancellationToken);
 
         if (!fetchResult.IsSuccess || fetchResult.Value is null)
         {
@@ -173,7 +174,7 @@ public sealed class SyncService : IRecipient<LibraryChangedMessage>
                     localBook.LastModifiedAt = serverBook.LastModifiedAt;
                 }
 
-                ApiResult<List<BookmarkEntity>> bmResult = await _apiClient.FetchServerBookmarksAsync(serverBook.Id, cancellationToken);
+                Result<List<BookmarkEntity>> bmResult = await _apiClient.FetchServerBookmarksAsync(serverBook.Id, cancellationToken);
 
                 if (bmResult.IsSuccess && bmResult.Value is not null)
                 {

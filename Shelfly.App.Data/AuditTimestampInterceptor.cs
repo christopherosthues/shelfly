@@ -58,5 +58,23 @@ public sealed class AuditTimestampInterceptor : SaveChangesInterceptor
                 entry.Entity.LastModifiedAt = utcNow;
             }
         }
+
+        IEnumerable<EntityEntry<ServerEntity>> serverEntries = context.ChangeTracker.Entries<ServerEntity>();
+        foreach (EntityEntry<ServerEntity> entry in serverEntries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAt = utcNow;
+            }
+        }
+
+        IEnumerable<EntityEntry<SavedServerEntry>> savedEntries = context.ChangeTracker.Entries<SavedServerEntry>();
+        foreach (EntityEntry<SavedServerEntry> entry in savedEntries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAt = utcNow;
+            }
+        }
     }
 }

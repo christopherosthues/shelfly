@@ -5,6 +5,7 @@ using Shelfly.App.Data.Entities;
 using Shelfly.App.Features.Settings.Services;
 using Shelfly.App.Resources.Localization;
 using Shelfly.App.ViewModels;
+using Shelfly.Common;
 
 namespace Shelfly.App.Features.Settings;
 
@@ -30,6 +31,8 @@ public partial class SettingsViewModel(SettingsService settingsService, SyncServ
 
     [ObservableProperty]
     public partial bool HasActiveServer { get; set; }
+
+    private CancellationTokenSource? _syncCts;
 
     protected override async Task LoadAsync(CancellationToken cancellationToken)
     {
@@ -80,18 +83,26 @@ public partial class SettingsViewModel(SettingsService settingsService, SyncServ
         {
             IsSyncing = true;
 
+            _syncCts = new CancellationTokenSource();
+
             try
             {
-                ApiResult<string> result = await syncService.SyncAsync();
+                Result<string> result = await syncService.SyncAsync(_syncCts.Token);
 
                 LastSuccessfulSyncAt = result.IsSuccess ? DateTime.UtcNow : null;
                 LastSyncResult = result.IsSuccess
                     ? AppResources.SettingsPageSyncSuccessMessage
-                    : result.ErrorMessage ?? AppResources.SettingsPageSyncFailureMessage;
+                    : result.Error ?? AppResources.SettingsPageSyncFailureMessage;
+            }
+            catch (OperationCanceledException)
+            {
+                // Cancelled by navigation
             }
             finally
             {
                 IsSyncing = false;
+                _syncCts?.Dispose();
+                _syncCts = null;
             }
         }
     }
@@ -138,14 +149,16 @@ public partial class SettingsViewModel(SettingsService settingsService, SyncServ
 
         IsSyncing = true;
 
+        _syncCts = new CancellationTokenSource();
+
         try
         {
-            ApiResult<string> result = await syncService.SyncAsync();
+            Result<string> result = await syncService.SyncAsync(_syncCts.Token);
 
             LastSuccessfulSyncAt = result.IsSuccess ? DateTime.UtcNow : null;
             LastSyncResult = result.IsSuccess
                 ? AppResources.SettingsPageSyncSuccessMessage
-                : result.ErrorMessage ?? AppResources.SettingsPageSyncFailureMessage;
+                : result.Error ?? AppResources.SettingsPageSyncFailureMessage;
 
             if (result.IsSuccess)
             {
@@ -162,9 +175,22 @@ public partial class SettingsViewModel(SettingsService settingsService, SyncServ
                     AppResources.CommonOkButton);
             }
         }
+        catch (OperationCanceledException)
+        {
+            // Cancelled by navigation
+        }
         finally
         {
             IsSyncing = false;
+            _syncCts?.Dispose();
+            _syncCts = null;
         }
+    }
+
+    public override void OnNavigatingFrom()
+    {
+        _syncCts?.Cancel();
+
+        base.OnNavigatingFrom();
     }
 }

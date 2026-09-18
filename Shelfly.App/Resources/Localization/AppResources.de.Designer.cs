@@ -474,6 +474,15 @@ namespace Shelfly.App.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Letzter Synchronisierungszeitpunkt für dieses Profil..
+        /// </summary>
+        internal static string BookDetailPageLastSyncAtDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageLastSyncAtDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Letzte Synchronisation.
         /// </summary>
         internal static string BookDetailPageLastSyncAtLabel {
@@ -488,6 +497,15 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookDetailPageNoBookmarksText {
             get {
                 return ResourceManager.GetString("BookDetailPageNoBookmarksText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Noch keine Synchronisierungshistorie.
+        /// </summary>
+        internal static string BookDetailPageNoSyncedProfilesText {
+            get {
+                return ResourceManager.GetString("BookDetailPageNoSyncedProfilesText", resourceCulture);
             }
         }
         
@@ -542,6 +560,24 @@ namespace Shelfly.App.Resources.Localization {
         internal static string BookDetailPageSoftDeleteBookDescription {
             get {
                 return ResourceManager.GetString("BookDetailPageSoftDeleteBookDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronisierter Profileintrag mit Benutzername und letztem Synchronisierungszeitpunkt..
+        /// </summary>
+        internal static string BookDetailPageSyncedProfileEntryDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageSyncedProfileEntryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liste der Profile, mit denen dieses Buch synchronisiert wurde..
+        /// </summary>
+        internal static string BookDetailPageSyncedProfilesSectionDescription {
+            get {
+                return ResourceManager.GetString("BookDetailPageSyncedProfilesSectionDescription", resourceCulture);
             }
         }
         
