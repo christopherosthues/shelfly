@@ -1,0 +1,1303 @@
+openapi: "3.1.0"
+
+info:
+  title: Shelfly API
+  description: Reading companion for managing bookmarks of physical books
+  version: "v1"
+  contact:
+    name: Shelfly Team
+
+servers:
+  - url: http://localhost:5000
+    description: Development environment
+  - url: https://api.shelfly.local
+    description: Production environment
+
+paths:
+  /v1/auth/register:
+    post:
+      summary: Register a new user
+      operationId: RegisterUser
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+        "400":
+          description: Validation error — email format, password strength, duplicate user
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: User already exists with this email
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /v1/auth/login:
+    post:
+      summary: Authenticate user and obtain JWT token
+      operationId: LoginUser
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Validation error — missing fields, format errors
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Authentication failed — email or password incorrect
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /v1/auth/refresh:
+    post:
+      summary: Refresh access token using refresh token
+      operationId: RefreshToken
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshRequest"
+      responses:
+        "200":
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Validation error — missing or malformed refresh token
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — refresh token expired, revoked, or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /v1/books:
+    get:
+      summary: List books
+      operationId: GetBooks
+      tags:
+        - Books
+      parameters:
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Successful response with book list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Book"
+                  totalCount:
+                    type: integer
+                    description: Total number of books matching query
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    post:
+      summary: Create a new book
+      operationId: CreateBook
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookCreate"
+      responses:
+        "201":
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Validation error — ISBN format, missing required fields
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict — ISBN already exists for this user
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+  /v1/books/{id}:
+    get:
+      summary: Get book by ID
+      operationId: GetBookById
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful response with book details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Bad Request — invalid UUID format in path parameter
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Book not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "410":
+          description: Gone — book soft-deleted (DeletedAt is set) and awaiting cleanup or hard deletion
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    put:
+      summary: Update book by ID
+      operationId: UpdateBook
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookUpdate"
+      responses:
+        "200":
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Validation error — ISBN format, missing required fields
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Book not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict — ISBN already exists for another book owned by this user
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "410":
+          description: Gone — book soft-deleted (DeletedAt is set) and awaiting cleanup or hard deletion
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    patch:
+      summary: Partially update book by ID
+      operationId: PatchBook
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookPatch"
+      responses:
+        "200":
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Validation error — ISBN format, missing required fields
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Book not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict — ISBN already exists for another book owned by this user
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "410":
+          description: Gone — book soft-deleted (DeletedAt is set) and awaiting cleanup or hard deletion
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    delete:
+      summary: Soft-delete book by ID
+      operationId: DeleteBook
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Book soft-deleted successfully (DeletedAt timestamp set)
+        "400":
+          description: Bad Request — invalid UUID format in path parameter
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Book not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "410":
+          description: Gone — book already soft-deleted (DeletedAt is set)
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+  /v1/bookmarks:
+    get:
+      summary: List bookmarks
+      operationId: GetBookmarks
+      tags:
+        - Bookmarks
+      parameters:
+        - name: bookId
+          in: query
+          description: Filter by parent book ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Successful response with bookmark list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Bookmark"
+                  totalCount:
+                    type: integer
+                    description: Total number of bookmarks matching query
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    post:
+      summary: Create a new bookmark
+      operationId: CreateBookmark
+      tags:
+        - Bookmarks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookmarkCreate"
+      responses:
+        "201":
+          description: Bookmark created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bookmark"
+        "400":
+          description: Validation error — page numbers, parent book reference
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict — page range overlaps with existing bookmark for this book
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+  /v1/bookmarks/{id}:
+    get:
+      summary: Get bookmark by ID
+      operationId: GetBookmarkById
+      tags:
+        - Bookmarks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful response with bookmark details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bookmark"
+        "400":
+          description: Bad Request — invalid UUID format in path parameter
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Bookmark not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    put:
+      summary: Update bookmark by ID
+      operationId: UpdateBookmark
+      tags:
+        - Bookmarks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookmarkUpdate"
+      responses:
+        "200":
+          description: Bookmark updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bookmark"
+        "400":
+          description: Validation error — page numbers, parent book reference
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Bookmark not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    patch:
+      summary: Partially update bookmark by ID
+      operationId: PatchBookmark
+      tags:
+        - Bookmarks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookmarkPatch"
+      responses:
+        "200":
+          description: Bookmark updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bookmark"
+        "400":
+          description: Validation error — page numbers, parent book reference
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Bookmark not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+    delete:
+      summary: Hard-delete bookmark by ID
+      operationId: DeleteBookmark
+      tags:
+        - Bookmarks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Bookmark hard-deleted successfully (physical row removal)
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Bookmark not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "400":
+          description: Bad Request — invalid UUID format in path parameter
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+  /v1/trash:
+    get:
+      summary: List soft-deleted books in trash
+      operationId: GetTrashItems
+      tags:
+        - Trash
+      parameters:
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: since
+          in: query
+          description: Return items modified after this timestamp (for synchronization)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Successful response with trash list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TrashItem"
+                  totalCount:
+                    type: integer
+                    description: Total number of items in trash
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+  /v1/trash/{id}/restore:
+    post:
+      summary: Restore soft-deleted book from trash
+      operationId: RestoreTrashItem
+      tags:
+        - Trash
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Book restored successfully (DeletedAt cleared)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Bad Request — invalid UUID format in path parameter
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Book not found in trash
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "410":
+          description: Gone — item already restored or permanently cleaned up
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+  /v1/trash/{id}:
+    delete:
+      summary: Hard-delete book from trash (permanent removal)
+      operationId: DeleteTrashItem
+      tags:
+        - Trash
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Book permanently deleted from trash
+        "400":
+          description: Bad Request — invalid UUID format in path parameter
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized — JWT token missing or invalid
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Book not found in trash
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "410":
+          description: Gone — item already permanently deleted from trash
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+      security:
+        - bearerAuth: []
+
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - isbn
+        - publisher
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Entity identifier (UUID v7, time-ordered)
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          minLength: 1
+          maxLength: 200
+        isbn:
+          type: string
+          pattern: "^(97[89][0-9]{10}|[0-9]{10})$"
+          description: ISBN-10 or ISBN-13 format
+        publisher:
+          type: string
+          minLength: 1
+          maxLength: 200
+        publishDate:
+          type: string
+          format: date
+          nullable: true
+          description: Publication date (ISO 8601)
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        lastModifiedAt:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Soft deletion timestamp; null = active
+
+    BookCreate:
+      type: object
+      required:
+        - title
+        - author
+        - isbn
+        - publisher
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          minLength: 1
+          maxLength: 200
+        isbn:
+          type: string
+          pattern: "^(97[89][0-9]{10}|[0-9]{10})$"
+          description: ISBN-10 or ISBN-13 format
+        publisher:
+          type: string
+          minLength: 1
+          maxLength: 200
+        publishDate:
+          type: string
+          format: date
+          nullable: true
+          description: Publication date (ISO 8601)
+
+    BookUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          minLength: 1
+          maxLength: 200
+        isbn:
+          type: string
+          pattern: "^(97[89][0-9]{10}|[0-9]{10})$"
+          description: ISBN-10 or ISBN-13 format
+        publisher:
+          type: string
+          minLength: 1
+          maxLength: 200
+        publishDate:
+          type: string
+          format: date
+          nullable: true
+          description: Publication date (ISO 8601)
+
+    BookPatch:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          minLength: 1
+          maxLength: 200
+        isbn:
+          type: string
+          pattern: "^(97[89][0-9]{10}|[0-9]{10})$"
+          description: ISBN-10 or ISBN-13 format
+        publisher:
+          type: string
+          minLength: 1
+          maxLength: 200
+        publishDate:
+          type: string
+          format: date
+          nullable: true
+          description: Publication date (ISO 8601)
+
+    Bookmark:
+      type: object
+      required:
+        - id
+        - bookId
+        - startPage
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Entity identifier (UUID v7, time-ordered)
+        bookId:
+          type: string
+          format: uuid
+          description: Parent book reference; cascade delete on parent hard deletion
+        startPage:
+          type: integer
+          minimum: 1
+          description: Starting page number
+        endPage:
+          type: integer
+          nullable: true
+          description: Ending page number (for multi-page bookmarks); must be >= startPage
+        note:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: User annotation text
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        lastModifiedAt:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+          description: Last modification timestamp; used for last-write-wins synchronization
+
+    BookmarkCreate:
+      type: object
+      required:
+        - bookId
+        - startPage
+      properties:
+        bookId:
+          type: string
+          format: uuid
+          description: Parent book reference
+        startPage:
+           type: integer
+           minimum: 1
+           description: Starting page number
+        endPage:
+          type: integer
+          nullable: true
+          description: Ending page number (for multi-page bookmarks); must be >= startPage
+        note:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: User annotation text
+
+    BookmarkUpdate:
+      type: object
+      properties:
+        bookId:
+          type: string
+          format: uuid
+          description: Parent book reference
+        startPage:
+          type: integer
+          minimum: 1
+          description: Starting page number
+        endPage:
+          type: integer
+          nullable: true
+          description: Ending page number (for multi-page bookmarks); must be >= startPage
+        note:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: User annotation text
+
+    BookmarkPatch:
+      type: object
+      properties:
+        bookId:
+          type: string
+          format: uuid
+          description: Parent book reference
+        startPage:
+          type: integer
+          minimum: 1
+          description: Starting page number
+        endPage:
+          type: integer
+          nullable: true
+          description: Ending page number (for multi-page bookmarks); must be >= startPage
+        note:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: User annotation text
+
+    TrashItem:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - isbn
+        - publisher
+        - createdAt
+        - deletedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Entity identifier (UUID v7, time-ordered)
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          minLength: 1
+          maxLength: 200
+        isbn:
+          type: string
+          pattern: "^(97[89][0-9]{10}|[0-9]{10})$"
+          description: ISBN-10 or ISBN-13 format
+        publisher:
+          type: string
+          minLength: 1
+          maxLength: 200
+        publishDate:
+          type: string
+          format: date
+          nullable: true
+          description: Publication date (ISO 8601)
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        lastModifiedAt:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+          description: Last modification timestamp; used for synchronization
+        deletedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Soft deletion timestamp; present when item is in trash
+
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address (used as username)
+        password:
+          type: string
+          format: password
+          minLength: 8
+          description: User password
+
+    RegisterResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: Newly created user identifier
+        email:
+          type: string
+          format: email
+          description: Registered email address
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+         email:
+           type: string
+           format: email
+           description: User email address
+         password:
+           type: string
+           format: password
+           description: User password
+
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: Keycloak-issued JWT token for API authentication
+        refreshToken:
+          type: string
+          description: Keycloak-issued refresh token for obtaining new access tokens
+        tokenType:
+          type: string
+          example: "Bearer"
+        expiresIn:
+           type: integer
+           description: Token lifetime in seconds
+
+    RefreshRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          description: Keycloak-issued refresh token from login response
+
+    ProblemDetails:
+      type: object
+      description: RFC 7807 Problem Details error response
+      properties:
+        type:
+          type: string
+          description: Error type URI (e.g., https:// Shelfly/errors/validation)
+          example: "https://shelfly.com/errors/validation"
+        title:
+          type: string
+          description: Human-readable error title
+          example: "Validation Failed"
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: Detailed error message
+          example: "ISBN format invalid"
+        instance:
+          type: string
+          description: Request path identifier
+          example: "/v1/books"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Keycloak-issued JWT token with audience validation.
+        The API validates tokens against the configured issuer using JWKS discovery.
+        Custom JwtAudienceValidator checks `aud` claim; mismatch returns 401 Unauthorized.
