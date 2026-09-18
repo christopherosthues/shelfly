@@ -42,6 +42,7 @@ docker compose up                          # API only
 
 - **Centralized packages**: NuGet versions pinned in `Directory.Packages.props`; add packages there, not in `.csproj`.
 - **global.json**: `<allowPrerelease>true</allowPrerelease>` with `rollForward: latestMajor`.
+- **Package permissions**: No new packages may be added without explicit user permission. Only stable (GA) versions are allowed — no alpha, beta, preview, rc, or other prerelease suffixes.
 
 ## Coding Standards
 
