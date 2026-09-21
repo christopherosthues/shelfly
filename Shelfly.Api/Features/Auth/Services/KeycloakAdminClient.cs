@@ -5,7 +5,6 @@ namespace Shelfly.Api.Features.Auth.Services;
 public class KeycloakAdminClient(IHttpClientFactory httpClientFactory, ILogger<KeycloakAdminClient> logger)
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("Keycloak");
-    private readonly ILogger<KeycloakAdminClient> _logger = logger;
 
     public async Task<HttpResponseMessage> CreateUserAsync(string realm, string email, string password, CancellationToken cancellationToken)
     {
@@ -22,7 +21,7 @@ public class KeycloakAdminClient(IHttpClientFactory httpClientFactory, ILogger<K
             requestContent,
             cancellationToken);
 
-        _logger.LogInformation("Created user {Email} in realm {Realm}", email, realm);
+        logger.LogInformation("Created user {Email} in realm {Realm}", email, realm);
 
         return response;
     }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Shelfly.Api.Features.Auth.DTOs;
 using Shelfly.Api.Features.Auth.Services;
 using Shelfly.Common;
@@ -23,12 +24,12 @@ public static class RefreshEndpoint
             return Ok(result.Value);
         }
 
-        return Json(new
+        return Json(new ProblemDetails
         {
-            status = 401,
-            title = "Unauthorized",
-            detail = result.Error,
-            type = "https://tools.ietf.org/html/rfc7807#section-2.1"
+            Status = 401,
+            Title = "Unauthorized",
+            Detail = result.Error,
+            Type = "https://tools.ietf.org/html/rfc7807#section-2.1"
         }, statusCode: 401);
     }
 }
