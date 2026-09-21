@@ -149,11 +149,11 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 4
 
-- [ ] T037 [P] [US4] Create ResetPasswordRequestDto in `Shelfly.Api/Features/Auth/DTOs/ResetPasswordRequestDto.cs` with Email property
-- [ ] T038 [P] [US4] Implement ResetPasswordRequestValidator in `Shelfly.Api/Features/Auth/Validators/ResetPasswordRequestValidator.cs` using FluentValidation with email format rule
-- [ ] T039 [US4] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with ResetPasswordAsync method signature returning AuthResult<string> for confirmation message
-- [ ] T040 [US4] Implement AuthService.ResetPasswordAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak Admin API (`POST /admin/realms/{realm}/users/{id}/execute-actions-email` with ACTION: UPDATE_PASSWORD) and 404 handling for unregistered emails
-- [ ] T041 [US4] Implement ResetPasswordEndpoint in `Shelfly.Api/Features/Auth/Endpoints/ResetPasswordEndpoint.cs` mapping POST `/v1/auth/reset-password` with FluentValidation and RFC 7807 Problem Details error responses
+- [X] T037 [P] [US4] Create ResetPasswordRequestDto in `Shelfly.Api/Features/Auth/DTOs/ResetPasswordRequestDto.cs` with Email property
+- [X] T038 [P] [US4] Implement ResetPasswordRequestValidator in `Shelfly.Api/Features/Auth/Validators/ResetPasswordRequestValidator.cs` using FluentValidation with email format rule
+- [X] T039 [US4] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with ResetPasswordAsync method signature returning AuthResult<string> for confirmation message
+- [X] T040 [US4] Implement AuthService.ResetPasswordAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak Admin API (`POST /admin/realms/{realm}/users/{id}/execute-actions-email` with ACTION: UPDATE_PASSWORD) and 404 handling for unregistered emails
+- [X] T041 [US4] Implement ResetPasswordEndpoint in `Shelfly.Api/Features/Auth/Endpoints/ResetPasswordEndpoint.cs` mapping POST `/v1/auth/reset-password` with FluentValidation and RFC 7807 Problem Details error responses
 - [ ] T042 [US4] Add OpenTelemetry span attributes for password reset events (email, outcome) in `Shelfly.Api/Features/Auth/Endpoints/ResetPasswordEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional
@@ -164,10 +164,10 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T043 [P] Update AuthEndpointExtensions in `Shelfly.Api/Extensions/AuthEndpointExtensions.cs` to register all authentication endpoints with proper route grouping
-- [ ] T044 Add comprehensive error handling middleware for Keycloak connectivity failures (502 Bad Gateway) in `Shelfly.Api/Program.cs`
+- [X] T043 [P] Update AuthEndpointExtensions in `Shelfly.Api/Extensions/AuthEndpointExtensions.cs` to register all authentication endpoints with proper route grouping
+- [X] T044 Add comprehensive error handling middleware for Keycloak connectivity failures (502 Bad Gateway) in `Shelfly.Api/Program.cs`
 - [ ] T045 [P] Run quickstart.md validation scenarios covering registration, login, token refresh, password reset, and rate limiting flows
-- [ ] T046 Code cleanup and refactoring across all authentication components
+- [X] T046 Code cleanup and refactoring across all authentication components
 - [ ] T047 Security hardening: verify JWT audience validation, token expiration handling, and sensitive data masking in logs
 
 ---

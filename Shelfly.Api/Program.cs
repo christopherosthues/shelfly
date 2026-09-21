@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -64,3 +65,23 @@ app.UseHttpsRedirection();
 
 // Map authentication endpoints
 app.MapAuthEndpoints();
+
+// Global error handling middleware for Keycloak connectivity failures
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke(context);
+    }
+    catch (Exception ex) when (ex.Message.Contains("Keycloak") || (ex.InnerException?.Message.Contains("Keycloak") ?? false))
+    {
+        context.Response.StatusCode = StatusCodes.Status502BadGateway;
+        await context.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Status = 502,
+            Title = "Bad Gateway",
+            Detail = "Keycloak service temporarily unavailable",
+            Type = "https://tools.ietf.org/html/rfc7807#section-2.1"
+        });
+    }
+});
