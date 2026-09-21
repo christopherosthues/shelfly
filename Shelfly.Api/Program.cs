@@ -1,10 +1,14 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shelfly.Api.Extensions;
 using Shelfly.Api.Features.Auth.Services;
+using Shelfly.Api.Features.HealthChecks.DTOs;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,10 @@ builder.Logging.AddOpenTelemetry();
 // Add services to the container.
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+
+// Health check services
+builder.Services.AddHealthChecks()
+    .AddCheck("liveness", () => HealthCheckResult.Healthy("Process is running"), tags: ["live"]);
 
 // Configuration services
 string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")
@@ -72,8 +80,63 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Health check response writer for structured JSON output
+static async Task WriteHealthCheckResponse(HttpContext context, HealthReport report)
+{
+    IEnumerable<DependencyStatusDto> dependencies = report.Entries.Select(entry => new DependencyStatusDto(
+        entry.Key,
+        entry.Value.Status == HealthStatus.Healthy ? "Healthy" : "Unhealthy",
+        entry.Value.Status == HealthStatus.Unhealthy ? CategorizeFailure(entry.Value.Exception) : null,
+        entry.Value.Duration));
+
+    HealthCheckResponseDto response = new HealthCheckResponseDto(
+        report.Status == HealthStatus.Healthy ? "Healthy" : "Unhealthy",
+        dependencies,
+        DateTimeOffset.UtcNow);
+
+    context.Response.ContentType = "application/json";
+    JsonSerializerOptions options = new System.Text.Json.JsonSerializerOptions { WriteIndented = true };
+    await System.Text.Json.JsonSerializer.SerializeAsync(context.Response.Body, response, options);
+}
+
+static string? CategorizeFailure(Exception? exception)
+{
+    return exception switch
+    {
+        null => "timeout",
+        _ when exception.Message.Contains("Timeout") || exception.GetType().Name.Contains("Timeout") => "timeout",
+        _ when exception.Message.Contains("Connection") || exception.InnerException?.Message.Contains("Connection") == true => "connection refused",
+        _ => "other"
+    };
+}
+
 // Map authentication endpoints
 app.MapAuthEndpoints();
+
+// Health check endpoints
+app.MapHealthChecks("/v1/health/live", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("live"),
+    ResponseWriter = WriteHealthCheckResponse,
+    ResultStatusCodes = new Dictionary<HealthStatus, int>
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
+
+app.MapHealthChecks("/v1/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready"),
+    ResponseWriter = WriteHealthCheckResponse,
+    ResultStatusCodes = new Dictionary<HealthStatus, int>
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
 // Global error handling middleware for Keycloak connectivity failures
 app.Use(async (context, next) =>
