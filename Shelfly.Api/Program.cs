@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shelfly.Api.Extensions;
 using Shelfly.Api.Features.Auth.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddOpenTelemetry();
 
 // Add services to the container.
 builder.Services.AddAuthentication();
@@ -47,7 +50,13 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(t => t
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
+        .AddSqlClientInstrumentation()
         .AddSource("shelfly-api")
+        .AddOtlpExporter())
+    .WithMetrics(t => t
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddSqlClientInstrumentation()
         .AddOtlpExporter());
 
 WebApplication app = builder.Build();
