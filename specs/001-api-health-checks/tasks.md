@@ -65,17 +65,17 @@ Shelfly.Api.Tests/Features/HealthChecks/  # Tests
 
 ### Tests for User Story 1 ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, before implementation**
 
-- [ ] T009 [P] [US1] Unit test for liveness health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/LivenessHealthCheckTests.cs`
-- [ ] T010 [P] [US1] Contract test for `/v1/health/live` endpoint response format in `Shelfly.Api.Tests/Features/HealthChecks/Integration/HealthEndpointIntegrationTests.cs`
+- [X] T009 [P] [US1] Unit test for liveness health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/LivenessHealthCheckTests.cs`
+- [X] T010 [P] [US1] Contract test for `/v1/health/live` endpoint response format in `Shelfly.Api.Tests/Features/HealthChecks/Integration/HealthEndpointIntegrationTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Implement LivenessHealthCheck class in `Shelfly.Api/Features/HealthChecks/Checks/LivenessHealthCheck.cs`
-- [ ] T012 [US1] Register liveness health check with tag "live" in `builder.Services.AddHealthChecks()` at `Shelfly.Api/Program.cs`
-- [ ] T013 [US1] Create HealthEndpointExtensions with MapLiveHealthChecks method in `Shelfly.Api/Features/HealthChecks/Endpoints/HealthEndpointExtensions.cs`
-- [ ] T014 [US1] Map `/v1/health/live` endpoint with predicate filter for "live" tag in `Shelfly.Api/Program.cs`
+- [X] T011 [P] [US1] Implement LivenessHealthCheck class in `Shelfly.Api/Features/HealthChecks/Checks/LivenessHealthCheck.cs`
+- [X] T012 [US1] Register liveness health check with tag "live" in `builder.Services.AddHealthChecks()` at `Shelfly.Api/Program.cs`
+- [X] T013 [US1] Create HealthEndpointExtensions with MapLiveHealthChecks method in `Shelfly.Api/Features/HealthChecks/Endpoints/HealthEndpointExtensions.cs`
+- [X] T014 [US1] Map `/v1/health/live` endpoint with predicate filter for "live" tag in `Shelfly.Api/Program.cs`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -89,21 +89,21 @@ Shelfly.Api.Tests/Features/HealthChecks/  # Tests
 
 ### Tests for User Story 2 ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, before implementation**
 
-- [ ] T015 [P] [US2] Unit test for PostgreSQL health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/PostgreSQLHealthCheckTests.cs`
-- [ ] T016 [P] [US2] Unit test for MongoDB health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/MongoDBHealthCheckTests.cs`
-- [ ] T017 [P] [US2] Unit test for Keycloak health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/KeycloakHealthCheckTests.cs`
-- [ ] T018 [P] [US2] Integration test for `/v1/health/ready` with Testcontainers (PostgreSQL + MongoDB) in `Shelfly.Api.Tests/Features/HealthChecks/Integration/ReadinessEndpointIntegrationTests.cs`
+- [X] T015 [P] [US2] Unit test for PostgreSQL health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/PostgreSQLHealthCheckTests.cs`
+- [X] T016 [P] [US2] Unit test for MongoDB health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/MongoDBHealthCheckTests.cs`
+- [X] T017 [P] [US2] Unit test for Keycloak health check logic in `Shelfly.Api.Tests/Features/HealthChecks/Unit/KeycloakHealthCheckTests.cs`
+- [X] T018 [P] [US2] Integration test for `/v1/health/ready` with Testcontainers (PostgreSQL + MongoDB) in `Shelfly.Api.Tests/Features/HealthChecks/Integration/ReadinessEndpointIntegrationTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Implement PostgreSQLHealthCheck using Npgsql connection + query in `Shelfly.Api/Features/HealthChecks/Checks/PostgreSQLHealthCheck.cs`
-- [ ] T020 [P] [US2] Implement MongoDBHealthCheck using ping command on admin database in `Shelfly.Api/Features/HealthChecks/Checks/MongoDBHealthCheck.cs`
-- [ ] T021 [P] [US2] Implement KeycloakHealthCheck using HTTP GET to realm endpoint in `Shelfly.Api/Features/HealthChecks/Checks/KeycloakHealthCheck.cs`
-- [ ] T022 [US2] Register readiness health checks with tags and 3-second timeout in `builder.Services.AddHealthChecks()` at `Shelfly.Api/Program.cs`
-- [ ] T023 [US2] Add MapReadyHealthChecks method to HealthEndpointExtensions in `Shelfly.Api/Features/HealthChecks/Endpoints/HealthEndpointExtensions.cs`
-- [ ] T024 [US2] Map `/v1/health/ready` endpoint with predicate filter for "ready" tag in `Shelfly.Api/Program.cs`
+- [X] T019 [P] [US2] Implement PostgreSQLHealthCheck using Npgsql connection + query in `Shelfly.Api/Features/HealthChecks/Checks/PostgreSQLHealthCheck.cs`
+- [X] T020 [P] [US2] Implement MongoDBHealthCheck using ping command on admin database in `Shelfly.Api/Features/HealthChecks/Checks/MongoDBHealthCheck.cs`
+- [X] T021 [P] [US2] Implement KeycloakHealthCheck using HTTP GET to realm endpoint in `Shelfly.Api/Features/HealthChecks/Checks/KeycloakHealthCheck.cs`
+- [X] T022 [US2] Register readiness health checks with tags and 3-second timeout in `builder.Services.AddHealthChecks()` at `Shelfly.Api/Program.cs`
+- [X] T023 [US2] Add MapReadyHealthChecks method to HealthEndpointExtensions in `Shelfly.Api/Features/HealthChecks/Endpoints/HealthEndpointExtensions.cs`
+- [X] T024 [US2] Map `/v1/health/ready` endpoint with predicate filter for "ready" tag in `Shelfly.Api/Program.cs`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 

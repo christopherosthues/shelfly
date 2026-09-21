@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -8,7 +7,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shelfly.Api.Extensions;
 using Shelfly.Api.Features.Auth.Services;
-using Shelfly.Api.Features.HealthChecks.DTOs;
+using Shelfly.Api.Features.HealthChecks.Checks;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +17,42 @@ builder.Logging.AddOpenTelemetry();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
-// Health check services
-builder.Services.AddHealthChecks()
-    .AddCheck("liveness", () => HealthCheckResult.Healthy("Process is running"), tags: ["live"]);
+// Connection strings (required before health check registration)
+string postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSql")
+                                  ?? throw new InvalidOperationException("POSTGRESQL_CONNECTION_STRING not configured");
 
-// Configuration services
 string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")
                                ?? throw new InvalidOperationException("MONGODB_CONNECTION_STRING not configured");
+
+builder.Services.AddHealthChecks()
+    .AddCheck<LivenessHealthCheck>("liveness", tags: ["live"])
+    .Add(new HealthCheckRegistration(
+        "postgresql",
+        _ => new PostgreSQLHealthCheck(postgresConnectionString),
+        failureStatus: HealthStatus.Unhealthy,
+        tags: ["ready"],
+        timeout: TimeSpan.FromSeconds(3)))
+    .Add(new HealthCheckRegistration(
+        "mongodb",
+        _ => new MongoDbHealthCheck(mongoConnectionString),
+        failureStatus: HealthStatus.Unhealthy,
+        tags: ["ready"],
+        timeout: TimeSpan.FromSeconds(3)))
+    .Add(new HealthCheckRegistration(
+        "keycloak",
+        sp =>
+        {
+            string keycloakUrl = builder.Configuration.GetValue<string>("Keycloak:BaseUrl")
+                                 ?? throw new InvalidOperationException("Keycloak:BaseUrl not configured");
+            string realm = builder.Configuration.GetValue<string>("Keycloak:Realm")
+                          ?? "master";
+            return new KeycloakHealthCheck(new HttpClient { BaseAddress = new Uri(keycloakUrl) }, realm);
+        },
+        failureStatus: HealthStatus.Unhealthy,
+        tags: ["ready"],
+        timeout: TimeSpan.FromSeconds(3)));
+
+// Configuration services
 
 ILoggerFactory loggerFactory = LoggerFactory.Create(b => b.AddConsole());
 
@@ -80,63 +108,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Health check response writer for structured JSON output
-static async Task WriteHealthCheckResponse(HttpContext context, HealthReport report)
-{
-    IEnumerable<DependencyStatusDto> dependencies = report.Entries.Select(entry => new DependencyStatusDto(
-        entry.Key,
-        entry.Value.Status == HealthStatus.Healthy ? "Healthy" : "Unhealthy",
-        entry.Value.Status == HealthStatus.Unhealthy ? CategorizeFailure(entry.Value.Exception) : null,
-        entry.Value.Duration));
-
-    HealthCheckResponseDto response = new HealthCheckResponseDto(
-        report.Status == HealthStatus.Healthy ? "Healthy" : "Unhealthy",
-        dependencies,
-        DateTimeOffset.UtcNow);
-
-    context.Response.ContentType = "application/json";
-    JsonSerializerOptions options = new System.Text.Json.JsonSerializerOptions { WriteIndented = true };
-    await System.Text.Json.JsonSerializer.SerializeAsync(context.Response.Body, response, options);
-}
-
-static string? CategorizeFailure(Exception? exception)
-{
-    return exception switch
-    {
-        null => "timeout",
-        _ when exception.Message.Contains("Timeout") || exception.GetType().Name.Contains("Timeout") => "timeout",
-        _ when exception.Message.Contains("Connection") || exception.InnerException?.Message.Contains("Connection") == true => "connection refused",
-        _ => "other"
-    };
-}
-
 // Map authentication endpoints
 app.MapAuthEndpoints();
 
-// Health check endpoints
-app.MapHealthChecks("/v1/health/live", new HealthCheckOptions
-{
-    Predicate = check => check.Tags.Contains("live"),
-    ResponseWriter = WriteHealthCheckResponse,
-    ResultStatusCodes = new Dictionary<HealthStatus, int>
-    {
-        [HealthStatus.Healthy] = StatusCodes.Status200OK,
-        [HealthStatus.Degraded] = StatusCodes.Status200OK,
-        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-    }
-});
-
-app.MapHealthChecks("/v1/health/ready", new HealthCheckOptions
-{
-    Predicate = check => check.Tags.Contains("ready"),
-    ResponseWriter = WriteHealthCheckResponse,
-    ResultStatusCodes = new Dictionary<HealthStatus, int>
-    {
-        [HealthStatus.Healthy] = StatusCodes.Status200OK,
-        [HealthStatus.Degraded] = StatusCodes.Status200OK,
-        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-    }
-});
+// Map health check endpoints
+app.MapLiveHealthChecks();
+app.MapReadyHealthChecks();
 
 // Global error handling middleware for Keycloak connectivity failures
 app.Use(async (context, next) =>
