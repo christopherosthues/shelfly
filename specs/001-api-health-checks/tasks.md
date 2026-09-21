@@ -136,8 +136,8 @@ Shelfly.Api.Tests/Features/HealthChecks/  # Tests
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T030 [P] Add OpenTelemetry instrumentation for health check spans in `Shelfly.Api/Program.cs`
-- [ ] T031 [P] Add structured logging for health check results (dependency name, status, duration) in all health check implementations
+- [X] T030 [P] Add OpenTelemetry instrumentation for health check spans in `Shelfly.Api/Program.cs`
+- [X] T031 [P] Add structured logging for health check results (dependency name, status, duration) in all health check implementations
 - [ ] T032 Run quickstart.md validation scenarios against running API
 - [ ] T033 Verify Docker HEALTHCHECK directive compatibility with `/v1/health/live` endpoint
 

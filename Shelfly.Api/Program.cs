@@ -80,7 +80,7 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase("shelfly");
 });
 
-// OpenTelemetry instrumentation for authentication endpoints
+// OpenTelemetry instrumentation for authentication and health check endpoints
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(r => r.AddService("shelfly-api"))
     .WithTracing(t => t
@@ -88,6 +88,7 @@ builder.Services.AddOpenTelemetry()
         .AddHttpClientInstrumentation()
         .AddSqlClientInstrumentation()
         .AddSource("shelfly-api")
+        .AddSource("shelfly-health-checks")
         .AddOtlpExporter())
     .WithMetrics(t => t
         .AddAspNetCoreInstrumentation()
