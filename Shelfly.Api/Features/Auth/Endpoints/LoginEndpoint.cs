@@ -1,20 +1,35 @@
 using Microsoft.AspNetCore.Http;
-using static Microsoft.AspNetCore.Http.Results;
+using Microsoft.AspNetCore.Mvc;
+using Shelfly.Api.Features.Auth.DTOs;
 using Shelfly.Api.Features.Auth.Services;
+using Shelfly.Common;
+using static Microsoft.AspNetCore.Http.Results;
 
 namespace Shelfly.Api.Features.Auth.Endpoints;
 
 public static class LoginEndpoint
 {
     public static async Task<IResult> Handle(
-        KeycloakAdminClient keycloakAdmin,
-        IConfiguration configuration,
+        IAuthService authService,
+        LoginRequestDto request,
         ILogger logger,
         CancellationToken cancellationToken)
     {
-        string issuer = configuration.GetValue<string>("Keycloak:Issuer") ?? "";
+        Result<AuthResponseDto> result = await authService.LoginAsync(request, cancellationToken);
 
-        // TODO: Implement login logic
-        return Ok();
+        if (result.IsSuccess)
+        {
+            logger.LogInformation("User logged in: {Email}", request.Email);
+
+            return Ok(result.Value);
+        }
+
+        return Results.Json(new ProblemDetails
+        {
+            Status = 401,
+            Title = "Unauthorized",
+            Detail = result.Error,
+            Type = "https://tools.ietf.org/html/rfc7807#section-2.1"
+        }, statusCode: 401);
     }
 }

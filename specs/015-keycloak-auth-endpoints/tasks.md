@@ -97,11 +97,11 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Create LoginRequestDto in `Shelfly.Api/Features/Auth/DTOs/LoginRequestDto.cs` with Email, Password properties
-- [ ] T022 [P] [US2] Implement LoginRequestValidator in `Shelfly.Api/Features/Auth/Validators/LoginRequestValidator.cs` using FluentValidation with required email and password rules
-- [ ] T023 [US2] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with LoginAsync method signature returning AuthResult<AuthResponseDto>
-- [ ] T024 [US2] Implement AuthService.LoginAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak token endpoint (`POST {issuer}/protocol/openid-connect/token`) with rate limiting integration and 401 handling for invalid credentials
-- [ ] T025 [US2] Implement LoginEndpoint in `Shelfly.Api/Features/Auth/Endpoints/LoginEndpoint.cs` mapping POST `/v1/auth/login` with FluentValidation, rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset), and RFC 7807 Problem Details error responses
+- [X] T021 [P] [US2] Create LoginRequestDto in `Shelfly.Api/Features/Auth/DTOs/LoginRequestDto.cs` with Email, Password properties
+- [X] T022 [P] [US2] Implement LoginRequestValidator in `Shelfly.Api/Features/Auth/Validators/LoginRequestValidator.cs` using FluentValidation with required email and password rules
+- [X] T023 [US2] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with LoginAsync method signature returning AuthResult<AuthResponseDto>
+- [X] T024 [US2] Implement AuthService.LoginAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak token endpoint (`POST {issuer}/protocol/openid-connect/token`) with rate limiting integration and 401 handling for invalid credentials
+- [X] T025 [US2] Implement LoginEndpoint in `Shelfly.Api/Features/Auth/Endpoints/LoginEndpoint.cs` mapping POST `/v1/auth/login` with FluentValidation, rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset), and RFC 7807 Problem Details error responses
 - [ ] T026 [US2] Add OpenTelemetry span attributes for login events (user ID, email, outcome, rate limit status) in `Shelfly.Api/Features/Auth/Endpoints/LoginEndpoint.cs`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently

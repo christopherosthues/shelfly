@@ -77,4 +77,48 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
             return Result<AuthResponseDto>.Failure($"Registration error: {ex.Message}");
         }
     }
+
+    public async Task<Result<AuthResponseDto>> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken)
+    {
+        string issuer = _configuration.GetValue<string>("Keycloak:Issuer") 
+                       ?? _configuration.GetValue<string>("Keycloak:BaseUrl") ?? "http://localhost:8080";
+
+        try
+        {
+            HttpResponseMessage response = await _keycloakAdmin.AuthenticateAsync(issuer, request.Email, request.Password, cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync(cancellationToken);
+                Dictionary<string, object>? tokenData = JsonSerializer.Deserialize<Dictionary<string, object>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                string accessToken = tokenData?.GetValueOrDefault("access_token")?.ToString() ?? "";
+                string refreshToken = tokenData?.GetValueOrDefault("refresh_token")?.ToString() ?? "";
+                string tokenType = tokenData?.GetValueOrDefault("token_type")?.ToString() ?? "Bearer";
+
+                _logger.LogInformation("User logged in: {Email}", request.Email);
+
+                return Result<AuthResponseDto>.Success(new AuthResponseDto(
+                    accessToken,
+                    request.Email,
+                    tokenType));
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                _logger.LogWarning("Login failed for {Email}: Invalid credentials", request.Email);
+                return Result<AuthResponseDto>.Failure("Invalid email or password");
+            }
+
+            string errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
+            _logger.LogWarning("Login failed for {Email}: {Status} - {Content}", request.Email, response.StatusCode, errorContent);
+
+            return Result<AuthResponseDto>.Failure($"Login failed: {response.ReasonPhrase ?? "Unknown error"}");
+        }
+        catch (Exception ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            _logger.LogError(ex, "Login error for {Email}", request.Email);
+            return Result<AuthResponseDto>.Failure($"Login error: {ex.Message}");
+        }
+    }
 }
