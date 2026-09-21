@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Shelfly.Api.Features.HealthChecks.DTOs;
+using Shelfly.Api.Features.HealthChecks.Services;
 
 namespace Shelfly.Api.Extensions;
 
@@ -55,33 +56,10 @@ public static class HealthEndpointExtensions
     /// </summary>
     private static async Task WriteHealthCheckResponse(HttpContext context, HealthReport report)
     {
-        IEnumerable<DependencyStatusDto> dependencies = report.Entries.Select(entry => new DependencyStatusDto(
-            entry.Key,
-            entry.Value.Status == HealthStatus.Healthy ? "Healthy" : "Unhealthy",
-            entry.Value.Status == HealthStatus.Unhealthy ? CategorizeFailure(entry.Value.Exception) : null,
-            entry.Value.Duration));
-
-        HealthCheckResponseDto response = new HealthCheckResponseDto(
-            report.Status == HealthStatus.Healthy ? "Healthy" : "Unhealthy",
-            dependencies,
-            DateTimeOffset.UtcNow);
+        var response = HealthCheckResultService.CreateResponse(report);
 
         context.Response.ContentType = "application/json";
         JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
         await JsonSerializer.SerializeAsync(context.Response.Body, response, options);
-    }
-
-    /// <summary>
-    /// Categorizes failure exceptions into actionable categories.
-    /// </summary>
-    private static string? CategorizeFailure(Exception? exception)
-    {
-        return exception switch
-        {
-            null => "timeout",
-            _ when exception.Message.Contains("Timeout") || exception.GetType().Name.Contains("Timeout") => "timeout",
-            _ when exception.Message.Contains("Connection") || exception.InnerException?.Message.Contains("Connection") == true => "connection refused",
-            _ => "other"
-        };
     }
 }

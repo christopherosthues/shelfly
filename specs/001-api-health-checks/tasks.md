@@ -117,16 +117,16 @@ Shelfly.Api.Tests/Features/HealthChecks/  # Tests
 
 ### Tests for User Story 3 ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, before implementation**
 
-- [ ] T025 [P] [US3] Unit test for response writer JSON structure in `Shelfly.Api.Tests/Features/HealthChecks/Unit/HealthCheckResponseWriterTests.cs`
-- [ ] T026 [P] [US3] Contract test verifying dependency status fields in `/v1/health/ready` response in `Shelfly.Api.Tests/Features/HealthChecks/Integration/ReadinessEndpointIntegrationTests.cs`
+- [X] T025 [P] [US3] Unit test for response writer JSON structure in `Shelfly.Api.Tests/Features/HealthChecks/Unit/HealthCheckResponseWriterTests.cs`
+- [X] T026 [P] [US3] Contract test verifying dependency status fields in `/v1/health/ready` response in `Shelfly.Api.Tests/Features/HealthChecks/Integration/ReadinessEndpointIntegrationTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T027 [P] [US3] Implement HealthCheckResultService for result aggregation and failure categorization in `Shelfly.Api/Features/HealthChecks/Services/HealthCheckResultService.cs`
-- [ ] T028 [US3] Update ResponseWriter to serialize HealthCheckResponseDto with dependency details using System.Text.Json in `Shelfly.Api/Program.cs`
-- [ ] T029 [US3] Implement failure category mapping logic (timeout, connection refused, other) in `Shelfly.Api/Features/HealthChecks/Services/HealthCheckResultService.cs`
+- [X] T027 [P] [US3] Implement HealthCheckResultService for result aggregation and failure categorization in `Shelfly.Api/Features/HealthChecks/Services/HealthCheckResultService.cs`
+- [X] T028 [US3] Update ResponseWriter to serialize HealthCheckResponseDto with dependency details using System.Text.Json in `Shelfly.Api/Program.cs`
+- [X] T029 [US3] Implement failure category mapping logic (timeout, connection refused, other) in `Shelfly.Api/Features/HealthChecks/Services/HealthCheckResultService.cs`
 
 **Checkpoint**: All user stories should now be independently functional
 
