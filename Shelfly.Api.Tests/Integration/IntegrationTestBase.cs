@@ -70,6 +70,7 @@ public class IntegrationTestBase
         httpClient.DefaultRequestHeaders.Authorization = null;
     }
 
+    // TODO: uncomment after realm import is configured
     // protected async Task SeedDatabaseAsync(Action<ShelflyDbContext> seed)
     // {
     //     using IServiceScope scope = ApiFactory.Services.CreateScope();
@@ -104,6 +105,7 @@ public class IntegrationTestBase
     /// implementation deletes all data from the database.
     /// </summary>
     /// <param name="dbContext">The database context used to reset the database</param>
+    // TODO: uncomment after realm import is configured
     // private static async Task ResetDatabase(ShelflyDbContext dbContext)
     // {
     //     dbContext.Bookmarks.RemoveRange(dbContext.Bookmarks);

@@ -20,7 +20,8 @@ public class ShelflyWebApplicationFactory : WebApplicationFactory<Program>, IAsy
         .WithUsername(KeycloakConfig.TestUserName)
         .WithPassword(KeycloakConfig.TestPassword)
         .WithResourceMapping("./Import/", "/opt/keycloak/data/import")
-        .WithCommand("--import-realm")
+        // TODO: uncomment after realm import is configured
+        // .WithCommand("--import-realm")
         .WithEnvironment(new Dictionary<string, string>
         {
             {"KC_BOOTSTRAP_ADMIN_USERNAME", "admin"},
@@ -38,7 +39,8 @@ public class ShelflyWebApplicationFactory : WebApplicationFactory<Program>, IAsy
     public async Task InitializeAsync()
     {
         await _postgreSqlContainer.StartAsync(CancellationToken.None);
-        await _keycloakContainer.StartAsync(CancellationToken.None);
+        // TODO: uncomment after realm import is configured
+        // await _keycloakContainer.StartAsync(CancellationToken.None);
         await _mongoDbContainer.StartAsync(CancellationToken.None);
     }
 
@@ -48,8 +50,9 @@ public class ShelflyWebApplicationFactory : WebApplicationFactory<Program>, IAsy
         await _postgreSqlContainer.StopAsync(CancellationToken.None);
         await _postgreSqlContainer.DisposeAsync();
 
-        await _keycloakContainer.StopAsync(CancellationToken.None);
-        await _keycloakContainer.DisposeAsync();
+        // TODO: uncomment after realm import is configured
+        // await _keycloakContainer.StopAsync(CancellationToken.None);
+        // await _keycloakContainer.DisposeAsync();
 
         await _mongoDbContainer.StopAsync(CancellationToken.None);
         await _mongoDbContainer.DisposeAsync();
@@ -101,6 +104,16 @@ public class ShelflyWebApplicationFactory : WebApplicationFactory<Program>, IAsy
                     ["ConnectionStrings:MongoDb"] = mongoConnectionString
                 }));
         }
+
+        // TODO: uncomment after realm import is configured
+        // if (keycloakBaseAddress is not null)
+        // {
+            // builder.ConfigureAppConfiguration(configuration =>
+                // configuration.AddInMemoryCollection(new Dictionary<string, string?>
+                // {
+                    // ["Keycloak:BaseUrl"] = keycloakBaseAddress
+                // }));
+        // }
 
         base.ConfigureWebHost(builder);
     }
