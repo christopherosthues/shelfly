@@ -1,20 +1,34 @@
 using Microsoft.AspNetCore.Http;
-using static Microsoft.AspNetCore.Http.Results;
+using Shelfly.Api.Features.Auth.DTOs;
 using Shelfly.Api.Features.Auth.Services;
+using Shelfly.Common;
+using static Microsoft.AspNetCore.Http.Results;
 
 namespace Shelfly.Api.Features.Auth.Endpoints;
 
 public static class RefreshEndpoint
 {
     public static async Task<IResult> Handle(
-        KeycloakAdminClient keycloakAdmin,
-        IConfiguration configuration,
+        IAuthService authService,
+        RefreshRequestDto request,
         ILogger logger,
         CancellationToken cancellationToken)
     {
-        string issuer = configuration.GetValue<string>("Keycloak:Issuer") ?? "";
+        Result<AuthResponseDto> result = await authService.RefreshAsync(request, cancellationToken);
 
-        // TODO: Implement token refresh logic
-        return Ok();
+        if (result.IsSuccess)
+        {
+            logger.LogInformation("Token refreshed successfully");
+
+            return Ok(result.Value);
+        }
+
+        return Json(new
+        {
+            status = 401,
+            title = "Unauthorized",
+            detail = result.Error,
+            type = "https://tools.ietf.org/html/rfc7807#section-2.1"
+        }, statusCode: 401);
     }
 }

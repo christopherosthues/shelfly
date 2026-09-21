@@ -24,7 +24,7 @@ public static class LoginEndpoint
             return Ok(result.Value);
         }
 
-        return Results.Json(new ProblemDetails
+        return Json(new ProblemDetails
         {
             Status = 401,
             Title = "Unauthorized",

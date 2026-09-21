@@ -123,11 +123,11 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T029 [P] [US3] Create RefreshRequestDto in `Shelfly.Api/Features/Auth/DTOs/RefreshRequestDto.cs` with RefreshToken property
-- [ ] T030 [P] [US3] Implement RefreshRequestValidator in `Shelfly.Api/Features/Auth/Validators/RefreshRequestValidator.cs` using FluentValidation with required refresh token rule
-- [ ] T031 [US3] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with RefreshAsync method signature returning AuthResult<AuthResponseDto>
-- [ ] T032 [US3] Implement AuthService.RefreshAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak token endpoint (`POST {issuer}/protocol/openid-connect/token` with grant_type=refresh_token) and 401 handling for expired tokens
-- [ ] T033 [US3] Implement RefreshEndpoint in `Shelfly.Api/Features/Auth/Endpoints/RefreshEndpoint.cs` mapping POST `/v1/auth/refresh` with FluentValidation and RFC 7807 Problem Details error responses
+- [X] T029 [P] [US3] Create RefreshRequestDto in `Shelfly.Api/Features/Auth/DTOs/RefreshRequestDto.cs` with RefreshToken property
+- [X] T030 [P] [US3] Implement RefreshRequestValidator in `Shelfly.Api/Features/Auth/Validators/RefreshRequestValidator.cs` using FluentValidation with required refresh token rule
+- [X] T031 [US3] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with RefreshAsync method signature returning AuthResult<AuthResponseDto>
+- [X] T032 [US3] Implement AuthService.RefreshAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak token endpoint (`POST {issuer}/protocol/openid-connect/token` with grant_type=refresh_token) and 401 handling for expired tokens
+- [X] T033 [US3] Implement RefreshEndpoint in `Shelfly.Api/Features/Auth/Endpoints/RefreshEndpoint.cs` mapping POST `/v1/auth/refresh` with FluentValidation and RFC 7807 Problem Details error responses
 - [ ] T034 [US3] Add OpenTelemetry span attributes for refresh events (user ID from token, outcome) in `Shelfly.Api/Features/Auth/Endpoints/RefreshEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional

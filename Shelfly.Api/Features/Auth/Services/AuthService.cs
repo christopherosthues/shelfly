@@ -121,4 +121,48 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
             return Result<AuthResponseDto>.Failure($"Login error: {ex.Message}");
         }
     }
+
+    public async Task<Result<AuthResponseDto>> RefreshAsync(RefreshRequestDto request, CancellationToken cancellationToken)
+    {
+        string issuer = _configuration.GetValue<string>("Keycloak:Issuer") 
+                       ?? _configuration.GetValue<string>("Keycloak:BaseUrl") ?? "http://localhost:8080";
+
+        try
+        {
+            HttpResponseMessage response = await _keycloakAdmin.RefreshTokenAsync(issuer, request.RefreshToken, cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync(cancellationToken);
+                Dictionary<string, object>? tokenData = JsonSerializer.Deserialize<Dictionary<string, object>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                string accessToken = tokenData?.GetValueOrDefault("access_token")?.ToString() ?? "";
+                string refreshToken = tokenData?.GetValueOrDefault("refresh_token")?.ToString() ?? "";
+                string tokenType = tokenData?.GetValueOrDefault("token_type")?.ToString() ?? "Bearer";
+
+                _logger.LogInformation("Token refreshed successfully");
+
+                return Result<AuthResponseDto>.Success(new AuthResponseDto(
+                    accessToken,
+                    "",
+                    tokenType));
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                _logger.LogWarning("Token refresh failed: Expired or invalid refresh token");
+                return Result<AuthResponseDto>.Failure("Expired or invalid refresh token");
+            }
+
+            string errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
+            _logger.LogWarning("Token refresh failed: {Status} - {Content}", response.StatusCode, errorContent);
+
+            return Result<AuthResponseDto>.Failure($"Refresh failed: {response.ReasonPhrase ?? "Unknown error"}");
+        }
+        catch (Exception ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            _logger.LogError(ex, "Token refresh error");
+            return Result<AuthResponseDto>.Failure($"Refresh error: {ex.Message}");
+        }
+    }
 }
