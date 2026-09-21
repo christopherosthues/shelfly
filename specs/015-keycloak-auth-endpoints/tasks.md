@@ -76,7 +76,7 @@ description: "Task list template for feature implementation"
 - [X] T015 [US1] Implement IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with RegisterAsync method signature returning AuthResult<AuthResponseDto>
 - [X] T016 [US1] Implement AuthService.RegisterAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak Admin API (`POST /admin/realms/{realm}/users`) with 409 conflict handling for duplicate emails
 - [X] T017 [US1] Implement RegisterEndpoint in `Shelfly.Api/Features/Auth/Endpoints/RegisterEndpoint.cs` mapping POST `/v1/auth/register` with FluentValidation integration and RFC 7807 Problem Details error responses
-- [ ] T018 [US1] Add OpenTelemetry span attributes for registration events (user ID, email, outcome) in `Shelfly.Api/Features/Auth/Endpoints/RegisterEndpoint.cs`
+- [X] T018 [US1] Add OpenTelemetry span attributes for registration events (user ID, email, outcome) in `Shelfly.Api/Features/Auth/Endpoints/RegisterEndpoint.cs`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -102,7 +102,7 @@ description: "Task list template for feature implementation"
 - [X] T023 [US2] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with LoginAsync method signature returning AuthResult<AuthResponseDto>
 - [X] T024 [US2] Implement AuthService.LoginAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak token endpoint (`POST {issuer}/protocol/openid-connect/token`) with rate limiting integration and 401 handling for invalid credentials
 - [X] T025 [US2] Implement LoginEndpoint in `Shelfly.Api/Features/Auth/Endpoints/LoginEndpoint.cs` mapping POST `/v1/auth/login` with FluentValidation, rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset), and RFC 7807 Problem Details error responses
-- [ ] T026 [US2] Add OpenTelemetry span attributes for login events (user ID, email, outcome, rate limit status) in `Shelfly.Api/Features/Auth/Endpoints/LoginEndpoint.cs`
+- [X] T026 [US2] Add OpenTelemetry span attributes for login events (user ID, email, outcome, rate limit status) in `Shelfly.Api/Features/Auth/Endpoints/LoginEndpoint.cs`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -128,7 +128,7 @@ description: "Task list template for feature implementation"
 - [X] T031 [US3] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with RefreshAsync method signature returning AuthResult<AuthResponseDto>
 - [X] T032 [US3] Implement AuthService.RefreshAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak token endpoint (`POST {issuer}/protocol/openid-connect/token` with grant_type=refresh_token) and 401 handling for expired tokens
 - [X] T033 [US3] Implement RefreshEndpoint in `Shelfly.Api/Features/Auth/Endpoints/RefreshEndpoint.cs` mapping POST `/v1/auth/refresh` with FluentValidation and RFC 7807 Problem Details error responses
-- [ ] T034 [US3] Add OpenTelemetry span attributes for refresh events (user ID from token, outcome) in `Shelfly.Api/Features/Auth/Endpoints/RefreshEndpoint.cs`
+- [X] T034 [US3] Add OpenTelemetry span attributes for refresh events (user ID from token, outcome) in `Shelfly.Api/Features/Auth/Endpoints/RefreshEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -154,7 +154,7 @@ description: "Task list template for feature implementation"
 - [X] T039 [US4] Extend IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with ResetPasswordAsync method signature returning AuthResult<string> for confirmation message
 - [X] T040 [US4] Implement AuthService.ResetPasswordAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak Admin API (`POST /admin/realms/{realm}/users/{id}/execute-actions-email` with ACTION: UPDATE_PASSWORD) and 404 handling for unregistered emails
 - [X] T041 [US4] Implement ResetPasswordEndpoint in `Shelfly.Api/Features/Auth/Endpoints/ResetPasswordEndpoint.cs` mapping POST `/v1/auth/reset-password` with FluentValidation and RFC 7807 Problem Details error responses
-- [ ] T042 [US4] Add OpenTelemetry span attributes for password reset events (email, outcome) in `Shelfly.Api/Features/Auth/Endpoints/ResetPasswordEndpoint.cs`
+- [X] T042 [US4] Add OpenTelemetry span attributes for password reset events (email, outcome) in `Shelfly.Api/Features/Auth/Endpoints/ResetPasswordEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -166,9 +166,9 @@ description: "Task list template for feature implementation"
 
 - [X] T043 [P] Update AuthEndpointExtensions in `Shelfly.Api/Extensions/AuthEndpointExtensions.cs` to register all authentication endpoints with proper route grouping
 - [X] T044 Add comprehensive error handling middleware for Keycloak connectivity failures (502 Bad Gateway) in `Shelfly.Api/Program.cs`
-- [ ] T045 [P] Run quickstart.md validation scenarios covering registration, login, token refresh, password reset, and rate limiting flows
+- [ ] T045 [P] Run quickstart.md validation scenarios covering registration, login, token refresh, password reset, and rate limiting flows _(deferred - requires infrastructure setup)_
 - [X] T046 Code cleanup and refactoring across all authentication components
-- [ ] T047 Security hardening: verify JWT audience validation, token expiration handling, and sensitive data masking in logs
+- [ ] T047 Security hardening: verify JWT audience validation, token expiration handling, and sensitive data masking in logs _(deferred - requires manual verification)_
 
 ---
 
