@@ -70,12 +70,12 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create RegisterRequestDto in `Shelfly.Api/Features/Auth/DTOs/RegisterRequestDto.cs` with Email, Password, FirstName, LastName properties
-- [ ] T013 [P] [US1] Create AuthResponseDto in `Shelfly.Api/Features/Auth/DTOs/AuthResponseDto.cs` with UserId, Email, Status properties for registration confirmation
-- [ ] T014 [P] [US1] Implement RegisterRequestValidator in `Shelfly.Api/Features/Auth/Validators/RegisterRequestValidator.cs` using FluentValidation with email format and 8-character minimum password rules
-- [ ] T015 [US1] Implement IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with RegisterAsync method signature returning AuthResult<AuthResponseDto>
-- [ ] T016 [US1] Implement AuthService.RegisterAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak Admin API (`POST /admin/realms/{realm}/users`) with 409 conflict handling for duplicate emails
-- [ ] T017 [US1] Implement RegisterEndpoint in `Shelfly.Api/Features/Auth/Endpoints/RegisterEndpoint.cs` mapping POST `/v1/auth/register` with FluentValidation integration and RFC 7807 Problem Details error responses
+- [X] T012 [P] [US1] Create RegisterRequestDto in `Shelfly.Api/Features/Auth/DTOs/RegisterRequestDto.cs` with Email, Password, FirstName, LastName properties
+- [X] T013 [P] [US1] Create AuthResponseDto in `Shelfly.Api/Features/Auth/DTOs/AuthResponseDto.cs` with UserId, Email, Status properties for registration confirmation
+- [X] T014 [P] [US1] Implement RegisterRequestValidator in `Shelfly.Api/Features/Auth/Validators/RegisterRequestValidator.cs` using FluentValidation with email format and 8-character minimum password rules
+- [X] T015 [US1] Implement IAuthService interface in `Shelfly.Api/Features/Auth/Services/IAuthService.cs` with RegisterAsync method signature returning AuthResult<AuthResponseDto>
+- [X] T016 [US1] Implement AuthService.RegisterAsync in `Shelfly.Api/Features/Auth/Services/AuthService.cs` delegating to Keycloak Admin API (`POST /admin/realms/{realm}/users`) with 409 conflict handling for duplicate emails
+- [X] T017 [US1] Implement RegisterEndpoint in `Shelfly.Api/Features/Auth/Endpoints/RegisterEndpoint.cs` mapping POST `/v1/auth/register` with FluentValidation integration and RFC 7807 Problem Details error responses
 - [ ] T018 [US1] Add OpenTelemetry span attributes for registration events (user ID, email, outcome) in `Shelfly.Api/Features/Auth/Endpoints/RegisterEndpoint.cs`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently

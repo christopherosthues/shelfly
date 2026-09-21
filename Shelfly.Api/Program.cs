@@ -30,11 +30,13 @@ string realm = builder.Configuration.GetValue<string>("Keycloak:Realm")
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<KeycloakAdminClient>();
 builder.Services.AddScoped<RateLimitService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddProblemDetails();
 
 // MongoDB resilience with Polly retry policy
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
-    var client = new MongoClient(mongoConnectionString);
+    MongoClient client = new MongoClient(mongoConnectionString);
     return client.GetDatabase("shelfly");
 });
 

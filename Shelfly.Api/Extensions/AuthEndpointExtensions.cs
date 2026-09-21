@@ -7,7 +7,7 @@ public static class AuthEndpointExtensions
 {
     public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("v1/auth");
+        RouteGroupBuilder group = routes.MapGroup("v1/auth");
 
         group.MapPost("/register", RegisterEndpoint.Handle);
         group.MapPost("/login", LoginEndpoint.Handle);

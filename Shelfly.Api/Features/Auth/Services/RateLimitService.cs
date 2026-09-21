@@ -10,13 +10,13 @@ public class RateLimitService(IMongoDatabase mongoDatabase, ILogger<RateLimitSer
 
     public async Task<bool> IsLockedOutAsync(string email, CancellationToken cancellationToken)
     {
-        var windowStart = DateTimeOffset.UtcNow.AddMinutes(-15);
+        DateTimeOffset windowStart = DateTimeOffset.UtcNow.AddMinutes(-15);
 
-        var filter = Builders<LoginAttemptRecord>.Filter.And(
+        FilterDefinition<LoginAttemptRecord> filter = Builders<LoginAttemptRecord>.Filter.And(
             Builders<LoginAttemptRecord>.Filter.Eq(r => r.Email, email),
             Builders<LoginAttemptRecord>.Filter.Gte(r => r.Timestamp, windowStart));
 
-        var count = await _loginAttempts.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+        long count = await _loginAttempts.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 
         bool lockedOut = count >= 10;
 
@@ -30,20 +30,20 @@ public class RateLimitService(IMongoDatabase mongoDatabase, ILogger<RateLimitSer
 
     public async Task<RateLimitStatus> RecordLoginAttemptAsync(string email, bool success, CancellationToken cancellationToken)
     {
-        var record = new LoginAttemptRecord(Guid.CreateVersion7(), email, DateTimeOffset.UtcNow, success);
+        LoginAttemptRecord record = new LoginAttemptRecord(Guid.CreateVersion7(), email, DateTimeOffset.UtcNow, success);
 
         await _loginAttempts.InsertOneAsync(record, cancellationToken: cancellationToken);
 
         if (!success)
         {
-            var windowStart = DateTimeOffset.UtcNow.AddMinutes(-1);
+            DateTimeOffset windowStart = DateTimeOffset.UtcNow.AddMinutes(-1);
 
-            var filter = Builders<LoginAttemptRecord>.Filter.And(
+            FilterDefinition<LoginAttemptRecord> filter = Builders<LoginAttemptRecord>.Filter.And(
                 Builders<LoginAttemptRecord>.Filter.Eq(r => r.Email, email),
                 Builders<LoginAttemptRecord>.Filter.Gte(r => r.Timestamp, windowStart),
                 Builders<LoginAttemptRecord>.Filter.Eq(r => r.Success, false));
 
-            var recentFailures = await _loginAttempts.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+            long recentFailures = await _loginAttempts.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 
             if (recentFailures >= 5)
             {
@@ -56,14 +56,14 @@ public class RateLimitService(IMongoDatabase mongoDatabase, ILogger<RateLimitSer
 
     public async Task<int> GetRemainingAttemptsAsync(string email, CancellationToken cancellationToken)
     {
-        var windowStart = DateTimeOffset.UtcNow.AddMinutes(-1);
+        DateTimeOffset windowStart = DateTimeOffset.UtcNow.AddMinutes(-1);
 
-        var filter = Builders<LoginAttemptRecord>.Filter.And(
+        FilterDefinition<LoginAttemptRecord> filter = Builders<LoginAttemptRecord>.Filter.And(
             Builders<LoginAttemptRecord>.Filter.Eq(r => r.Email, email),
             Builders<LoginAttemptRecord>.Filter.Gte(r => r.Timestamp, windowStart),
             Builders<LoginAttemptRecord>.Filter.Eq(r => r.Success, false));
 
-        var recentFailures = await _loginAttempts.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+        long recentFailures = await _loginAttempts.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 
         return Math.Max(0, 5 - (int)recentFailures);
     }
