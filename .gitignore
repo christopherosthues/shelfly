@@ -13,3 +13,5 @@ Thumbs.db
 .vscode/
 envfiles/*.env
 !envfiles/*.env.example
+**/licenses/
+*.txt

@@ -41,6 +41,29 @@
     profiles:
       - db-init
 
+  shelfly-mongo-init:
+    image: mongodb/mongodb-community-server:8.3.2-ubuntu2204-slim
+    restart: no
+    environment:
+      - MONGO_HOST=mongodb
+      - MONGODB_ROOT_USER=${MONGODB_ROOT_USER}
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - MONGODB_SHELFLY_DATABASE=${MONGODB_SHELFLY_DATABASE}
+      - MONGODB_SHELFLY_CONFIG_USER=${MONGODB_SHELFLY_CONFIG_USER}
+      - MONGODB_SHELFLY_CONFIG_PASSWORD=${MONGODB_SHELFLY_CONFIG_PASSWORD}
+    volumes:
+      - ./database/mongodb/01-create-shelfly-mongo-user.sh:/mongo-init.sh:ro
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    entrypoint:
+      - /bin/bash
+      - /mongo-init.sh
+    networks:
+      - application_network
+    profiles:
+      - mongo-init
+
   shelfly-kc-import:
     build:
       context: ./keycloak
