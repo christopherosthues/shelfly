@@ -72,7 +72,7 @@ public class KeycloakAdminClient(IHttpClientFactory httpClientFactory, ILogger<K
 
     public async Task<HttpResponseMessage> ExecutePasswordResetActionAsync(string realm, string userId, CancellationToken cancellationToken)
     {
-        string[] actions = new[] { "UPDATE_PASSWORD" };
+        string[] actions = ["UPDATE_PASSWORD"];
 
         HttpResponseMessage response = await _httpClient.PostAsync(
             $"admin/realms/{realm}/users/{userId}/execute-actions-email",

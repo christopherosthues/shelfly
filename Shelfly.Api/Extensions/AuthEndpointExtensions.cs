@@ -1,4 +1,3 @@
-using System.Net.Http.Headers;
 using Shelfly.Api.Features.Auth.Endpoints;
 
 namespace Shelfly.Api.Extensions;

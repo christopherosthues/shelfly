@@ -1,5 +1,5 @@
-using System.Net.Http.Headers;
 using System.Text.Json;
+using System.IdentityModel.Tokens.Jwt;
 using Shelfly.Api.Features.Auth.DTOs;
 using Shelfly.Common;
 
@@ -52,9 +52,12 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
                 logger.LogInformation("Registered user {Email} with ID {UserId}", request.Email, userId);
 
                 return Result<AuthResponseDto>.Success(new AuthResponseDto(
-                    userId,
-                    request.Email,
-                    "active"));
+                    "",
+                    "",
+                    "Bearer",
+                    0,
+                    0,
+                    userId));
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
@@ -91,13 +94,25 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
                 string accessToken = tokenData?.GetValueOrDefault("access_token")?.ToString() ?? "";
                 string refreshToken = tokenData?.GetValueOrDefault("refresh_token")?.ToString() ?? "";
                 string tokenType = tokenData?.GetValueOrDefault("token_type")?.ToString() ?? "Bearer";
+                int expiresIn = tokenData?.GetValueOrDefault("expires_in") is int exp ? exp : 0;
+                int refreshExpiresIn = tokenData?.GetValueOrDefault("refresh_expires_in") is int refExp ? refExp : 0;
+
+                string userId = "";
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    JwtSecurityToken jwtToken = new(accessToken);
+                    userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "";
+                }
 
                 logger.LogInformation("User logged in: {Email}", request.Email);
 
                 return Result<AuthResponseDto>.Success(new AuthResponseDto(
                     accessToken,
-                    request.Email,
-                    tokenType));
+                    refreshToken,
+                    tokenType,
+                    expiresIn,
+                    refreshExpiresIn,
+                    userId));
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -135,13 +150,25 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
                 string accessToken = tokenData?.GetValueOrDefault("access_token")?.ToString() ?? "";
                 string refreshToken = tokenData?.GetValueOrDefault("refresh_token")?.ToString() ?? "";
                 string tokenType = tokenData?.GetValueOrDefault("token_type")?.ToString() ?? "Bearer";
+                int expiresIn = tokenData?.GetValueOrDefault("expires_in") is int exp ? exp : 0;
+                int refreshExpiresIn = tokenData?.GetValueOrDefault("refresh_expires_in") is int refExp ? refExp : 0;
+
+                string userId = "";
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    JwtSecurityToken jwtToken = new(accessToken);
+                    userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "";
+                }
 
                 logger.LogInformation("Token refreshed successfully");
 
                 return Result<AuthResponseDto>.Success(new AuthResponseDto(
                     accessToken,
-                    "",
-                    tokenType));
+                    refreshToken,
+                    tokenType,
+                    expiresIn,
+                    refreshExpiresIn,
+                    userId));
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)

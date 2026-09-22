@@ -1,4 +1,3 @@
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Shelfly.Api.Features.Auth.Services;
@@ -6,7 +5,6 @@ namespace Shelfly.Api.Features.Auth.Services;
 public class RateLimitService(IMongoDatabase mongoDatabase, ILogger<RateLimitService> logger)
 {
     private readonly IMongoCollection<LoginAttemptRecord> _loginAttempts = mongoDatabase.GetCollection<LoginAttemptRecord>("login_attempts");
-    private readonly ILogger<RateLimitService> _logger = logger;
 
     public async Task<bool> IsLockedOutAsync(string email, CancellationToken cancellationToken)
     {
@@ -22,7 +20,7 @@ public class RateLimitService(IMongoDatabase mongoDatabase, ILogger<RateLimitSer
 
         if (lockedOut)
         {
-            _logger.LogWarning("Account {Email} temporarily locked after {Count} failures in 15 minutes", email, count);
+            logger.LogWarning("Account {Email} temporarily locked after {Count} failures in 15 minutes", email, count);
         }
 
         return lockedOut;

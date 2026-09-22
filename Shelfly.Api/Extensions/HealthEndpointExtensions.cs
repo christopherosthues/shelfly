@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Shelfly.Api.Features.HealthChecks.DTOs;
 using Shelfly.Api.Features.HealthChecks.Services;
 
 namespace Shelfly.Api.Extensions;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Shelfly.Api.Features.HealthChecks.DTOs;
 

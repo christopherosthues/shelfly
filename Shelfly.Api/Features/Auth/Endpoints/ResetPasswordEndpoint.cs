@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shelfly.Api.Features.Auth.DTOs;
 using Shelfly.Api.Features.Auth.Services;
