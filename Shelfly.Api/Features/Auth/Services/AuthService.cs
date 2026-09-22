@@ -89,29 +89,26 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync(cancellationToken);
-                Dictionary<string, object>? tokenData = JsonSerializer.Deserialize<Dictionary<string, object>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                string accessToken = tokenData?.GetValueOrDefault("access_token")?.ToString() ?? "";
-                string refreshToken = tokenData?.GetValueOrDefault("refresh_token")?.ToString() ?? "";
-                string tokenType = tokenData?.GetValueOrDefault("token_type")?.ToString() ?? "Bearer";
-                int expiresIn = tokenData?.GetValueOrDefault("expires_in") is int exp ? exp : 0;
-                int refreshExpiresIn = tokenData?.GetValueOrDefault("refresh_expires_in") is int refExp ? refExp : 0;
+                KeycloakTokenResponseDto tokenData =
+                    JsonSerializer.Deserialize<KeycloakTokenResponseDto>(content,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ??
+                    KeycloakTokenResponseDto.None;
 
                 string userId = "";
-                if (!string.IsNullOrEmpty(accessToken))
+                if (!string.IsNullOrEmpty(tokenData.AccessToken))
                 {
-                    JwtSecurityToken jwtToken = new(accessToken);
+                    JwtSecurityToken jwtToken = new(tokenData.AccessToken);
                     userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "";
                 }
 
                 logger.LogInformation("User logged in: {Email}", request.Email);
 
                 return Result<AuthResponseDto>.Success(new AuthResponseDto(
-                    accessToken,
-                    refreshToken,
-                    tokenType,
-                    expiresIn,
-                    refreshExpiresIn,
+                    tokenData.AccessToken,
+                    tokenData.RefreshToken,
+                    tokenData.TokenType,
+                    tokenData.ExpiresIn,
+                    tokenData.RefreshTokenExpiresIn,
                     userId));
             }
 
@@ -145,29 +142,26 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync(cancellationToken);
-                Dictionary<string, object>? tokenData = JsonSerializer.Deserialize<Dictionary<string, object>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                string accessToken = tokenData?.GetValueOrDefault("access_token")?.ToString() ?? "";
-                string refreshToken = tokenData?.GetValueOrDefault("refresh_token")?.ToString() ?? "";
-                string tokenType = tokenData?.GetValueOrDefault("token_type")?.ToString() ?? "Bearer";
-                int expiresIn = tokenData?.GetValueOrDefault("expires_in") is int exp ? exp : 0;
-                int refreshExpiresIn = tokenData?.GetValueOrDefault("refresh_expires_in") is int refExp ? refExp : 0;
+                KeycloakTokenResponseDto tokenData =
+                    JsonSerializer.Deserialize<KeycloakTokenResponseDto>(content,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ??
+                    KeycloakTokenResponseDto.None;
 
                 string userId = "";
-                if (!string.IsNullOrEmpty(accessToken))
+                if (!string.IsNullOrEmpty(tokenData.AccessToken))
                 {
-                    JwtSecurityToken jwtToken = new(accessToken);
+                    JwtSecurityToken jwtToken = new(tokenData.AccessToken);
                     userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "";
                 }
 
                 logger.LogInformation("Token refreshed successfully");
 
                 return Result<AuthResponseDto>.Success(new AuthResponseDto(
-                    accessToken,
-                    refreshToken,
-                    tokenType,
-                    expiresIn,
-                    refreshExpiresIn,
+                    tokenData.AccessToken,
+                    tokenData.RefreshToken,
+                    tokenData.TokenType,
+                    tokenData.ExpiresIn,
+                    tokenData.RefreshTokenExpiresIn,
                     userId));
             }
 
