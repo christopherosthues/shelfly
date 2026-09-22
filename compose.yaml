@@ -1,7 +1,59 @@
 ﻿services:
   shelfly:
-    image: shelfly
     build:
       context: .
       dockerfile: Shelfly.Api/Dockerfile
+    container_name: shelfly
+    hostname: shelfly
+    ports:
+      - "5000:8080"
+    environment:
+      - MONGODB_CONNECTION_STRING=${MONGODB_CONNECTION_STRING}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+      mongodb:
+        condition: service_started
+    networks:
+      - application_network
+      - keycloak_network
 
+  shelfly-db-init:
+    build:
+      context: ./database/postgresql
+      dockerfile: Dockerfile.init
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SHELFLY_DB=${SHELFLY_DB}
+      - SHELFLY_USER=${SHELFLY_USER}
+      - SHELFLY_USER_PASSWORD=${SHELFLY_USER_PASSWORD}
+      - SHELFLY_SCHEMA=${SHELFLY_SCHEMA}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - application_network
+    profiles:
+      - db-init
+
+  shelfly-kc-import:
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile.import
+    depends_on:
+      keycloak:
+        condition: service_started
+    networks:
+      - keycloak_network
+    profiles:
+      - kc-import
+
+networks:
+  application_network:
+    external: false
+  keycloak_network:

@@ -1,0 +1,5 @@
+FROM keycloak/keycloak:26.6 AS init
+
+COPY keycloak-realm-config.json /opt/keycloak/data/import/
+
+ENTRYPOINT [ "kc.sh", "import", "/opt/keycloak/data/import/keycloak-realm-config.json" ]
