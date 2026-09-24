@@ -1,7 +1,7 @@
 FROM postgres:18.4
 
-COPY 01-create-shelfly-db.sql /docker-entrypoint-initdb.d/
-COPY 01b-create-shelfly-admin.sql /docker-entrypoint-initdb.d/
-COPY 02-create-shelfly-user.sql /docker-entrypoint-initdb.d/
+COPY ../../database/postgresql/01-create-db.sql /docker-entrypoint-initdb.d/
+COPY ../../database/postgresql/02-create-admin.sql /docker-entrypoint-initdb.d/
+COPY ../../database/postgresql/03-create-user.sql /docker-entrypoint-initdb.d/
 
-ENTRYPOINT [ "sh", "-c", "export PGPASSWORD=$(cat /run/secrets/postgres_password) && psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f /docker-entrypoint-initdb.d/01-create-shelfly-db.sql && psql -U ${POSTGRES_USER} -d ${SHELFLY_DB} -f /docker-entrypoint-initdb.d/01b-create-shelfly-admin.sql && psql -U ${POSTGRES_USER} -d ${SHELFLY_DB} -f /docker-entrypoint-initdb.d/02-create-shelfly-user.sql" ]
+ENTRYPOINT [ "sh", "-c", "export APP_DB=$SHELFLY_DB && export APP_ADMIN=$SHELFLY_ADMIN && export APP_USER=$SHELFLY_USER && export APP_SCHEMA=$SHELFLY_SCHEMA && export APP_ADMIN_SECRET_FILE=shelfly_admin_password && export APP_USER_SECRET_FILE=shelfly_user_password && export PGPASSWORD=$(cat /run/secrets/postgres_password) && psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f /docker-entrypoint-initdb.d/01-create-db.sql && psql -U ${POSTGRES_USER} -d ${SHELFLY_DB} -f /docker-entrypoint-initdb.d/02-create-admin.sql && psql -U ${POSTGRES_USER} -d ${SHELFLY_DB} -f /docker-entrypoint-initdb.d/03-create-user.sql" ]
