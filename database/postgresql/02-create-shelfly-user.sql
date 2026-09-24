@@ -1,14 +1,15 @@
--- Idempotent user creation and permission grant script for Shelfly (Execution Order: 02)
+-- Idempotent application user creation and permission grant script for Shelfly (Execution Order: 02)
 -- Mount point: /docker-entrypoint-initdb.d/02-create-shelfly-user.sql
--- Environment variables used: SHELFLY_USER_PASSWORD (required), SHELFLY_DB (required), SHELFLY_USER (required), SHELFLY_SCHEMA (required)
--- Dependencies: Requires database to exist first (runs after 01-create-shelfly-db.sql)
+-- Environment variables used: SHELFLY_DB (required), SHELFLY_USER (required), SHELFLY_SCHEMA (required)
+-- Secrets required: shelfly_user_password
+-- Dependencies: Requires database and admin user to exist first (runs after 01b-create-shelfly-admin.sql)
 
 \set schema `echo ${SHELFLY_SCHEMA}`
 \set db `echo ${SHELFLY_DB}`
 \set username `echo ${SHELFLY_USER}`
 
--- Create the user if it does not already exist
-SELECT 'CREATE USER :' || :username || ' WITH PASSWORD ''' || getenv('SHELFLY_USER_PASSWORD') || ''';'
+-- Create the application user if it does not already exist
+SELECT 'CREATE USER :' || :username || ' WITH PASSWORD ''' || trim(pg_read_file('/run/secrets/shelfly_user_password')) || ''';'
 WHERE NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = :username)
 \gexec
 

@@ -11,7 +11,8 @@ Thumbs.db
 .DS_Store
 *.tmp
 .vscode/
-envfiles/*.env
-!envfiles/*.env.example
+**/*.env
+**/secrets/
+**/keycloak-realm-config.json
 **/licenses/
 *.txt
