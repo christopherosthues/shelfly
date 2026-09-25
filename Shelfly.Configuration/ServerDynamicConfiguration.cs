@@ -12,6 +12,9 @@ public class ServerDynamicConfiguration : IJsonConfigurationRoot
     public DeletionConfig Deletion { get; set; } = new();
 
     [ValidateObjectMembers]
+    public PostgreSqlConfig PostgreSql { get; set; } = new();
+
+    [ValidateObjectMembers]
     public FeatureToggles Features { get; set; } = new();
 
     [ValidateObjectMembers]
@@ -30,6 +33,7 @@ public class ServerDynamicConfiguration : IJsonConfigurationRoot
         string prefix = nameof(ServerDynamicConfiguration);
         Dictionary<string, string?> jsonDictionary = new(StringComparer.OrdinalIgnoreCase);
         Deletion.ToFlatJsonDictionary(prefix + $":{nameof(Deletion)}", jsonDictionary);
+        PostgreSql.ToFlatJsonDictionary(prefix + $":{nameof(PostgreSql)}", jsonDictionary);
         Features.ToFlatJsonDictionary(prefix + $":{nameof(Features)}", jsonDictionary);
         RateLimiting.ToFlatJsonDictionary(prefix + $":{nameof(RateLimiting)}", jsonDictionary);
         Diagnostics.ToFlatJsonDictionary(prefix + $":{nameof(Diagnostics)}", jsonDictionary);

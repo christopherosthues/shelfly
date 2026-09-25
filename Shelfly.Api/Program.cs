@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -9,6 +10,7 @@ using Shelfly.Api.Features.Auth.Services;
 using Shelfly.Api.Features.Books.Services;
 using Shelfly.Api.Features.Bookmarks.Services;
 using Shelfly.Api.Features.HealthChecks.Checks;
+using Shelfly.Configuration;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,42 +20,9 @@ builder.Logging.AddOpenTelemetry();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
-// Connection strings (required before health check registration)
-string postgresConnectionString = PostgreSqlOptionsExtensions.BuildPostgresConnectionString(builder.Configuration);
-
 string mongoConnectionString = MongoDbOptionsExtensions.BuildMongoConnectionString(builder.Configuration);
 
 builder.Configuration.AddMongoDbConfiguration(mongoConnectionString);
-
-builder.Services.AddHealthChecks()
-    .AddCheck<LivenessHealthCheck>("liveness", tags: ["live"])
-    .Add(new HealthCheckRegistration(
-        "postgresql",
-        _ => new PostgreSQLHealthCheck(postgresConnectionString),
-        failureStatus: HealthStatus.Unhealthy,
-        tags: ["ready"],
-        timeout: TimeSpan.FromSeconds(3)))
-    .Add(new HealthCheckRegistration(
-        "mongodb",
-        _ => new MongoDbHealthCheck(mongoConnectionString),
-        failureStatus: HealthStatus.Unhealthy,
-        tags: ["ready"],
-        timeout: TimeSpan.FromSeconds(3)))
-    .Add(new HealthCheckRegistration(
-        "keycloak",
-        sp =>
-        {
-            string keycloakUrl = builder.Configuration.GetValue<string>("Keycloak:BaseUrl")
-                                 ?? throw new InvalidOperationException("Keycloak:BaseUrl not configured");
-            string realm = builder.Configuration.GetValue<string>("Keycloak:Realm")
-                          ?? "master";
-            return new KeycloakHealthCheck(new HttpClient { BaseAddress = new Uri(keycloakUrl) }, realm);
-        },
-        failureStatus: HealthStatus.Unhealthy,
-        tags: ["ready"],
-        timeout: TimeSpan.FromSeconds(3)));
-
-// Configuration services
 
 ILoggerFactory loggerFactory = LoggerFactory.Create(b => b.AddConsole());
 
@@ -73,8 +42,8 @@ builder.Services.AddScoped<KeycloakAdminClient>();
 builder.Services.AddScoped<RateLimitService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// Register EF Core DbContext with PostgreSQL
-builder.Services.AddShelflyDbContext((IConfigurationRoot)builder.Configuration);
+// Register EF Core DbContext with PostgreSQL (will use fallback config initially)
+builder.Services.AddShelflyDbContext(builder.Configuration);
 
 // Feature services
 builder.Services.AddScoped<IBookService, BookService>();
@@ -108,6 +77,39 @@ using (IServiceScope scope = app.Services.CreateScope())
 {
     DynamicOptionsManager optionsManager = scope.ServiceProvider.GetRequiredService<DynamicOptionsManager>();
     await optionsManager.LoadAsync(CancellationToken.None);
+
+    // Rebuild PostgreSQL connection string with MongoDB-backed config
+    PostgreSqlConfig postgreSqlConfig = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<PostgreSqlConfig>>().CurrentValue;
+    string postgresConnectionString = PostgreSqlOptionsExtensions.BuildPostgresConnectionString(postgreSqlConfig, builder.Configuration);
+
+    // Register health checks with the resolved connection string
+    builder.Services.AddHealthChecks()
+        .AddCheck<LivenessHealthCheck>("liveness", tags: ["live"])
+        .Add(new HealthCheckRegistration(
+            "postgresql",
+            _ => new PostgreSQLHealthCheck(postgresConnectionString),
+            failureStatus: HealthStatus.Unhealthy,
+            tags: ["ready"],
+            timeout: TimeSpan.FromSeconds(3)))
+        .Add(new HealthCheckRegistration(
+            "mongodb",
+            _ => new MongoDbHealthCheck(mongoConnectionString),
+            failureStatus: HealthStatus.Unhealthy,
+            tags: ["ready"],
+            timeout: TimeSpan.FromSeconds(3)))
+        .Add(new HealthCheckRegistration(
+            "keycloak",
+            sp =>
+            {
+                string keycloakUrl = builder.Configuration.GetValue<string>("Keycloak:BaseUrl")
+                                     ?? throw new InvalidOperationException("Keycloak:BaseUrl not configured");
+                string realm = builder.Configuration.GetValue<string>("Keycloak:Realm")
+                               ?? "master";
+                return new KeycloakHealthCheck(new HttpClient { BaseAddress = new Uri(keycloakUrl) }, realm);
+            },
+            failureStatus: HealthStatus.Unhealthy,
+            tags: ["ready"],
+            timeout: TimeSpan.FromSeconds(3)));
 }
 
 // Configure the HTTP request pipeline.
