@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Shelfly.Api.Features.HealthChecks.DTOs;
 using Shelfly.Api.Features.HealthChecks.Services;
 
 namespace Shelfly.Api.Extensions;
@@ -10,55 +11,58 @@ namespace Shelfly.Api.Extensions;
 /// </summary>
 public static class HealthEndpointExtensions
 {
-    /// <summary>
-    /// Maps the liveness health check endpoint at /v1/health/live.
-    /// </summary>
-    public static IEndpointRouteBuilder MapLiveHealthChecks(this IEndpointRouteBuilder routes)
+    extension(IEndpointRouteBuilder routes)
     {
-        routes.MapHealthChecks("/v1/health/live", new HealthCheckOptions
+        /// <summary>
+        /// Maps the liveness health check endpoint at /v1/health/live.
+        /// </summary>
+        public IEndpointRouteBuilder MapLiveHealthChecks()
         {
-            Predicate = check => check.Tags.Contains("live"),
-            ResponseWriter = WriteHealthCheckResponse,
-            ResultStatusCodes = new Dictionary<HealthStatus, int>
+            routes.MapHealthChecks("/v1/health/live", new HealthCheckOptions
             {
-                [HealthStatus.Healthy] = StatusCodes.Status200OK,
-                [HealthStatus.Degraded] = StatusCodes.Status200OK,
-                [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-            }
-        });
+                Predicate = check => check.Tags.Contains("live"),
+                ResponseWriter = WriteHealthCheckResponse,
+                ResultStatusCodes = new Dictionary<HealthStatus, int>
+                {
+                    [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                    [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                }
+            });
 
-        return routes;
-    }
+            return routes;
+        }
 
-    /// <summary>
-    /// Maps the readiness health check endpoint at /v1/health/ready.
-    /// </summary>
-    public static IEndpointRouteBuilder MapReadyHealthChecks(this IEndpointRouteBuilder routes)
-    {
-        routes.MapHealthChecks("/v1/health/ready", new HealthCheckOptions
+        /// <summary>
+        /// Maps the readiness health check endpoint at /v1/health/ready.
+        /// </summary>
+        public IEndpointRouteBuilder MapReadyHealthChecks()
         {
-            Predicate = check => check.Tags.Contains("ready"),
-            ResponseWriter = WriteHealthCheckResponse,
-            ResultStatusCodes = new Dictionary<HealthStatus, int>
+            routes.MapHealthChecks("/v1/health/ready", new HealthCheckOptions
             {
-                [HealthStatus.Healthy] = StatusCodes.Status200OK,
-                [HealthStatus.Degraded] = StatusCodes.Status200OK,
-                [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-            }
-        });
+                Predicate = check => check.Tags.Contains("ready"),
+                ResponseWriter = WriteHealthCheckResponse,
+                ResultStatusCodes = new Dictionary<HealthStatus, int>
+                {
+                    [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                    [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                }
+            });
 
-        return routes;
-    }
+            return routes;
+        }
 
-    /// <summary>
-    /// Custom response writer for structured JSON health check responses.
-    /// </summary>
-    private static async Task WriteHealthCheckResponse(HttpContext context, HealthReport report)
-    {
-        var response = HealthCheckResultService.CreateResponse(report);
+        /// <summary>
+        /// Custom response writer for structured JSON health check responses.
+        /// </summary>
+        private static async Task WriteHealthCheckResponse(HttpContext context, HealthReport report)
+        {
+            HealthCheckResponseDto response = HealthCheckResultService.CreateResponse(report);
 
-        context.Response.ContentType = "application/json";
-        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
-        await JsonSerializer.SerializeAsync(context.Response.Body, response, options);
+            context.Response.ContentType = "application/json";
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
+            await JsonSerializer.SerializeAsync(context.Response.Body, response, options);
+        }
     }
 }

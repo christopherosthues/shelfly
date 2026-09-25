@@ -12,11 +12,11 @@ public class LivenessHealthCheck : IHealthCheck
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        using var activity = Source.StartActivity($"Liveness check: {context.Registration.Name}");
+        using Activity? activity = Source.StartActivity($"Liveness check: {context.Registration.Name}");
         activity?.SetTag("health.check.name", "liveness");
         activity?.SetTag("health.check.status", "Healthy");
 
-        var result = HealthCheckResult.Healthy("Liveness check passed");
+        HealthCheckResult result = HealthCheckResult.Healthy("Liveness check passed");
         activity?.SetStatus(ActivityStatusCode.Ok);
 
         return result;

@@ -7,8 +7,10 @@
     hostname: shelfly
     ports:
       - "5000:8080"
+    env_file:
+      - ./deploy/envfiles/shelfly.env
     environment:
-      - MONGODB_CONNECTION_STRING=${MONGODB_CONNECTION_STRING}
+      - MONGODB_PASSWORD_FILE=/run/secrets/mongodb_shelfly_config_password
     restart: unless-stopped
     depends_on:
       postgres:
@@ -20,6 +22,8 @@
     networks:
       - application_network
       - keycloak_network
+    secrets:
+      - mongodb_shelfly_config_password
 
   shelfly-db-init:
     build:

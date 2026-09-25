@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using MongoDB.Driver;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shelfly.Api.Extensions;
+using Shelfly.Api.Features.Admin.Services;
 using Shelfly.Api.Features.Auth.Services;
 using Shelfly.Api.Features.HealthChecks.Checks;
 
@@ -20,8 +20,9 @@ builder.Services.AddAuthorization();
 string postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSql")
                                   ?? throw new InvalidOperationException("POSTGRESQL_CONNECTION_STRING not configured");
 
-string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb")
-                               ?? throw new InvalidOperationException("MONGODB_CONNECTION_STRING not configured");
+string mongoConnectionString = MongoDbOptionsExtensions.BuildMongoConnectionString(builder.Configuration);
+
+builder.Configuration.AddMongoDbConfiguration(mongoConnectionString);
 
 builder.Services.AddHealthChecks()
     .AddCheck<LivenessHealthCheck>("liveness", tags: ["live"])
@@ -72,12 +73,8 @@ builder.Services.AddScoped<RateLimitService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddProblemDetails();
 
-// MongoDB resilience with Polly retry policy
-builder.Services.AddSingleton<IMongoDatabase>(sp =>
-{
-    MongoClient client = new MongoClient(mongoConnectionString);
-    return client.GetDatabase("shelfly");
-});
+// Dynamic options (MongoDB-backed configuration with change token support)
+builder.Services.AddMongoDbOptions(builder.Configuration, mongoConnectionString);
 
 // OpenTelemetry instrumentation for authentication and health check endpoints
 builder.Services.AddOpenTelemetry()
@@ -97,8 +94,12 @@ builder.Services.AddOpenTelemetry()
 
 WebApplication app = builder.Build();
 
-// Seed default configuration if empty (using scoped service)
-// app.Services.AddProblemDetails();
+// Load dynamic configuration from MongoDB (seeds defaults if empty)
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    DynamicOptionsManager optionsManager = scope.ServiceProvider.GetRequiredService<DynamicOptionsManager>();
+    await optionsManager.LoadAsync(CancellationToken.None);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -110,6 +111,9 @@ app.UseHttpsRedirection();
 
 // Map authentication endpoints
 app.MapAuthEndpoints();
+
+// Map admin configuration endpoints
+app.MapAdminEndpoints();
 
 // Map health check endpoints
 app.MapLiveHealthChecks();
