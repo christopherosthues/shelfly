@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
 using Shelfly.Api.Extensions.Providers;
 using Shelfly.Api.Features.Admin.Services;
 using Shelfly.Configuration;
@@ -36,7 +37,8 @@ public static class MongoDbOptionsExtensions
         string authSource = config.GetValue<string>("MongoDB:AuthSource")
                               ?? throw new InvalidOperationException("MongoDB:AuthSource not configured");
 
-        return $"mongodb://{username}:{password}@{host}:{port}/{database}?authSource={authSource}";
+        ConnectionString connectionString = new($"mongodb://{username}:{password}@{host}:{port}/{database}?authSource={authSource}");
+        return connectionString.ToString();
     }
 
     /// <summary>

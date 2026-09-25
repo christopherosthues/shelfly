@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Shelfly.Api.Data;
 using Shelfly.Configuration;
 
@@ -38,7 +39,16 @@ public static class PostgreSqlOptionsExtensions
         string database = postgreSqlConfig?.Database ?? config.GetValue<string>("PostgreSql:Database")
                          ?? "shelfly";
 
-        return $"Host={host};Port={port};Username={username};Password={password};Database={database}";
+        NpgsqlConnectionStringBuilder builder = new()
+        {
+            Host = host,
+            Port = port,
+            Username = username,
+            Password = password,
+            Database = database,
+        };
+
+        return builder.ToString();
     }
 
     /// <summary>
