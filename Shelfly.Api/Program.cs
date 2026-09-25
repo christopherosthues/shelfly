@@ -6,6 +6,8 @@ using OpenTelemetry.Trace;
 using Shelfly.Api.Extensions;
 using Shelfly.Api.Features.Admin.Services;
 using Shelfly.Api.Features.Auth.Services;
+using Shelfly.Api.Features.Books.Services;
+using Shelfly.Api.Features.Bookmarks.Services;
 using Shelfly.Api.Features.HealthChecks.Checks;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -17,8 +19,7 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 // Connection strings (required before health check registration)
-string postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSql")
-                                  ?? throw new InvalidOperationException("POSTGRESQL_CONNECTION_STRING not configured");
+string postgresConnectionString = PostgreSqlOptionsExtensions.BuildPostgresConnectionString(builder.Configuration);
 
 string mongoConnectionString = MongoDbOptionsExtensions.BuildMongoConnectionString(builder.Configuration);
 
@@ -71,6 +72,14 @@ builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<KeycloakAdminClient>();
 builder.Services.AddScoped<RateLimitService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Register EF Core DbContext with PostgreSQL
+builder.Services.AddShelflyDbContext((IConfigurationRoot)builder.Configuration);
+
+// Feature services
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBookmarkService, BookmarkService>();
+
 builder.Services.AddProblemDetails();
 
 // Dynamic options (MongoDB-backed configuration with change token support)
@@ -114,6 +123,10 @@ app.MapAuthEndpoints();
 
 // Map admin configuration endpoints
 app.MapAdminEndpoints();
+
+// Map books and bookmarks endpoints
+app.MapBooksEndpoints();
+app.MapBookmarksEndpoints();
 
 // Map health check endpoints
 app.MapLiveHealthChecks();

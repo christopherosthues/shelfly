@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Shelfly.Api.Extensions.Providers;
 using Shelfly.Api.Features.Admin.Services;
