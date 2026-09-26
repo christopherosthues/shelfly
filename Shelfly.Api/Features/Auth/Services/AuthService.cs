@@ -7,12 +7,12 @@ using Shelfly.Configuration;
 
 namespace Shelfly.Api.Features.Auth.Services;
 
-public class AuthService(KeycloakAdminClient keycloakAdmin, IOptionsMonitor<KeycloakConfig> keycloakConfig, ILogger<AuthService> logger)
+public class AuthService(KeycloakAdminClient keycloakAdmin, IOptionsMonitor<ServerDynamicConfiguration> serverDynamicConfigurationOptionsMonitor, ILogger<AuthService> logger)
     : IAuthService
 {
     public async Task<Result<AuthResponseDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken)
     {
-        string realm = keycloakConfig.CurrentValue.Realm;
+        string realm = serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak.Realm;
 
         try
         {
@@ -81,8 +81,8 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IOptionsMonitor<Keyc
 
     public async Task<Result<AuthResponseDto>> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken)
     {
-        string issuer = keycloakConfig.CurrentValue.Issuer
-                        ?? keycloakConfig.CurrentValue.BaseUrl;
+        string issuer = serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak.Issuer
+                        ?? serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak.BaseUrl;
 
         try
         {
@@ -134,8 +134,8 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IOptionsMonitor<Keyc
 
     public async Task<Result<AuthResponseDto>> RefreshAsync(RefreshRequestDto request, CancellationToken cancellationToken)
     {
-        string issuer = keycloakConfig.CurrentValue.Issuer
-                        ?? keycloakConfig.CurrentValue.BaseUrl;
+        string issuer = serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak.Issuer
+                        ?? serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak.BaseUrl;
 
         try
         {
@@ -187,7 +187,7 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IOptionsMonitor<Keyc
 
     public async Task<Result<string>> ResetPasswordAsync(ResetPasswordRequestDto request, CancellationToken cancellationToken)
     {
-        string realm = keycloakConfig.CurrentValue.Realm;
+        string realm = serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak.Realm;
 
         try
         {

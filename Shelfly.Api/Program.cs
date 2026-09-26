@@ -45,6 +45,27 @@ builder.Services.AddProblemDetails();
 // Dynamic options (MongoDB-backed configuration with change token support)
 builder.Services.AddMongoDbOptions(builder.Configuration, mongoConnectionString);
 
+builder.Services.AddHealthChecks()
+    .AddCheck<LivenessHealthCheck>(HealthCheckNames.Liveness, tags: [HealthCheckTags.Live])
+    .Add(new HealthCheckRegistration(
+        HealthCheckNames.PostgreSql,
+        sp => sp.GetRequiredService<PostgreSqlHealthCheck>(),
+        failureStatus: HealthStatus.Unhealthy,
+        tags: [HealthCheckTags.Ready],
+        timeout: TimeSpan.FromSeconds(3)))
+    .Add(new HealthCheckRegistration(
+        HealthCheckNames.MongoDb,
+        _ => new MongoDbHealthCheck(mongoConnectionString),
+        failureStatus: HealthStatus.Unhealthy,
+        tags: [HealthCheckTags.Ready],
+        timeout: TimeSpan.FromSeconds(3)))
+    .Add(new HealthCheckRegistration(
+        HealthCheckNames.Keycloak,
+        sp => sp.GetRequiredService<KeycloakHealthCheck>(),
+        failureStatus: HealthStatus.Unhealthy,
+        tags: [HealthCheckTags.Ready],
+        timeout: TimeSpan.FromSeconds(3)));
+
 // OpenTelemetry instrumentation for authentication and health check endpoints
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(r => r.AddService(ActivitySources.Api))
@@ -69,29 +90,6 @@ WebApplication app = builder.Build();
 MongoDbConfigurationProvider.SetLoggerFactory(app.Services.GetRequiredService<ILoggerFactory>());
 Meter configMeter = app.Services.GetRequiredService<IMeterFactory>().Create(ActivitySources.ConfigProvider);
 MongoDbConfigurationProvider.SetMeter(configMeter);
-
-// Load dynamic configuration from MongoDB (seeds defaults if empty)
-    // Register health checks with the resolved connection string
-    builder.Services.AddHealthChecks()
-        .AddCheck<LivenessHealthCheck>(HealthCheckNames.Liveness, tags: [HealthCheckTags.Live])
-        .Add(new HealthCheckRegistration(
-            HealthCheckNames.PostgreSql,
-            sp => sp.GetRequiredService<PostgreSqlHealthCheck>(),
-            failureStatus: HealthStatus.Unhealthy,
-            tags: [HealthCheckTags.Ready],
-            timeout: TimeSpan.FromSeconds(3)))
-        .Add(new HealthCheckRegistration(
-            HealthCheckNames.MongoDb,
-            _ => new MongoDbHealthCheck(mongoConnectionString),
-            failureStatus: HealthStatus.Unhealthy,
-            tags: [HealthCheckTags.Ready],
-            timeout: TimeSpan.FromSeconds(3)))
-        .Add(new HealthCheckRegistration(
-            HealthCheckNames.Keycloak,
-            sp => sp.GetRequiredService<KeycloakHealthCheck>(),
-            failureStatus: HealthStatus.Unhealthy,
-            tags: [HealthCheckTags.Ready],
-            timeout: TimeSpan.FromSeconds(3)));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

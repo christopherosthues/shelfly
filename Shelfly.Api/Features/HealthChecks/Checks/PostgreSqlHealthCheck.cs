@@ -11,7 +11,7 @@ namespace Shelfly.Api.Features.HealthChecks.Checks;
 /// <summary>
 /// Validates PostgreSQL database connectivity.
 /// </summary>
-public class PostgreSqlHealthCheck(IOptionsMonitor<PostgreSqlConfig> postgresOptionsMonitor, IConfiguration configuration) : IHealthCheck
+public class PostgreSqlHealthCheck(IOptionsMonitor<ServerDynamicConfiguration> serverDynamicConfigurationOptionsMonitor, IConfiguration configuration) : IHealthCheck
 {
     private static readonly ActivitySource Source = new(ActivitySources.HealthChecks);
 
@@ -22,7 +22,7 @@ public class PostgreSqlHealthCheck(IOptionsMonitor<PostgreSqlConfig> postgresOpt
 
         try
         {
-            PostgreSqlConfig postgreSqlConfig = postgresOptionsMonitor.CurrentValue;
+            PostgreSqlConfig postgreSqlConfig = serverDynamicConfigurationOptionsMonitor.CurrentValue.PostgreSql;
             string connectionString = PostgreSqlOptionsExtensions.BuildPostgresConnectionString(postgreSqlConfig, configuration);
             await using NpgsqlConnection connection = new(connectionString);
 

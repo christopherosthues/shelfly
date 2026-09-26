@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Shelfly.Api.Constants;
 
 namespace Shelfly.Api.Features.HealthChecks.Checks;
 
@@ -8,17 +9,29 @@ namespace Shelfly.Api.Features.HealthChecks.Checks;
 /// </summary>
 public class LivenessHealthCheck : IHealthCheck
 {
-    private static readonly ActivitySource Source = new("shelfly-health-checks");
+    private static readonly ActivitySource Source = new(ActivitySources.HealthChecks);
 
-    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
         using Activity? activity = Source.StartActivity($"Liveness check: {context.Registration.Name}");
-        activity?.SetTag("health.check.name", "liveness");
-        activity?.SetTag("health.check.status", "Healthy");
+        activity?.SetTag(TagKeys.HealthCheck.Name, HealthCheckNames.Liveness);
 
-        HealthCheckResult result = HealthCheckResult.Healthy("Liveness check passed");
-        activity?.SetStatus(ActivityStatusCode.Ok);
+        try
+        {
+            activity?.SetTag(TagKeys.HealthCheck.Status, HealthStatus.Healthy);
 
-        return result;
+            HealthCheckResult result = HealthCheckResult.Healthy("Liveness check passed");
+            activity?.SetStatus(ActivityStatusCode.Ok);
+
+            return Task.FromResult(result);
+        }
+        catch (Exception exception)
+        {
+            HealthCheckResult exceptionResult = HealthCheckResult.Unhealthy(exception.Message);
+            activity?.SetTag(TagKeys.HealthCheck.Status, HealthStatusValues.Unhealthy);
+            activity?.SetTag(TagKeys.HealthCheck.Exception, exception.GetType().Name);
+            activity?.SetStatus(ActivityStatusCode.Error);
+            return Task.FromResult(exceptionResult);
+        }
     }
 }

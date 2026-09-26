@@ -156,6 +156,7 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
                     {
                         Data[kvp.Key] = kvp.Value;
                     }
+                    OnReload();
 
                     activity?.SetTag(TagKeys.Config.Updated, true);
                     _logger?.LogInformation("MongoDB configuration updated from poll");

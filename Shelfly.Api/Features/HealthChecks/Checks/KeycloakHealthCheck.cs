@@ -9,7 +9,7 @@ namespace Shelfly.Api.Features.HealthChecks.Checks;
 /// <summary>
 /// Validates Keycloak authentication service connectivity.
 /// </summary>
-public class KeycloakHealthCheck(IHttpClientFactory httpClientFactory, IOptionsMonitor<KeycloakConfig> keycloakOptionsMonitor) : IHealthCheck
+public class KeycloakHealthCheck(IHttpClientFactory httpClientFactory, IOptionsMonitor<ServerDynamicConfiguration> serverDynamicConfigurationOptionsMonitor) : IHealthCheck
 {
     private static readonly ActivitySource Source = new(ActivitySources.HealthChecks);
 
@@ -20,7 +20,7 @@ public class KeycloakHealthCheck(IHttpClientFactory httpClientFactory, IOptionsM
 
         try
         {
-            KeycloakConfig keycloakConfig = keycloakOptionsMonitor.CurrentValue;
+            KeycloakConfig keycloakConfig = serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak;
             string realmEndpoint = $"/realms/{keycloakConfig.Realm}";
             using HttpClient httpClient = httpClientFactory.CreateClient("Keycloak");
             HttpResponseMessage response = await httpClient.GetAsync(realmEndpoint, cancellationToken);
