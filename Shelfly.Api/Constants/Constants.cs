@@ -63,6 +63,8 @@ internal static class MongoDbConstants
     public const string ServerConfigurationCollection = "server_configuration";
     public const string GlobalConfigDocumentId = "global_config";
     public const string PingCommand = "ping";
+    public const string SecretsCollection = "secrets";
+    public const string SecretsDocumentId = "secret_keys";
 }
 
 internal static class MetricNames

@@ -2,6 +2,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 using Shelfly.Api.Extensions.Providers;
 using Shelfly.Api.Features.Admin.Services;
+using Shelfly.Api.Features.Secrets;
 using Shelfly.Configuration;
 
 namespace Shelfly.Api.Extensions;
@@ -63,11 +64,12 @@ public static class MongoDbOptionsExtensions
         // Register infrastructure services
         services.AddSingleton<IMongoDatabase>(_ =>
         {
-            MongoClient client = new MongoClient(mongoConnectionString);
+            MongoClient client = new(mongoConnectionString);
             return client.GetDatabase("shelfly");
         });
 
         services.AddSingleton<DynamicOptionsManager>();
+        services.AddSingleton<ISecretsManager, MongoDbSecretsManager>();
 
         services.AddOptionsWithValidateOnStart<ServerDynamicConfiguration>()
             .Bind(configurationManager.GetSection(ConfigurationSectionName))
