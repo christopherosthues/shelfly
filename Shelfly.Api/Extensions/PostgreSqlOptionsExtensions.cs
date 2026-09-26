@@ -15,29 +15,20 @@ public static class PostgreSqlOptionsExtensions
     /// with fallback to vault secret file for the password. Falls back to ConnectionStrings:PostgreSql
     /// if the individual config keys are not present (e.g., during development or build).
     /// </summary>
-    public static string BuildPostgresConnectionString(PostgreSqlConfig? postgreSqlConfig, IConfigurationRoot config)
+    public static string BuildPostgresConnectionString(PostgreSqlConfig? postgreSqlConfig, IConfiguration config)
     {
-        // Fallback: use pre-formed connection string from environment variable for development
-        string? fallback = config.GetConnectionString("PostgreSql");
-        if (!string.IsNullOrEmpty(fallback))
-        {
-            return fallback;
-        }
-
-        string host = postgreSqlConfig?.Host ?? config.GetValue<string>("PostgreSql:Host")
+        string host = postgreSqlConfig?.Host
                         ?? throw new InvalidOperationException("PostgreSql:Host not configured");
 
-        int port = postgreSqlConfig?.Port ?? config.GetValue<int?>("PostgreSql:Port") ?? 5432;
+        int port = postgreSqlConfig?.Port ?? 5432;
 
-        string username = postgreSqlConfig?.Username ?? config.GetValue<string>("PostgreSql:Username")
+        string username = postgreSqlConfig?.Username
                           ?? throw new InvalidOperationException("PostgreSql:Username not configured");
 
-        string password = config.GetValue<string>("PostgreSql:Password")
-                          ?? ReadSecretFile(config.GetValue<string?>("POSTGRESQL_PASSWORD_FILE"))
+        string password = ReadSecretFile(config.GetValue<string?>("POSTGRESQL_PASSWORD_FILE"))
                           ?? throw new InvalidOperationException("PostgreSql:Password not configured");
 
-        string database = postgreSqlConfig?.Database ?? config.GetValue<string>("PostgreSql:Database")
-                         ?? "shelfly";
+        string database = postgreSqlConfig?.Database ?? "shelfly";
 
         NpgsqlConnectionStringBuilder builder = new()
         {

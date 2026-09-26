@@ -3,12 +3,12 @@ using Shelfly.Api.Features.HealthChecks.Checks;
 
 namespace Shelfly.Api.Tests.Unit.HealthChecks;
 
-public class PostgreSQLHealthCheckTests
+public class PostgreSqlHealthCheckTests
 {
     [Test]
     public async Task CheckHealthAsync_ReturnsHealthy_WhenConnectionSucceeds()
     {
-        PostgreSQLHealthCheck check = new PostgreSQLHealthCheck("Server=localhost;Database=test;");
+        PostgreSqlHealthCheck check = new PostgreSqlHealthCheck("Server=localhost;Database=test;");
         HealthCheckContext context = new HealthCheckContext { Registration = new HealthCheckRegistration("postgresql", _ => check, null, Array.Empty<string>()) };
 
         // Without a running server, this will fail — but we verify the structure

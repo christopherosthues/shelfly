@@ -14,6 +14,7 @@ internal static class TagKeys
         public const string Name = "health.check.name";
         public const string Status = "health.check.status";
         public const string Exception = "health.check.exception";
+        public const string ResponseStatusCode = "http.response_status_code";
     }
 
     public static class Config
@@ -62,13 +63,6 @@ internal static class MongoDbConstants
     public const string ServerConfigurationCollection = "server_configuration";
     public const string GlobalConfigDocumentId = "global_config";
     public const string PingCommand = "ping";
-}
-
-internal static class KeycloakConfigKeys
-{
-    public const string BaseUrl = "Keycloak:BaseUrl";
-    public const string Realm = "Keycloak:Realm";
-    public const string DefaultRealm = "master";
 }
 
 internal static class MetricNames

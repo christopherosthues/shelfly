@@ -24,6 +24,9 @@ public class ServerDynamicConfiguration : IJsonConfigurationRoot
     public DiagnosticsConfig Diagnostics { get; set; } = new();
 
     [ValidateObjectMembers]
+    public KeycloakConfig Keycloak { get; set; } = new();
+
+    [ValidateObjectMembers]
     public LoggingConfig Logging { get; set; } = new();
 
     public static ServerDynamicConfiguration Default() => new();
@@ -37,6 +40,7 @@ public class ServerDynamicConfiguration : IJsonConfigurationRoot
         Features.ToFlatJsonDictionary(prefix + $":{nameof(Features)}", jsonDictionary);
         RateLimiting.ToFlatJsonDictionary(prefix + $":{nameof(RateLimiting)}", jsonDictionary);
         Diagnostics.ToFlatJsonDictionary(prefix + $":{nameof(Diagnostics)}", jsonDictionary);
+        Keycloak.ToFlatJsonDictionary(prefix + $":{nameof(Keycloak)}", jsonDictionary);
         Logging.ToFlatJsonDictionary(prefix + $":{nameof(Logging)}", jsonDictionary);
 
         return jsonDictionary;

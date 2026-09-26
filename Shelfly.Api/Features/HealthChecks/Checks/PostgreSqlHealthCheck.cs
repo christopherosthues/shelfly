@@ -1,31 +1,33 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using MongoDB.Bson;
-using MongoDB.Driver;
+using Microsoft.Extensions.Options;
+using Npgsql;
 using Shelfly.Api.Constants;
+using Shelfly.Api.Extensions;
+using Shelfly.Configuration;
 
 namespace Shelfly.Api.Features.HealthChecks.Checks;
 
 /// <summary>
-/// Validates MongoDB configuration store connectivity.
+/// Validates PostgreSQL database connectivity.
 /// </summary>
-public class MongoDbHealthCheck(string connectionString) : IHealthCheck
+public class PostgreSqlHealthCheck(IOptionsMonitor<PostgreSqlConfig> postgresOptionsMonitor, IConfiguration configuration) : IHealthCheck
 {
     private static readonly ActivitySource Source = new(ActivitySources.HealthChecks);
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        using Activity? activity = Source.StartActivity($"MongoDB check: {context.Registration.Name}");
-        activity?.SetTag(TagKeys.HealthCheck.Name, HealthCheckNames.MongoDb);
-
-        using MongoClient client = new(connectionString);
-        IMongoDatabase database = client.GetDatabase(MongoDbConstants.AdminDatabase);
-        BsonDocument pingCommand = new(MongoDbConstants.PingCommand, 1);
+        using Activity? activity = Source.StartActivity($"PostgreSQL check: {context.Registration.Name}");
+        activity?.SetTag(TagKeys.HealthCheck.Name, HealthCheckNames.PostgreSql);
 
         try
         {
-            await database.RunCommandAsync<BsonDocument>(pingCommand, cancellationToken: cancellationToken);
-            HealthCheckResult result = HealthCheckResult.Healthy("MongoDB is reachable");
+            PostgreSqlConfig postgreSqlConfig = postgresOptionsMonitor.CurrentValue;
+            string connectionString = PostgreSqlOptionsExtensions.BuildPostgresConnectionString(postgreSqlConfig, configuration);
+            await using NpgsqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync(cancellationToken);
+            HealthCheckResult result = HealthCheckResult.Healthy("PostgreSQL is reachable");
             activity?.SetTag(TagKeys.HealthCheck.Status, HealthStatusValues.Healthy);
             activity?.SetStatus(ActivityStatusCode.Ok);
             return result;

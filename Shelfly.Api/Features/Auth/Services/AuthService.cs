@@ -1,16 +1,18 @@
 using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Options;
 using Shelfly.Api.Features.Auth.DTOs;
 using Shelfly.Common;
+using Shelfly.Configuration;
 
 namespace Shelfly.Api.Features.Auth.Services;
 
-public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration configuration, ILogger<AuthService> logger)
+public class AuthService(KeycloakAdminClient keycloakAdmin, IOptionsMonitor<KeycloakConfig> keycloakConfig, ILogger<AuthService> logger)
     : IAuthService
 {
     public async Task<Result<AuthResponseDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken)
     {
-        string realm = configuration.GetValue<string>("Keycloak:Realm") ?? "master";
+        string realm = keycloakConfig.CurrentValue.Realm;
 
         try
         {
@@ -79,8 +81,8 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
 
     public async Task<Result<AuthResponseDto>> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken)
     {
-        string issuer = configuration.GetValue<string>("Keycloak:Issuer")
-                       ?? configuration.GetValue<string>("Keycloak:BaseUrl") ?? "http://localhost:8080";
+        string issuer = keycloakConfig.CurrentValue.Issuer
+                        ?? keycloakConfig.CurrentValue.BaseUrl;
 
         try
         {
@@ -132,8 +134,8 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
 
     public async Task<Result<AuthResponseDto>> RefreshAsync(RefreshRequestDto request, CancellationToken cancellationToken)
     {
-        string issuer = configuration.GetValue<string>("Keycloak:Issuer")
-                       ?? configuration.GetValue<string>("Keycloak:BaseUrl") ?? "http://localhost:8080";
+        string issuer = keycloakConfig.CurrentValue.Issuer
+                        ?? keycloakConfig.CurrentValue.BaseUrl;
 
         try
         {
@@ -185,7 +187,7 @@ public class AuthService(KeycloakAdminClient keycloakAdmin, IConfiguration confi
 
     public async Task<Result<string>> ResetPasswordAsync(ResetPasswordRequestDto request, CancellationToken cancellationToken)
     {
-        string realm = configuration.GetValue<string>("Keycloak:Realm") ?? "master";
+        string realm = keycloakConfig.CurrentValue.Realm;
 
         try
         {
