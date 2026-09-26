@@ -15,6 +15,7 @@
     <PackageReference Include="HotChocolate.Data.EntityFramework" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
@@ -50,5 +51,21 @@
   <ItemGroup>
     <ProjectReference Include="..\Shelfly.Common\Shelfly.Common.csproj" />
     <ProjectReference Include="..\Shelfly.Configuration\Shelfly.Configuration.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="Features\AdminUI\App.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\DeletionConfigEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\DiagnosticsConfigEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\FeatureTogglesEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\KeycloakConfigEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\LoggingConfigEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\PostgreSqlConfigEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Components\RateLimitingConfigEditor.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Layout\MainLayout.razor" />
+    <AdditionalFiles Include="Features\AdminUI\Pages\AdminConfig.razor" />
+    <AdditionalFiles Include="Features\AdminUI\_Imports.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Blazor\Layout\MainLayout.razor" />
   </ItemGroup>
 </Project>

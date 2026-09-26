@@ -1,0 +1,57 @@
+@namespace Shelfly.Api.Features.AdminUI.Components
+@inject Microsoft.Extensions.Options.IOptionsMonitor<ServerDynamicConfiguration> OptionsMonitor
+
+<div class="mb-3">
+    <label class="form-label">Host</label>
+    <input type="text" class="form-control" @bind="@Config.Host" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Port</label>
+    <input type="number" class="form-control" min="1" max="65535" 
+           @bind="@Config.Port" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Username</label>
+    <input type="text" class="form-control" @bind="@Config.Username" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Database</label>
+    <input type="text" class="form-control" @bind="@Config.Database" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Password Secret Key</label>
+    <input type="text" class="form-control" @bind="@Config.PasswordSecretKey" />
+    <div class="form-text">Key name used to retrieve the password from secrets store.</div>
+</div>
+
+<button type="button" class="btn btn-primary" @onclick="OnSave">Save</button>
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert alert-success mt-2">@Message</div>
+}
+
+@code {
+    [Parameter]
+    public PostgreSqlConfig Config { get; set; } = new();
+
+    [Parameter]
+    public EventCallback OnSaved { get; set; }
+
+    private string? Message;
+
+    private async Task OnSave()
+    {
+        ServerDynamicConfiguration current = OptionsMonitor.CurrentValue;
+        current.PostgreSql.Host = Config.Host;
+        current.PostgreSql.Port = Config.Port;
+        current.PostgreSql.Username = Config.Username;
+        current.PostgreSql.Database = Config.Database;
+        current.PostgreSql.PasswordSecretKey = Config.PasswordSecretKey;
+        await OnSaved.InvokeAsync();
+        Message = "PostgreSQL configuration saved.";
+    }
+}

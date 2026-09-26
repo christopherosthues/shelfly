@@ -1,0 +1,39 @@
+@namespace Shelfly.Api.Features.AdminUI.Components
+@inject Microsoft.Extensions.Options.IOptionsMonitor<ServerDynamicConfiguration> OptionsMonitor
+
+<div class="mb-3">
+    <label class="form-label">Log Level</label>
+    <select class="form-select" @bind="@Config.LogLevel">
+        <option value="Trace">Trace</option>
+        <option value="Debug">Debug</option>
+        <option value="Information">Information</option>
+        <option value="Warning">Warning</option>
+        <option value="Error">Error</option>
+        <option value="Critical">Critical</option>
+    </select>
+    <div class="form-text">Minimum log level for application logging.</div>
+</div>
+
+<button type="button" class="btn btn-primary mt-3" @onclick="OnSave">Save</button>
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert alert-success mt-2">@Message</div>
+}
+
+@code {
+    [Parameter]
+    public LoggingConfig Config { get; set; } = new();
+
+    [Parameter]
+    public EventCallback OnSaved { get; set; }
+
+    private string? Message;
+
+    private async Task OnSave()
+    {
+        ServerDynamicConfiguration current = OptionsMonitor.CurrentValue;
+        current.Logging.LogLevel = Config.LogLevel;
+        await OnSaved.InvokeAsync();
+        Message = "Logging configuration saved.";
+    }
+}

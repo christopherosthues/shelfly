@@ -1,0 +1,90 @@
+@namespace Shelfly.Api.Features.AdminUI.Pages
+@page "/admin/config"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Policy = "AdminOnly")]
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.Deletion ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.Deletion">Deletion</a>
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.PostgreSql ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.PostgreSql">PostgreSQL</a>
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.Features ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.Features">Features</a>
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.RateLimiting ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.RateLimiting">Rate Limiting</a>
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.Diagnostics ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.Diagnostics">Diagnostics</a>
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.Keycloak ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.Keycloak">Keycloak</a>
+            <a class="list-group-item list-group-item-action @(ActiveTab == ConfigTab.Logging ? "active" : "")"
+               href="#" @onclick="() => ActiveTab = ConfigTab.Logging">Logging</a>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                @if (ActiveTab == ConfigTab.Deletion)
+                {
+                    <DeletionConfigEditor Config="@Configuration.Deletion" OnSaved="OnSaved" />
+                }
+                @if (ActiveTab == ConfigTab.PostgreSql)
+                {
+                    <PostgreSqlConfigEditor Config="@Configuration.PostgreSql" OnSaved="OnSaved" />
+                }
+                @if (ActiveTab == ConfigTab.Features)
+                {
+                    <FeatureTogglesEditor Config="@Configuration.Features" OnSaved="OnSaved" />
+                }
+                @if (ActiveTab == ConfigTab.RateLimiting)
+                {
+                    <RateLimitingConfigEditor Config="@Configuration.RateLimiting" OnSaved="OnSaved" />
+                }
+                @if (ActiveTab == ConfigTab.Diagnostics)
+                {
+                    <DiagnosticsConfigEditor Config="@Configuration.Diagnostics" OnSaved="OnSaved" />
+                }
+                @if (ActiveTab == ConfigTab.Keycloak)
+                {
+                    <KeycloakConfigEditor Config="@Configuration.Keycloak" OnSaved="OnSaved" />
+                }
+                @if (ActiveTab == ConfigTab.Logging)
+                {
+                    <LoggingConfigEditor Config="@Configuration.Logging" OnSaved="OnSaved" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private Services.ConfigService? ConfigService { get; set; }
+
+    private ServerDynamicConfiguration Configuration = new();
+    private ConfigTab ActiveTab = ConfigTab.Deletion;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Configuration = ConfigService!.GetCurrent();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnSaved()
+    {
+        Configuration = await ConfigService!.SaveAsync(Configuration);
+    }
+
+    public enum ConfigTab
+    {
+        Deletion,
+        PostgreSql,
+        Features,
+        RateLimiting,
+        Diagnostics,
+        Keycloak,
+        Logging
+    }
+}

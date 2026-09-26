@@ -1,0 +1,14 @@
+@namespace Shelfly.Api.Features.AdminUI
+
+<Router AppAssembly="typeof(App).Assembly">
+    <Found Context="context">
+        <CascadingAuthenticationState>
+            <component render="context" />
+        </CascadingAuthenticationState>
+    </Found>
+    <NotFound>
+        <layoutView Layout="Shelfly.Api.Blazor.Layout.MainLayout">
+            <p class="text-danger">No matching page found.</p>
+        </layoutView>
+    </NotFound>
+</Router>

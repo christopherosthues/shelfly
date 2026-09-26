@@ -7,6 +7,7 @@ using OpenTelemetry.Trace;
 using Shelfly.Api.Constants;
 using Shelfly.Api.Extensions;
 using Shelfly.Api.Extensions.Providers;
+using Shelfly.Api.Features.AdminUI.Services;
 using Shelfly.Api.Features.Auth.Services;
 using Shelfly.Api.Features.Books.Services;
 using Shelfly.Api.Features.Bookmarks.Services;
@@ -16,9 +17,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddOpenTelemetry();
 
-// Add services to the container.
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+builder.Services.AddAdminUi();
 
 string mongoConnectionString = MongoDbOptionsExtensions.BuildMongoConnectionString(builder.Configuration);
 
@@ -44,6 +43,9 @@ builder.Services.AddProblemDetails();
 
 // Dynamic options (MongoDB-backed configuration with change token support)
 builder.Services.AddMongoDbOptions(builder.Configuration, mongoConnectionString);
+
+// Register Blazor admin UI services
+builder.Services.AddScoped<ConfigService>();
 
 builder.Services.AddHealthChecks()
     .AddCheck<LivenessHealthCheck>(HealthCheckNames.Liveness, tags: [HealthCheckTags.Live])
@@ -112,6 +114,9 @@ app.MapBookmarksEndpoints();
 // Map health check endpoints
 app.MapLiveHealthChecks();
 app.MapReadyHealthChecks();
+
+// Map Blazor Admin UI (requires authentication and admin role)
+app.MapBlazorAdminUi();
 
 // Global error handling middleware for Keycloak connectivity failures
 app.Use(async (context, next) =>

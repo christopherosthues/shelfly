@@ -1,0 +1,35 @@
+@namespace Shelfly.Api.Features.AdminUI.Layout
+@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Authentication.OpenIdConnect
+
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Shelfly Admin</a>
+        <div class="navbar-nav ms-auto">
+            @if (authState.User.Identity?.IsAuthenticated ?? false)
+            {
+                <span class="nav-item nav-link">Welcome, @authState.User.FindFirst("preferred_username")?.Value</span>
+                <a class="nav-item nav-link" href="#" @onclick="Logout">Logout</a>
+            }
+        </div>
+    </div>
+</nav>
+
+<main class="container-fluid mt-3">
+    @Body
+</main>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; } = default!;
+
+    private AuthenticationState authState => authenticationStateTask.Result;
+
+    private void Logout()
+    {
+        navigation!.NavigateTo($"logout/{OpenIdConnectDefaults.AuthenticationScheme}");
+    }
+
+    [Inject]
+    private NavigationManager? navigation { get; set; }
+}

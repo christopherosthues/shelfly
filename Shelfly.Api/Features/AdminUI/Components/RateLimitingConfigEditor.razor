@@ -1,0 +1,41 @@
+@namespace Shelfly.Api.Features.AdminUI.Components
+@inject Microsoft.Extensions.Options.IOptionsMonitor<ServerDynamicConfiguration> OptionsMonitor
+
+<div class="mb-3">
+    <label class="form-label">Capacity</label>
+    <input type="number" class="form-control" min="1" 
+           @bind="@Config.Capacity" />
+    <div class="form-text">Maximum number of requests allowed in the time window.</div>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Window (Seconds)</label>
+    <input type="number" class="form-control" min="1" max="3600" 
+           @bind="@Config.WindowSeconds" />
+    <div class="form-text">Time window duration in seconds.</div>
+</div>
+
+<button type="button" class="btn btn-primary" @onclick="OnSave">Save</button>
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert alert-success mt-2">@Message</div>
+}
+
+@code {
+    [Parameter]
+    public RateLimitingConfig Config { get; set; } = new();
+
+    [Parameter]
+    public EventCallback OnSaved { get; set; }
+
+    private string? Message;
+
+    private async Task OnSave()
+    {
+        ServerDynamicConfiguration current = OptionsMonitor.CurrentValue;
+        current.RateLimiting.Capacity = Config.Capacity;
+        current.RateLimiting.WindowSeconds = Config.WindowSeconds;
+        await OnSaved.InvokeAsync();
+        Message = "Rate limiting configuration saved.";
+    }
+}
