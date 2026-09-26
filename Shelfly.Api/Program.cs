@@ -1,3 +1,4 @@
+using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -5,6 +6,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shelfly.Api.Extensions;
+using Shelfly.Api.Extensions.Providers;
 using Shelfly.Api.Features.Admin.Services;
 using Shelfly.Api.Features.Auth.Services;
 using Shelfly.Api.Features.Books.Services;
@@ -23,8 +25,6 @@ builder.Services.AddAuthorization();
 string mongoConnectionString = MongoDbOptionsExtensions.BuildMongoConnectionString(builder.Configuration);
 
 builder.Configuration.AddMongoDbConfiguration(mongoConnectionString);
-
-ILoggerFactory loggerFactory = LoggerFactory.Create(b => b.AddConsole());
 
 // Authentication feature services
 builder.Services.AddHttpClient("Keycloak", c =>
@@ -63,14 +63,21 @@ builder.Services.AddOpenTelemetry()
         .AddSqlClientInstrumentation()
         .AddSource("shelfly-api")
         .AddSource("shelfly-health-checks")
+        .AddSource("shelfly-config-provider")
         .AddOtlpExporter())
     .WithMetrics(t => t
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
         .AddSqlClientInstrumentation()
+        .AddMeter("shelfly-config-provider")
         .AddOtlpExporter());
 
 WebApplication app = builder.Build();
+
+// Wire OTel metrics and logging to the MongoDB configuration provider
+MongoDbConfigurationProvider.SetLoggerFactory(app.Services.GetRequiredService<ILoggerFactory>());
+Meter configMeter = app.Services.GetRequiredService<IMeterFactory>().Create("shelfly-config-provider");
+MongoDbConfigurationProvider.SetMeter(configMeter);
 
 // Load dynamic configuration from MongoDB (seeds defaults if empty)
 using (IServiceScope scope = app.Services.CreateScope())

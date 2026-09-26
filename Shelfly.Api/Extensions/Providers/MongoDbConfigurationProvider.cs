@@ -1,4 +1,7 @@
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Shelfly.Configuration;
@@ -12,6 +15,12 @@ namespace Shelfly.Api.Extensions.Providers;
 public sealed class MongoDbConfigurationProvider(string connectionString)
     : ConfigurationProvider, IDisposable
 {
+    private static readonly ActivitySource ActivitySource = new("shelfly-config-provider");
+
+    private static ILogger? _logger;
+    private static Counter<long>? _failedRequestsCounter;
+    private static Histogram<double>? _pollDurationHistogram;
+
     private PeriodicTimer? _pollTimer;
     private Task? _pollTask;
     private readonly CancellationTokenSource _pollCancellation = new();
@@ -21,36 +30,73 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
         PropertyNameCaseInsensitive = true
     };
 
-    // TODO: logging and metrics (e.g. failed retrievals
+    /// <summary>
+    /// Sets the logger factory for structured logging.
+    /// </summary>
+    public static void SetLoggerFactory(ILoggerFactory? loggerFactory) =>
+        _logger = loggerFactory?.CreateLogger<MongoDbConfigurationProvider>();
+
+    /// <summary>
+    /// Sets the meter for OTel metrics collection.
+    /// </summary>
+    public static void SetMeter(Meter? meter)
+    {
+        _failedRequestsCounter = meter?.CreateCounter<long>(
+            "shelfly.config.failed_requests",
+            "count",
+            "Number of failed MongoDB configuration retrievals");
+
+        _pollDurationHistogram = meter?.CreateHistogram<double>(
+            "shelfly.config.poll_duration",
+            "ms",
+            "Duration of MongoDB configuration poll operations");
+    }
 
     public override void Load()
     {
-        try
+        long elapsedMs = MeasureDuration(() =>
         {
-            using MongoClient client = new(connectionString);
-            IMongoCollection<BsonDocument> configCollection =
-                client.GetDatabase("shelfly").GetCollection<BsonDocument>("server_configuration");
-            BsonDocument? doc = configCollection.Find(d => d["_id"] == "global_config").ToList().FirstOrDefault();
+            using Activity? activity = ActivitySource.StartActivity("Initial config load");
+            activity?.SetTag("config.operation", "load");
 
-            if (doc != null)
+            try
             {
-                string json = doc.ToJson();
-                ServerDynamicConfiguration config =
-                    JsonSerializer.Deserialize<ServerDynamicConfiguration>(json, _jsonSerializerOptions) ??
-                    ServerDynamicConfiguration.Default();
+                using MongoClient client = new(connectionString);
+                IMongoCollection<BsonDocument> configCollection =
+                    client.GetDatabase("shelfly").GetCollection<BsonDocument>("server_configuration");
+                BsonDocument? doc = configCollection.Find(d => d["_id"] == "global_config").ToList().FirstOrDefault();
 
-                Data = config.ToFlatJsonDictionary();
+                if (doc != null)
+                {
+                    string json = doc.ToJson();
+                    ServerDynamicConfiguration config =
+                        JsonSerializer.Deserialize<ServerDynamicConfiguration>(json, _jsonSerializerOptions) ??
+                        ServerDynamicConfiguration.Default();
+
+                    Data = config.ToFlatJsonDictionary();
+                    activity?.SetTag("config.doc_found", true);
+                    activity?.SetStatus(ActivityStatusCode.Ok);
+                    _logger?.LogInformation("MongoDB configuration loaded successfully");
+                }
+                else
+                {
+                    Data = ServerDynamicConfiguration.Default().ToFlatJsonDictionary();
+                    activity?.SetTag("config.doc_found", false);
+                    activity?.SetStatus(ActivityStatusCode.Ok);
+                    _logger?.LogWarning("No MongoDB configuration document found, using defaults");
+                }
             }
-            else
+            catch (Exception ex)
             {
+                RecordFailedRequest("load");
+                activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+                activity?.SetTag("config.exception", ex.GetType().Name);
+                _logger?.LogError(ex, "MongoDB configuration load failed");
                 Data = ServerDynamicConfiguration.Default().ToFlatJsonDictionary();
             }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Poll check failed: {ex.Message}");
-            Data = ServerDynamicConfiguration.Default().ToFlatJsonDictionary();
-        }
+        });
+
+        RecordPollDuration("load", elapsedMs);
 
         StartPolling();
     }
@@ -73,47 +119,90 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
 
     private async Task PollForChangesAsync()
     {
-        try
+        using Activity? activity = ActivitySource.StartActivity("Config poll");
+        activity?.SetTag("config.operation", "poll");
+
+        double elapsedMs = await MeasureDurationAsync(async () =>
         {
-            using MongoClient client = new(connectionString);
-            IMongoCollection<BsonDocument> configCollection = client.GetDatabase("shelfly").GetCollection<BsonDocument>("server_configuration");
-            BsonDocument? doc = await configCollection.Find(d => d["_id"] == "global_config").FirstOrDefaultAsync(_pollCancellation.Token);
-
-            if (doc == null)
+            try
             {
-                return;
-            }
+                using MongoClient client = new(connectionString);
+                IMongoCollection<BsonDocument> configCollection = client.GetDatabase("shelfly").GetCollection<BsonDocument>("server_configuration");
+                BsonDocument? doc = await configCollection.Find(d => d["_id"] == "global_config").FirstOrDefaultAsync(_pollCancellation.Token);
 
-            string json = doc.ToJson();
-            ServerDynamicConfiguration? dbConfig = JsonSerializer.Deserialize<ServerDynamicConfiguration>(json, _jsonSerializerOptions);
-
-            // Keep the current config active when new config could not be parsed
-            if (dbConfig == null)
-            {
-                return;
-            }
-
-            Dictionary<string, string?> newData = dbConfig.ToFlatJsonDictionary();
-
-            if (!Data.SequenceEqual(newData))
-            {
-                Data.Clear();
-                foreach (KeyValuePair<string, string?> kvp in newData)
+                if (doc == null)
                 {
-                    Data[kvp.Key] = kvp.Value;
+                    _logger?.LogInformation("MongoDB poll: no configuration document found");
+                    activity?.SetTag("config.doc_found", false);
+                    return;
                 }
+
+                string json = doc.ToJson();
+                ServerDynamicConfiguration? dbConfig = JsonSerializer.Deserialize<ServerDynamicConfiguration>(json, _jsonSerializerOptions);
+
+                if (dbConfig == null)
+                {
+                    _logger?.LogWarning("MongoDB poll: configuration document found but deserialization returned null");
+                    activity?.SetTag("config.deserialized", false);
+                    return;
+                }
+
+                Dictionary<string, string?> newData = dbConfig.ToFlatJsonDictionary();
+
+                if (!Data.SequenceEqual(newData))
+                {
+                    Data.Clear();
+                    foreach (KeyValuePair<string, string?> kvp in newData)
+                    {
+                        Data[kvp.Key] = kvp.Value;
+                    }
+
+                    activity?.SetTag("config.updated", true);
+                    _logger?.LogInformation("MongoDB configuration updated from poll");
+                }
+                else
+                {
+                    activity?.SetTag("config.updated", false);
+                }
+
+                activity?.SetStatus(ActivityStatusCode.Ok);
             }
-        }
-        catch (OperationCanceledException)
-        {
-            // Expected during shutdown
-        }
-        catch (Exception ex)
-        {
-            // Transient MongoDB errors — swallow and retry on next poll
-            System.Diagnostics.Debug.WriteLine($"Poll check failed: {ex.Message}");
-        }
+            catch (OperationCanceledException)
+            {
+                activity?.SetTag("config.canceled", true);
+                _logger?.LogInformation("MongoDB poll canceled during shutdown");
+            }
+            catch (Exception ex)
+            {
+                RecordFailedRequest("poll");
+                activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+                activity?.SetTag("config.exception", ex.GetType().Name);
+                _logger?.LogWarning(ex, "MongoDB poll failed, retrying on next interval");
+            }
+        });
+
+        RecordPollDuration("poll", elapsedMs);
     }
+
+    private static long MeasureDuration(Action action)
+    {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        action();
+        return stopwatch.ElapsedMilliseconds;
+    }
+
+    private static async Task<double> MeasureDurationAsync(Func<Task> action)
+    {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        await action();
+        return stopwatch.Elapsed.TotalMilliseconds;
+    }
+
+    private static void RecordFailedRequest(string operation) =>
+        _failedRequestsCounter?.Add(1, new TagList { { "operation", operation } });
+
+    private static void RecordPollDuration(string operation, double durationMs) =>
+        _pollDurationHistogram?.Record(durationMs, new TagList { { "operation", operation } });
 
     public void Dispose()
     {

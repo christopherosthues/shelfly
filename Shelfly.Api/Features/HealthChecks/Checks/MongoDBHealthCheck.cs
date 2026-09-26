@@ -17,7 +17,7 @@ public class MongoDbHealthCheck(string connectionString) : IHealthCheck
         using Activity? activity = Source.StartActivity($"MongoDB check: {context.Registration.Name}");
         activity?.SetTag("health.check.name", "mongodb");
 
-        MongoClient client = new MongoClient(connectionString);
+        using MongoClient client = new MongoClient(connectionString);
         IMongoDatabase database = client.GetDatabase("admin");
         BsonDocument pingCommand = new BsonDocument("ping", 1);
 
