@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Shelfly.Api.Constants;
 using Shelfly.Configuration;
 
 namespace Shelfly.Api.Extensions.Providers;
@@ -15,7 +16,7 @@ namespace Shelfly.Api.Extensions.Providers;
 public sealed class MongoDbConfigurationProvider(string connectionString)
     : ConfigurationProvider, IDisposable
 {
-    private static readonly ActivitySource ActivitySource = new("shelfly-config-provider");
+    private static readonly ActivitySource ActivitySource = new(ActivitySources.ConfigProvider);
 
     private static ILogger? _logger;
     private static Counter<long>? _failedRequestsCounter;
@@ -42,14 +43,14 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
     public static void SetMeter(Meter? meter)
     {
         _failedRequestsCounter = meter?.CreateCounter<long>(
-            "shelfly.config.failed_requests",
-            "count",
-            "Number of failed MongoDB configuration retrievals");
+            MetricNames.FailedRequestsCounter,
+            MetricNames.CountUnit,
+            MetricNames.FailedRequestsDescription);
 
         _pollDurationHistogram = meter?.CreateHistogram<double>(
-            "shelfly.config.poll_duration",
-            "ms",
-            "Duration of MongoDB configuration poll operations");
+            MetricNames.PollDurationHistogram,
+            MetricNames.MsUnit,
+            MetricNames.PollDurationDescription);
     }
 
     public override void Load()
@@ -57,14 +58,14 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
         long elapsedMs = MeasureDuration(() =>
         {
             using Activity? activity = ActivitySource.StartActivity("Initial config load");
-            activity?.SetTag("config.operation", "load");
+            activity?.SetTag(TagKeys.Config.Operation, OperationNames.Load);
 
             try
             {
                 using MongoClient client = new(connectionString);
                 IMongoCollection<BsonDocument> configCollection =
-                    client.GetDatabase("shelfly").GetCollection<BsonDocument>("server_configuration");
-                BsonDocument? doc = configCollection.Find(d => d["_id"] == "global_config").ToList().FirstOrDefault();
+                    client.GetDatabase(MongoDbConstants.ShelflyDatabase).GetCollection<BsonDocument>(MongoDbConstants.ServerConfigurationCollection);
+                BsonDocument? doc = configCollection.Find(d => d["_id"] == MongoDbConstants.GlobalConfigDocumentId).ToList().FirstOrDefault();
 
                 if (doc != null)
                 {
@@ -74,29 +75,29 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
                         ServerDynamicConfiguration.Default();
 
                     Data = config.ToFlatJsonDictionary();
-                    activity?.SetTag("config.doc_found", true);
+                    activity?.SetTag(TagKeys.Config.DocFound, true);
                     activity?.SetStatus(ActivityStatusCode.Ok);
                     _logger?.LogInformation("MongoDB configuration loaded successfully");
                 }
                 else
                 {
                     Data = ServerDynamicConfiguration.Default().ToFlatJsonDictionary();
-                    activity?.SetTag("config.doc_found", false);
+                    activity?.SetTag(TagKeys.Config.DocFound, false);
                     activity?.SetStatus(ActivityStatusCode.Ok);
                     _logger?.LogWarning("No MongoDB configuration document found, using defaults");
                 }
             }
             catch (Exception ex)
             {
-                RecordFailedRequest("load");
+                RecordFailedRequest(OperationNames.Load);
                 activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
-                activity?.SetTag("config.exception", ex.GetType().Name);
+                activity?.SetTag(TagKeys.Config.Exception, ex.GetType().Name);
                 _logger?.LogError(ex, "MongoDB configuration load failed");
                 Data = ServerDynamicConfiguration.Default().ToFlatJsonDictionary();
             }
         });
 
-        RecordPollDuration("load", elapsedMs);
+        RecordPollDuration(OperationNames.Load, elapsedMs);
 
         StartPolling();
     }
@@ -120,20 +121,20 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
     private async Task PollForChangesAsync()
     {
         using Activity? activity = ActivitySource.StartActivity("Config poll");
-        activity?.SetTag("config.operation", "poll");
+        activity?.SetTag(TagKeys.Config.Operation, OperationNames.Poll);
 
         double elapsedMs = await MeasureDurationAsync(async () =>
         {
             try
             {
                 using MongoClient client = new(connectionString);
-                IMongoCollection<BsonDocument> configCollection = client.GetDatabase("shelfly").GetCollection<BsonDocument>("server_configuration");
-                BsonDocument? doc = await configCollection.Find(d => d["_id"] == "global_config").FirstOrDefaultAsync(_pollCancellation.Token);
+                IMongoCollection<BsonDocument> configCollection = client.GetDatabase(MongoDbConstants.ShelflyDatabase).GetCollection<BsonDocument>(MongoDbConstants.ServerConfigurationCollection);
+                BsonDocument? doc = await configCollection.Find(d => d["_id"] == MongoDbConstants.GlobalConfigDocumentId).FirstOrDefaultAsync(_pollCancellation.Token);
 
                 if (doc == null)
                 {
                     _logger?.LogInformation("MongoDB poll: no configuration document found");
-                    activity?.SetTag("config.doc_found", false);
+                    activity?.SetTag(TagKeys.Config.DocFound, false);
                     return;
                 }
 
@@ -143,7 +144,7 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
                 if (dbConfig == null)
                 {
                     _logger?.LogWarning("MongoDB poll: configuration document found but deserialization returned null");
-                    activity?.SetTag("config.deserialized", false);
+                    activity?.SetTag(TagKeys.Config.Deserialized, false);
                     return;
                 }
 
@@ -157,31 +158,31 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
                         Data[kvp.Key] = kvp.Value;
                     }
 
-                    activity?.SetTag("config.updated", true);
+                    activity?.SetTag(TagKeys.Config.Updated, true);
                     _logger?.LogInformation("MongoDB configuration updated from poll");
                 }
                 else
                 {
-                    activity?.SetTag("config.updated", false);
+                    activity?.SetTag(TagKeys.Config.Updated, false);
                 }
 
                 activity?.SetStatus(ActivityStatusCode.Ok);
             }
             catch (OperationCanceledException)
             {
-                activity?.SetTag("config.canceled", true);
+                activity?.SetTag(TagKeys.Config.Canceled, true);
                 _logger?.LogInformation("MongoDB poll canceled during shutdown");
             }
             catch (Exception ex)
             {
-                RecordFailedRequest("poll");
+                RecordFailedRequest(OperationNames.Poll);
                 activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
-                activity?.SetTag("config.exception", ex.GetType().Name);
+                activity?.SetTag(TagKeys.Config.Exception, ex.GetType().Name);
                 _logger?.LogWarning(ex, "MongoDB poll failed, retrying on next interval");
             }
         });
 
-        RecordPollDuration("poll", elapsedMs);
+        RecordPollDuration(OperationNames.Poll, elapsedMs);
     }
 
     private static long MeasureDuration(Action action)
@@ -199,10 +200,10 @@ public sealed class MongoDbConfigurationProvider(string connectionString)
     }
 
     private static void RecordFailedRequest(string operation) =>
-        _failedRequestsCounter?.Add(1, new TagList { { "operation", operation } });
+        _failedRequestsCounter?.Add(1, new TagList { { TagKeys.Operation, operation } });
 
     private static void RecordPollDuration(string operation, double durationMs) =>
-        _pollDurationHistogram?.Record(durationMs, new TagList { { "operation", operation } });
+        _pollDurationHistogram?.Record(durationMs, new TagList { { TagKeys.Operation, operation } });
 
     public void Dispose()
     {

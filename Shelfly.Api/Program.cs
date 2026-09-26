@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Shelfly.Api.Constants;
 using Shelfly.Api.Extensions;
 using Shelfly.Api.Extensions.Providers;
 using Shelfly.Api.Features.Admin.Services;
@@ -29,13 +30,13 @@ builder.Configuration.AddMongoDbConfiguration(mongoConnectionString);
 // Authentication feature services
 builder.Services.AddHttpClient("Keycloak", c =>
 {
-    string keycloakUrl = builder.Configuration.GetValue<string>("Keycloak:BaseUrl")
-                         ?? throw new InvalidOperationException("Keycloak:BaseUrl not configured");
+    string keycloakUrl = builder.Configuration.GetValue<string>(KeycloakConfigKeys.BaseUrl)
+                          ?? throw new InvalidOperationException($"{KeycloakConfigKeys.BaseUrl} not configured");
     c.BaseAddress = new Uri(keycloakUrl);
 });
 
-string realm = builder.Configuration.GetValue<string>("Keycloak:Realm")
-               ?? "master";
+string realm = builder.Configuration.GetValue<string>(KeycloakConfigKeys.Realm)
+                ?? KeycloakConfigKeys.DefaultRealm;
 
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<KeycloakAdminClient>();
@@ -56,27 +57,27 @@ builder.Services.AddMongoDbOptions(builder.Configuration, mongoConnectionString)
 
 // OpenTelemetry instrumentation for authentication and health check endpoints
 builder.Services.AddOpenTelemetry()
-    .ConfigureResource(r => r.AddService("shelfly-api"))
+    .ConfigureResource(r => r.AddService(ActivitySources.Api))
     .WithTracing(t => t
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
         .AddSqlClientInstrumentation()
-        .AddSource("shelfly-api")
-        .AddSource("shelfly-health-checks")
-        .AddSource("shelfly-config-provider")
+        .AddSource(ActivitySources.Api)
+        .AddSource(ActivitySources.HealthChecks)
+        .AddSource(ActivitySources.ConfigProvider)
         .AddOtlpExporter())
     .WithMetrics(t => t
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
         .AddSqlClientInstrumentation()
-        .AddMeter("shelfly-config-provider")
+        .AddMeter(ActivitySources.ConfigProvider)
         .AddOtlpExporter());
 
 WebApplication app = builder.Build();
 
 // Wire OTel metrics and logging to the MongoDB configuration provider
 MongoDbConfigurationProvider.SetLoggerFactory(app.Services.GetRequiredService<ILoggerFactory>());
-Meter configMeter = app.Services.GetRequiredService<IMeterFactory>().Create("shelfly-config-provider");
+Meter configMeter = app.Services.GetRequiredService<IMeterFactory>().Create(ActivitySources.ConfigProvider);
 MongoDbConfigurationProvider.SetMeter(configMeter);
 
 // Load dynamic configuration from MongoDB (seeds defaults if empty)
@@ -91,31 +92,31 @@ using (IServiceScope scope = app.Services.CreateScope())
 
     // Register health checks with the resolved connection string
     builder.Services.AddHealthChecks()
-        .AddCheck<LivenessHealthCheck>("liveness", tags: ["live"])
+        .AddCheck<LivenessHealthCheck>(HealthCheckNames.Liveness, tags: [HealthCheckTags.Live])
         .Add(new HealthCheckRegistration(
-            "postgresql",
+            HealthCheckNames.PostgreSql,
             _ => new PostgreSQLHealthCheck(postgresConnectionString),
             failureStatus: HealthStatus.Unhealthy,
-            tags: ["ready"],
+            tags: [HealthCheckTags.Ready],
             timeout: TimeSpan.FromSeconds(3)))
         .Add(new HealthCheckRegistration(
-            "mongodb",
+            HealthCheckNames.MongoDb,
             _ => new MongoDbHealthCheck(mongoConnectionString),
             failureStatus: HealthStatus.Unhealthy,
-            tags: ["ready"],
+            tags: [HealthCheckTags.Ready],
             timeout: TimeSpan.FromSeconds(3)))
         .Add(new HealthCheckRegistration(
-            "keycloak",
+            HealthCheckNames.Keycloak,
             sp =>
             {
-                string keycloakUrl = builder.Configuration.GetValue<string>("Keycloak:BaseUrl")
-                                     ?? throw new InvalidOperationException("Keycloak:BaseUrl not configured");
-                string realm = builder.Configuration.GetValue<string>("Keycloak:Realm")
-                               ?? "master";
+                string keycloakUrl = builder.Configuration.GetValue<string>(KeycloakConfigKeys.BaseUrl)
+                                     ?? throw new InvalidOperationException($"{KeycloakConfigKeys.BaseUrl} not configured");
+                string realm = builder.Configuration.GetValue<string>(KeycloakConfigKeys.Realm)
+                               ?? KeycloakConfigKeys.DefaultRealm;
                 return new KeycloakHealthCheck(new HttpClient { BaseAddress = new Uri(keycloakUrl) }, realm);
             },
             failureStatus: HealthStatus.Unhealthy,
-            tags: ["ready"],
+            tags: [HealthCheckTags.Ready],
             timeout: TimeSpan.FromSeconds(3)));
 }
 
@@ -148,7 +149,7 @@ app.Use(async (context, next) =>
     {
         await next.Invoke(context);
     }
-    catch (Exception ex) when (ex.Message.Contains("Keycloak") || (ex.InnerException?.Message.Contains("Keycloak") ?? false))
+    catch (Exception ex) when (ex.Message.Contains(HealthCheckNames.Keycloak) || (ex.InnerException?.Message.Contains(HealthCheckNames.Keycloak) ?? false))
     {
         context.Response.StatusCode = StatusCodes.Status502BadGateway;
         await context.Response.WriteAsJsonAsync(new ProblemDetails
