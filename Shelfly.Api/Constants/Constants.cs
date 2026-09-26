@@ -76,3 +76,14 @@ internal static class MetricNames
     public const string FailedRequestsDescription = "Number of failed MongoDB configuration retrievals";
     public const string PollDurationDescription = "Duration of MongoDB configuration poll operations";
 }
+
+internal static class AuthorizationSchemes
+{
+    public const string AdminOnly = "AdminOnly";
+    public const string Bearer = "Bearer";
+}
+
+internal static class HttpClientNames
+{
+    public const string Keycloak = "Keycloak";
+}

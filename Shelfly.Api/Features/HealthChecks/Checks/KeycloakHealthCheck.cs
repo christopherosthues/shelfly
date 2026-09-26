@@ -22,7 +22,7 @@ public class KeycloakHealthCheck(IHttpClientFactory httpClientFactory, IOptionsM
         {
             KeycloakConfig keycloakConfig = serverDynamicConfigurationOptionsMonitor.CurrentValue.Keycloak;
             string realmEndpoint = $"/realms/{keycloakConfig.Realm}";
-            using HttpClient httpClient = httpClientFactory.CreateClient("Keycloak");
+            using HttpClient httpClient = httpClientFactory.CreateClient(HttpClientNames.Keycloak);
             HttpResponseMessage response = await httpClient.GetAsync(realmEndpoint, cancellationToken);
 
             if (response.IsSuccessStatusCode)

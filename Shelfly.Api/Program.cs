@@ -24,7 +24,7 @@ string mongoConnectionString = MongoDbOptionsExtensions.BuildMongoConnectionStri
 builder.Configuration.AddMongoDbConfiguration(mongoConnectionString);
 
 // Authentication feature services
-builder.Services.AddHttpClient("Keycloak");
+builder.Services.AddHttpClient(HttpClientNames.Keycloak);
 
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<KeycloakAdminClient>();
