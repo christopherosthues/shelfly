@@ -83,9 +83,6 @@ MongoDbConfigurationProvider.SetMeter(configMeter);
 // Load dynamic configuration from MongoDB (seeds defaults if empty)
 using (IServiceScope scope = app.Services.CreateScope())
 {
-    DynamicOptionsManager optionsManager = scope.ServiceProvider.GetRequiredService<DynamicOptionsManager>();
-    await optionsManager.LoadAsync(CancellationToken.None);
-
     // Rebuild PostgreSQL connection string with MongoDB-backed config
     PostgreSqlConfig postgreSqlConfig = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<PostgreSqlConfig>>().CurrentValue;
     string postgresConnectionString = PostgreSqlOptionsExtensions.BuildPostgresConnectionString(postgreSqlConfig, builder.Configuration);
