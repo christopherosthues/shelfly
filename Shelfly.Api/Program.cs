@@ -115,9 +115,6 @@ app.MapBookmarksEndpoints();
 app.MapLiveHealthChecks();
 app.MapReadyHealthChecks();
 
-// Map Blazor Admin UI (requires authentication and admin role)
-app.MapBlazorAdminUi();
-
 // Global error handling middleware for Keycloak connectivity failures
 app.Use(async (context, next) =>
 {
