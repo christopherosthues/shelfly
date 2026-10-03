@@ -30,7 +30,7 @@
       context: ./database/postgresql
       dockerfile: Dockerfile.init
     env_file:
-      - ../../deploy/envfiles/postgres-common.env
+      - ../deploy/envfiles/postgres-common.env
       - ./deploy/envfiles/postgres.env
     depends_on:
       postgres:
@@ -48,7 +48,7 @@
     image: mongodb/mongodb-community-server:8.3.2-ubuntu2204-slim
     restart: no
     env_file:
-      - ../../deploy/envfiles/mongodb-common.env
+      - ../deploy/envfiles/mongodb-common.env
       - ./deploy/envfiles/mongodb.env
     environment:
       - APP_MONGO_DATABASE=${MONGODB_SHELFLY_DATABASE}
@@ -90,12 +90,12 @@ networks:
 
 secrets:
   postgres_password:
-    file: ./deploy/secrets/postgres_password.txt
+    file: ../deploy/secrets/postgres_password.txt
   shelfly_admin_password:
     file: ./deploy/secrets/shelfly_admin_password.txt
   shelfly_user_password:
     file: ./deploy/secrets/shelfly_user_password.txt
   mongodb_root_password:
-    file: ./deploy/secrets/mongodb_root_password.txt
+    file: ../deploy/secrets/mongodb_root_password.txt
   mongodb_shelfly_config_password:
     file: ./deploy/secrets/mongodb_shelfly_config_password.txt
