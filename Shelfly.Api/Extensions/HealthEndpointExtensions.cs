@@ -11,8 +11,11 @@ namespace Shelfly.Api.Extensions;
 /// </summary>
 public static class HealthEndpointExtensions
 {
+    private static JsonSerializerOptions JsonSerializerOptions = new() { WriteIndented = true };
+
     extension(IEndpointRouteBuilder routes)
     {
+
         /// <summary>
         /// Maps the liveness health check endpoint at /v1/health/live.
         /// </summary>
@@ -61,8 +64,7 @@ public static class HealthEndpointExtensions
             HealthCheckResponseDto response = HealthCheckResultService.CreateResponse(report);
 
             context.Response.ContentType = "application/json";
-            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
-            await JsonSerializer.SerializeAsync(context.Response.Body, response, options);
+            await JsonSerializer.SerializeAsync(context.Response.Body, response, JsonSerializerOptions);
         }
     }
 }

@@ -46,7 +46,7 @@ public static class MongoDbOptionsExtensions
     /// Reads a secret value from a file path (Docker Compose secrets mount point).
     /// </summary>
     private static string? ReadSecretFile(string? filePath) =>
-        filePath is not null && File.Exists(filePath) ? File.ReadAllText(filePath).Trim() : default;
+        filePath is not null && File.Exists(filePath) ? File.ReadAllText(filePath).Trim() : null;
 
     public static IConfigurationManager AddMongoDbConfiguration(this IConfigurationManager configurationManager, string mongoConnectionString)
     {

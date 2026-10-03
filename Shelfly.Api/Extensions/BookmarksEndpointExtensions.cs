@@ -8,7 +8,7 @@ public static class BookmarksEndpointExtensions
     {
         public IEndpointRouteBuilder MapBookmarksEndpoints()
         {
-            RouteGroupBuilder group = routes.MapGroup("v1/bookmarks");
+            RouteGroupBuilder group = routes.MapGroup("v1/bookmarks").RequireAuthorization();
 
             group.MapGet("/", ListBookmarksEndpoint.Handle);
             group.MapPost("/", CreateBookmarkEndpoint.Handle);

@@ -61,7 +61,6 @@ public static class PostgreSqlOptionsExtensions
             builder.AddInterceptors(new AuditTimestampInterceptor());
         });
 
-        // TODO: Do we need this?
         services.AddScoped<AuditTimestampInterceptor>();
 
         return services;

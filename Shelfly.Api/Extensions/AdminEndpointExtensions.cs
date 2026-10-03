@@ -11,7 +11,7 @@ public static class AdminEndpointExtensions
     {
         public IEndpointRouteBuilder MapAdminEndpoints()
         {
-            RouteGroupBuilder group = routes.MapGroup("admin").RequireAuthorization();
+            RouteGroupBuilder group = routes.MapGroup("v1/admin").RequireAuthorization();
 
             group.MapGet("/config", GetConfigEndpoint.Handle);
             group.MapPut("/config", UpdateConfigEndpoint.Handle);
@@ -20,7 +20,7 @@ public static class AdminEndpointExtensions
             group.MapControllers();
             group.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
-                .RequireAuthorization("AdminOnly");
+                .RequireAuthorization(AuthorizationSchemes.AdminOnly);
 
             return routes;
         }

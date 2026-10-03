@@ -8,7 +8,7 @@ public static class BooksEndpointExtensions
     {
         public IEndpointRouteBuilder MapBooksEndpoints()
         {
-            RouteGroupBuilder group = routes.MapGroup("v1/books");
+            RouteGroupBuilder group = routes.MapGroup("v1/books").RequireAuthorization();
 
             group.MapGet("/", ListBooksEndpoint.Handle);
             group.MapPost("/", CreateBookEndpoint.Handle);
